@@ -1,0 +1,68 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="invoiceID">
+    <th mat-header-cell *matHeaderCellDef> Broj fakture </th>
+    <td mat-cell *matCellDef="let element"> 
+        {{element.invoiceID}} 
+     </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> datum </th>
+    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+  </ng-container>
+
+    <ng-container matColumnDef="supplierName">
+      <th mat-header-cell *matHeaderCellDef> Dobavljac </th>
+      <td mat-cell *matCellDef="let element"> {{element.supplierName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef> Kupac </th>
+      <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="value_out_pdv">
+      <th mat-header-cell *matHeaderCellDef> Vrednost bez PDV-a </th>
+      <td mat-cell *matCellDef="let element"> <b>{{element.valueOutPdv}}</b> </td>
+    </ng-container>
+    <ng-container matColumnDef="value_pdv">
+      <th mat-header-cell *matHeaderCellDef> Vrednost PDV-a </th>
+      <td mat-cell *matCellDef="let element"> <b>{{element.valuePdv}}</b> </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="value_total">
+      <th mat-header-cell *matHeaderCellDef> Ukupna vrednost </th>
+      <td mat-cell *matCellDef="let element"> <b>{{element.valueTotal}}</b> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef> Opcije </th>
+      <td mat-cell *matCellDef="let element"> 
+        <button mat-raised-button color="accent"class="edit-button">
+            <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openInvoiceDetails(row)"></tr>
+  </table>
+  
+  <div class="total-end">
+    <div class="total">
+      <div class="property">
+          <span class="label">Ukupno:</span>
+          <span class="value"> {{total_value_out_pdv.toFixed(2)}} </span>
+      </div>
+      <div class="property">
+          <span class="label">Iznos PDV-a (stopa 17%):</span>
+          <span class="value"> {{total_value_pdv.toFixed(2)}}</span>
+      </div>
+      <div class="property">
+          <span class="label">Ukupan zaduzenja sa PDV-om:</span>
+          <span class="value"> {{total_value.toFixed(2)}}</span>
+      </div>
+    </div>
+
+</div>

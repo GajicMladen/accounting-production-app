@@ -1,0 +1,17 @@
+table{
+    width: 100%;
+}
+th{
+    text-align: center!important;
+}
+
+td{
+    text-align: center;
+}
+.row-is-selected{
+    background-color: #673ab7;
+}
+
+.row-is-selected td{
+    color: white;
+}

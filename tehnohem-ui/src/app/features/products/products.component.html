@@ -1,0 +1,22 @@
+<h3>Proizvodi</h3>
+<div>
+    
+    <button mat-raised-button color="primary" (click)="addProductInvoice()">
+        <mat-icon>add</mat-icon>
+        <mat-icon>file_copy</mat-icon>
+        Novi radni nalog 
+    </button>
+    <button mat-raised-button color="primary" (click)="addProductInvoice()">
+        <mat-icon>add</mat-icon>
+        <mat-icon>inventory</mat-icon>
+        Nova predatnica 
+    </button>
+</div>
+<hr />
+<app-simple-count-table 
+    [dataSource]="products" 
+    [displayedColumns]="displayedColumns"
+    (addClicked)="addNewProduct()"
+    (deleteRowClicked)="deleteProduct($event)" 
+    (editRowClicked)="editProduct($event)"
+></app-simple-count-table>

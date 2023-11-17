@@ -1,0 +1,32 @@
+
+    <div class="filters">
+
+        <mat-form-field>
+            <mat-label>Odaberi period</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date">
+              <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-slide-toggle [(ngModel)]="statistics" (change)="onChange()">Statistika</mat-slide-toggle>
+    </div>
+    <h2>Istorija</h2>
+    <div *ngIf="tabToShow===5.1">
+        <app-bussines-table-expense *ngIf="statistics" [dataSource]="invoicesIncoming" [displayedColumns]="displayedColumnsIncomingInvoice"></app-bussines-table-expense>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesIncoming">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="tabToShow===5.2">
+        <app-bussines-table-expense *ngIf="statistics" [dataSource]="invoicesInternalIssueRaw" [displayedColumns]="displayedColumnsIssueRaw"></app-bussines-table-expense>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesInternalIssueRaw">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div>    

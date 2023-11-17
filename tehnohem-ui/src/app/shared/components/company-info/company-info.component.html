@@ -1,0 +1,32 @@
+<mat-card class="company" (click)="openCompanyInfo()">
+    <div class="manage-commands delete-icon" *ngIf="deleteOption">
+        <button mat-raised-button (click)="deleteCompany(company.id);$event.stopPropagation();" class="delete-button"><mat-icon >delete</mat-icon></button>
+    </div>
+    <div class="logo">
+        <img src="../../../../assets/z-market.jpg" *ngIf="+company.id % 4 ===0"/>
+        <img src="../../../../assets/mv-group.jfif" *ngIf="+company.id % 4 ===1"/>
+        <img src="../../../../assets/beoprom.png" *ngIf="+company.id % 4 ===2"/>
+        <img src="../../../../assets/boksit-milici.png" *ngIf="+company.id % 4 ===3"/>
+    </div>
+    <div class="info">
+        <div class="property">
+            <span class="label"> Naziv </span>
+            <span class="value"> {{company.name}} </span>
+        </div>
+        <div class="property">
+            <span class="label"> Adresa</span>
+            <span class="value"> {{company.address}}	</span>
+        </div>
+        <div class="property">
+            <span class="label"> JIB </span>
+            <span class="value"> {{company.jib}} </span>
+        </div>
+        <div class="property">
+            <span class="label"> E-mail </span>
+            <span class="value"> {{company.email}}</span>
+        </div>
+    </div>
+    <div class="manage-commands add-icon" *ngIf="deliveryPlacesOption">
+        <button mat-raised-button color="primary" (click)="openDeliveryPlacesInfo();$event.stopPropagation();" class="delivery-places-button">Dostavna mesta <mat-icon >info</mat-icon></button>
+    </div>
+</mat-card>

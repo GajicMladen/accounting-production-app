@@ -1,0 +1,120 @@
+<div>
+    <div class="filters">
+        <mat-icon>filter_list</mat-icon>
+        <mat-form-field *ngIf="selectorName !== '~'">
+            <mat-label>{{selectorName}}</mat-label>
+            <mat-select (selectionChange)="filterTables($event.value)">
+                <mat-option [value]="'~'"> / </mat-option>
+              <mat-option *ngFor="let raw of selectData" [value]="raw.name">
+                {{raw.name}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <mat-label>Odaberi period</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date">
+              <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-slide-toggle *ngIf="selectorName === '~'">Gotovinske prodaje</mat-slide-toggle>
+    </div>
+      
+      <!-- <p>Selected range: {{range.value | json}}</p> -->
+</div>
+<div class="tables">
+    <div class="table1-div">
+        <div class="table-title">
+            <h3>{{table1Title}}</h3>
+            <div class="options">
+                <button mat-raised-button color="primary">{{table1Btn1}}</button>
+            </div>
+        </div>
+        <hr />
+        <div class="table1">
+            <!-- <app-bussines-table-expense [dataSource]="table1Data" ></app-bussines-table-expense> -->
+
+        </div>
+    </div>
+    <div class="table2-div">
+        <div class="table-title">
+            <h3>{{table2Title}}</h3>
+            <div class="options">
+                <button mat-raised-button color="primary" *ngIf="table2Btn1 !== '~'">{{table2Btn1}}</button>
+            </div>
+        </div>
+        <hr />
+        <div class="table2">
+            <!-- <app-bussines-table-expense [dataSource]="table2Data"></app-bussines-table-expense> -->
+        </div>
+    </div>
+    <div class="table3-div">
+        <button mat-raised-button class="print-btn"><mat-icon>print</mat-icon>Štampaj izveštaj</button>
+    </div>
+</div>
+<hr />
+<div class="summary">
+    <div class="table1">
+        <div class="total-end">
+            <div class="total">
+              <div class="property">
+                  <span class="label">Ukupno:</span>
+                  <span class="value"> {{summaryTable1String}} </span>
+              </div>
+              <div class="property">
+                  <span class="label">Iznos PDV-a (stopa 17%):</span>
+                  <span class="value"> {{summaryTable1PDVString}}</span>
+              </div>
+              <div class="property">
+                  <span class="label">Ukupan zaduzenja sa PDV-om:</span>
+                  <span class="value">{{summaryTable1TotalString}}</span>
+              </div>
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="table2">
+        <div class="total-end">
+            <div class="total">
+              <div class="property">
+                  <span class="label">Ukupno:</span>
+                  <span class="value"> {{summaryTable2String}} </span>
+              </div>
+              <div class="property">
+                  <span class="label">Iznos PDV-a (stopa 17%):</span>
+                  <span class="value"> {{summaryTable2PDVString}}</span>
+              </div>
+              <div class="property">
+                  <span class="label">Ukupan zaduzenja sa PDV-om:</span>
+                  <span class="value">{{summaryTable2TotalString}}</span>
+              </div>
+            </div>
+        
+        </div>
+    </div>
+    <div class="table3">
+
+        <div class="total-end">
+            <div class="total">
+              <div class="property">
+                  <span class="label">Ukupno:</span>
+                  <span class="value"> {{summaryTotalString}} </span>
+              </div>
+              <div class="property">
+                  <span class="label">Iznos PDV-a (stopa 17%):</span>
+                  <span class="value"> {{summaryTotalPDVString}}</span>
+              </div>
+              <div class="property">
+                  <span class="label">Ukupan zaduzenja sa PDV-om:</span>
+                  <span class="value">{{summaryTotalTotalString}}</span>
+              </div>
+            </div>
+        
+        </div>
+    </div>
+</div>

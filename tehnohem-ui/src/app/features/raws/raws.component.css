@@ -1,0 +1,15 @@
+.categories{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.category{
+    min-width: 550px;
+}
+
+.options{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}

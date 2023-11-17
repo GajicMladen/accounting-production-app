@@ -1,0 +1,83 @@
+<h2>Prodaja</h2>
+
+<mat-card class="buyer">
+    <div>
+        <h3>Kupac</h3>
+        <div class="customer-picker">
+            <app-company-picker></app-company-picker>
+        </div>
+    </div>
+    <div>
+        <h3>Isporuka</h3>
+        <div class="customer-picker">
+            <app-company-picker></app-company-picker>
+        </div>
+    </div>
+</mat-card>
+<mat-card>
+    <h3>Proizvodi</h3>
+    <div class="products">
+        <div class="product-picker">
+            <app-product-picker (selectedProductEmiter)="changedSelectedProduct($event)"></app-product-picker>
+        </div>
+        <div *ngIf="selectedProduct">
+            <form class="product-price">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Unesite cenu proizvoda</mat-label>
+                  <input matInput placeholder="Cena proizvoda" value="0.93">
+                </mat-form-field>
+                <div class="package-type">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Unesite kolicinu proizvoda</mat-label>
+                        <input matInput placeholder="Kolicina" value="">
+                    </mat-form-field>
+                    <mat-radio-group aria-label="Select an option">
+                        <mat-radio-button value="1">kom.</mat-radio-button>
+                        <mat-radio-button value="2"><mat-icon>inventory</mat-icon></mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>Rabat</mat-label>
+                    <input matInput placeholder="Rabat" value="">
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="product-options-end" *ngIf="selectedProduct">
+            <div class="product-options">
+                <button mat-raised-button class="save-btn" color="primary" (click)="addNewProductToList(newProductToSell)"> 
+                    <mat-icon>check</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="sell-table">
+        <app-sell-product-table></app-sell-product-table>
+    </div>
+    <div class="total-div">
+        <div class="total-end">
+            <div class="total">
+              <div class="property">
+                  <span class="label">Osnovica PDV-a:</span>
+                  <span class="value"> 338.25 </span>
+              </div>
+              <div class="property">
+                  <span class="label">Iznos PDV-a (stopa 17%):</span>
+                  <span class="value"> 57.50 </span>
+              </div>
+              <div class="property">
+                  <span class="label">Ukupan iznos za uplatu sa PDV-om:</span>
+                  <span class="value">395.76</span>
+              </div>
+            </div>
+        
+        </div>
+        <div class="final-options">
+            <button mat-raised-button class="final-save-btn">
+                <mat-icon>save</mat-icon>
+                Sačuvaj
+            </button>
+        </div>
+    </div>
+</mat-card>

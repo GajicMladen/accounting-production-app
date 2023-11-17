@@ -1,0 +1,15 @@
+.title{
+    margin-top: 20px;
+}
+.companies{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.company{
+    min-width: 300px;
+    max-width: 300px;
+}

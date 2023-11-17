@@ -1,0 +1,64 @@
+<div>
+    <h2 *ngIf="data.companyType === companyTypes.SUPPLIER "> Novi dobavljač </h2>
+    <h2 *ngIf="data.companyType === companyTypes.CUSTOMER "> Novi kupac </h2>
+    <h2 *ngIf="data.companyType === companyTypes.THIRD_PARTY "> Nova treća strana </h2>
+    <h2 *ngIf="data.companyType === companyTypes.CUSTOMER_DELIVERY_PLACE"> Nova dostavno mesto za {{data.company!.name}}</h2>
+
+    <form [formGroup]="form">
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Naziv</mat-label>
+                <input matInput placeholder="Naziv" value="" formControlName="name" >
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>JIB</mat-label>
+                <input matInput placeholder="JIB" value="" formControlName="jib">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>IB</mat-label>
+                <input matInput placeholder="IB" value="" formControlName="ib">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Adresa</mat-label>
+                <input matInput placeholder="Adresa" value="" formControlName="address">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Broj telefona</mat-label>
+                <input matInput placeholder="Broj telefona" value="" formControlName="phoneNumber">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Kontakt osoba</mat-label>
+                <input matInput placeholder="Kontakt osoba" value="" formControlName="contactPerson">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>E-mail</mat-label>
+                <input matInput placeholder="Email" value="" formControlName="email">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <button mat-raised-button (click)="saveCompany()">
+                <mat-icon>save</mat-icon>
+                Sačuvaj
+            </button>
+        </div>
+    </form>
+</div>
