@@ -26,6 +26,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateProducts();
+    this.addProductInvoice();
   }
   
   updateProducts(){
@@ -38,7 +39,7 @@ export class ProductsComponent implements OnInit {
 
   dialogData : InternalDocumentData ={
     title:"Predatnica",
-    documentType:InternalDocumentType.PRODUCT_INVOICE,
+    documentType:InternalDocumentType.INTERNAL_ISSUE_PRODUCT,
     isReadonly:false
   }
   
@@ -46,7 +47,7 @@ export class ProductsComponent implements OnInit {
 
     this.dialogData={
       title:"Predatnica",
-      documentType:InternalDocumentType.PRODUCT_INVOICE,
+      documentType:InternalDocumentType.INTERNAL_ISSUE_PRODUCT,
       isReadonly:false
     }
     const dialogRef = this.dialog.open(InternalDocumentsDialogComponent,{

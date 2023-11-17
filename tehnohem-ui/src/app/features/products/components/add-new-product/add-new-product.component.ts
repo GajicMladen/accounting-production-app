@@ -18,7 +18,7 @@ export class AddNewProductComponent implements OnInit {
     volume : new FormControl(),
     currentAmount : new FormControl(),
     singlePrice: new FormControl(),
-    totalPrice : new FormControl(),
+    totalValue : new FormControl(),
   });
 
   constructor(
@@ -34,7 +34,7 @@ export class AddNewProductComponent implements OnInit {
       this.form.get('barCode')?.setValue(this.data.product!.barCode);
       this.form.get('currentAmount')?.setValue(this.data.product!.currentAmount);
       this.form.get('singlePrice')?.setValue(this.data.product!.singlePrice);
-      this.form.get('totalPrice')?.setValue(this.data.product!.totalValue);
+      this.form.get('totalValue')?.setValue(this.data.product!.totalValue);
     }
   }
 

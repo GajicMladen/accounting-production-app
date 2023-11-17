@@ -12,6 +12,7 @@ import { SellRawTableComponent } from '../../sell-raw-table/sell-raw-table.compo
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
 import { IncomingInvoiceDTO } from 'src/app/shared/model/invoices/incomingInvoiceDTO';
 import { InvoiceItem } from 'src/app/shared/model/invoices/invoiceItem';
+import { Product } from 'src/app/shared/model/product';
 
 @Component({
   selector: 'app-internal-documents-dialog',
@@ -118,6 +119,20 @@ export class InternalDocumentsDialogComponent implements OnInit {
     this.singlePiceForm.get('singlePrice')?.setValue(this.selectedRaw?.singlePrice);
     this.singlePiceForm.get('count')?.setValue(0);
 
+  }
+  
+  changeSelectedProduct(product:Product|undefined)
+  {
+    if(product){
+      this.singlePiceForm.get('name')?.setValue(product.name);
+      this.singlePiceForm.get('singlePrice')?.setValue(product.singlePrice);
+      this.singlePiceForm.get('count')?.setValue(0);
+    }
+    else{
+      this.singlePiceForm.get('name')?.setValue("");
+      this.singlePiceForm.get('singlePrice')?.setValue("");
+      this.singlePiceForm.get('count')?.setValue(0);
+    }
   }
 
   getRawType():RawType{

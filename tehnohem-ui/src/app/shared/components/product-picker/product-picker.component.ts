@@ -1,16 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Product } from '../../model/product';
+import { ProductService } from '../../services/product-service/product.service';
 
 
 
 
-const ELEMENT_DATA: Product[] = [
-  {id: 0, name: 'Sirce', volume: "1/1", barCode: '4400233300007',singlePrice:11,totalValue:22,currentAmount:2},
-  {id: 1, name: 'Task Maxi ', volume: "5/1", barCode: '88002352300007',singlePrice:11,totalValue:22,currentAmount:2},
-  {id: 2, name: 'Rival pumpica', volume: "0.75/1", barCode: '4400233300007',singlePrice:11,totalValue:22,currentAmount:2},
-  {id: 3, name: 'Auto glas', volume: "3/1", barCode: '440013255632517',singlePrice:11,totalValue:22,currentAmount:2},
-  
-];
 @Component({
   selector: 'app-product-picker',
   templateUrl: './product-picker.component.html',
@@ -22,11 +16,19 @@ export class ProductPickerComponent implements OnInit {
   selectedProduct : Product | undefined;
   i : number = 0;
   displayedColumns: string[] = [ 'name',"volume"];
-  dataSource = ELEMENT_DATA;
+  dataSource : Product[] = [];
 
-  constructor() { }
+  constructor(
+    private productService:ProductService
+  ) { }
   
   ngOnInit(): void {
+    this.productService.getAllProducts().subscribe(
+      data=>{
+        this.dataSource = data;
+      }
+    )
+
   }
   
   isRowSelected(row:Product):boolean{
