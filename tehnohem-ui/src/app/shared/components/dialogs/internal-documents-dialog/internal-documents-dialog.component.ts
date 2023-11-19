@@ -8,7 +8,6 @@ import { Raw } from 'src/app/shared/model/raw';
 import { RawToSell } from 'src/app/shared/model/rawToSell';
 import { CompanyService } from 'src/app/shared/services/company-service/company.service';
 import { RawService } from 'src/app/shared/services/raw-service/raw.service';
-import { SellRawTableComponent } from '../../sell-raw-table/sell-raw-table.component';
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
 import { IncomingInvoiceDTO } from 'src/app/shared/model/invoices/incomingInvoiceDTO';
 import { InvoiceItem } from 'src/app/shared/model/invoices/invoiceItem';
@@ -33,6 +32,9 @@ export class InternalDocumentsDialogComponent implements OnInit {
   newRaw:boolean = false;
   newRawType : string = "raw" ;
   selectedRaw: Raw | undefined;
+
+  selectedItemID : number = 0;
+
   raws: Raw[] = [];
   bottles: Raw[] = [];
   caps: Raw[] = [];
@@ -118,7 +120,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
     this.singlePiceForm.get('name')?.setValue(this.selectedRaw?.name);
     this.singlePiceForm.get('singlePrice')?.setValue(this.selectedRaw?.singlePrice);
     this.singlePiceForm.get('count')?.setValue(0);
-
+    this.selectedItemID = this.selectedRaw?.id!;
   }
   
   changeSelectedProduct(product:Product|undefined)
@@ -127,12 +129,14 @@ export class InternalDocumentsDialogComponent implements OnInit {
       this.singlePiceForm.get('name')?.setValue(product.name);
       this.singlePiceForm.get('singlePrice')?.setValue(product.singlePrice);
       this.singlePiceForm.get('count')?.setValue(0);
+      this.selectedItemID = product.id;
     }
     else{
       this.singlePiceForm.get('name')?.setValue("");
       this.singlePiceForm.get('singlePrice')?.setValue("");
       this.singlePiceForm.get('count')?.setValue(0);
     }
+
   }
 
   getRawType():RawType{
@@ -153,7 +157,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
     value_pdv = +value_pdv.toFixed(2);
     value_total = +value_total.toFixed(2);
     let newPice : RawToSell = {
-      itemID: this.newRaw ? -1 : this.selectedRaw?.id! ,
+      itemID: this.selectedItemID ,
       rawType: this.getRawType(),
       name: this.singlePiceForm.get('name')?.value,
       count: this.singlePiceForm.get('count')?.value,
@@ -197,6 +201,10 @@ export class InternalDocumentsDialogComponent implements OnInit {
     if(this.data.documentType == InternalDocumentType.INTERNAL_ISSUE_RAW){
       this.addNewIssueRaw();
     }
+    
+    if(this.data.documentType == InternalDocumentType.INTERNAL_ISSUE_PRODUCT){
+      this.addNewIssueProduct();
+    }
   }
 
   addNewIncomingInvoice(){
@@ -233,6 +241,26 @@ export class InternalDocumentsDialogComponent implements OnInit {
     this.invoicesService.addNewInternalIssueRaw(newIncomingInvoice).subscribe(
       data=>{
         this.dialogRef.close("addedNewInternalIssueRaw");
+      }
+    )
+
+  }
+  
+  addNewIssueProduct(){
+
+    let newIncomingInvoice : IncomingInvoiceDTO ={
+      invoiceID: this.invoiceID,
+      date: this.date.toLocaleDateString('sv'),
+      supplierID: "",
+      invoiceItems: this.rawsToSell as RawToSell[],
+      totalValueOfPdv: this.total_value_of_pdv,
+      totalValueWithoutPdv: this.total_value_without_pdv,
+      totalValue: this.total_value_with_pdv
+    };
+
+    this.invoicesService.addNewInternalIssueProduct(newIncomingInvoice).subscribe(
+      data=>{
+        this.dialogRef.close("addedNewInternalIssueProduct");
       }
     )
 

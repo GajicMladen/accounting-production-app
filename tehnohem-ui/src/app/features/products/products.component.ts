@@ -53,6 +53,12 @@ export class ProductsComponent implements OnInit {
     const dialogRef = this.dialog.open(InternalDocumentsDialogComponent,{
       data:this.dialogData
     });
+
+    dialogRef.afterClosed().subscribe(data =>{
+      if(data === "addedNewInternalIssueProduct"){
+        this.updateProducts();
+      }
+    })
   }
 
   addNewProduct(){

@@ -23,9 +23,11 @@ export class HistoryComponent implements OnInit {
   
   invoicesIncoming: DetailInvoiceInfo[] =[];
   invoicesInternalIssueRaw: DetailInvoiceInfo[] =[];
+  invoicesInternalIssueProduct: DetailInvoiceInfo[] =[];
 
   displayedColumnsIncomingInvoice: string[] = [ 'supplierName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
   displayedColumnsIssueRaw: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
+  displayedColumnsIssueProduct: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
 
   statistics: boolean = true;
 
@@ -46,6 +48,12 @@ export class HistoryComponent implements OnInit {
 
     this.invoicesService.getAllInternalIssueRaw().subscribe(data =>{
       this.invoicesInternalIssueRaw = data.sort(function(a,b): any{
+        return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
+      });
+    });
+
+    this.invoicesService.getAllInternalIssueProduct().subscribe(data =>{
+      this.invoicesInternalIssueProduct = data.sort(function(a,b): any{
         return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
       });
     });

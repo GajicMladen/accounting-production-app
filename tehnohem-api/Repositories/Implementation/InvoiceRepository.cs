@@ -32,6 +32,15 @@ namespace tehnohem_api.Repositories.Implementation
                 .ToList();
         }
 
+        public List<Invoice> GetAllInternalIssueProduct()
+        {
+            return this.invoices.Where(i => i.InvoiceType == InvoiceType.INTERNAL_ISSUE_PRODUCT)
+                .Include(ii => ii.InvoiceItems)
+                .Include(ii => ii.Supplier)
+                .Include(ii => ii.Customer)
+                .ToList();
+        }
+
         public List<Invoice> GetAllInternalIssueRaw()
         {
             return this.invoices.Where(i => i.InvoiceType == InvoiceType.INTERNAL_ISSUE_RAW)

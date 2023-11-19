@@ -30,6 +30,13 @@ namespace tehnohem_api.Controllers
             return Ok();
         }
 
+        [HttpPost("addNewInternalIssueProduct")]
+        public IActionResult addNewInternalIssueProdcut(IncomingInvoiceDTO incomingInvoiceDTO)
+        {
+            this.invoicesService.AddNewInternalIssueProduct(incomingInvoiceDTO);
+            return Ok();
+        }
+
         [HttpGet("allIncomingInvoices")]
         public List<DetailInvoiceInfoDTO> getAllIncomingInvoices() { 
             List<Invoice> invoices = this.invoicesService.GetAllIncomingInvoices();
@@ -40,6 +47,13 @@ namespace tehnohem_api.Controllers
         public List<DetailInvoiceInfoDTO> getAllInternalIssueRaw()
         {
             List<Invoice> invoices = this.invoicesService.GetAllInternalIssueRaw();
+            return this.invoicesService.GetDetailInvoicesInfo(invoices);
+        }
+
+        [HttpGet("allInternalIssueProduct")]
+        public List<DetailInvoiceInfoDTO> getAllInternalIssueProduct()
+        {
+            List<Invoice> invoices = this.invoicesService.GetAllInternalIssueProduct();
             return this.invoicesService.GetDetailInvoicesInfo(invoices);
         }
     }

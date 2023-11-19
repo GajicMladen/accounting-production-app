@@ -23,12 +23,20 @@ export class InvoicesService {
     return this.http.post<any>(this.url+"/addNewInternalIssueRaw",incomingInvoiceDTO);
   }
 
+  addNewInternalIssueProduct(incomingInvoiceDTO:IncomingInvoiceDTO):Observable<any>{
+    return this.http.post<any>(this.url+"/addNewInternalIssueProduct",incomingInvoiceDTO);
+  }
+
   getAllIncomingInvoices():Observable<DetailInvoiceInfo[]>{
     return this.http.get<DetailInvoiceInfo[]>(this.url+"/allIncomingInvoices");
   }
   
   getAllInternalIssueRaw():Observable<DetailInvoiceInfo[]>{
     return this.http.get<DetailInvoiceInfo[]>(this.url+"/allInternalIssueRaw");
+  }
+  
+  getAllInternalIssueProduct():Observable<DetailInvoiceInfo[]>{
+    return this.http.get<DetailInvoiceInfo[]>(this.url+"/allInternalIssueProduct");
   }
 }
 

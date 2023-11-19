@@ -15,5 +15,16 @@ namespace tehnohem_api.Model
         public float CurrentAmount { get; set; }
         public float TotalValue { get; set; }
 
+        public Product() { }
+
+        public Product(Product x) {
+            this.ID = x.ID;
+            this.BarCode = x.BarCode;
+            this.Name = x.Name;
+            this.Volume = x.Volume;
+            this.SinglePrice = x.SinglePrice;
+            this.CurrentAmount = x.CurrentAmount;
+            this.TotalValue = x.TotalValue;
+        }
     }
 }
