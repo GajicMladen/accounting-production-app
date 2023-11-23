@@ -13,7 +13,6 @@ import { InvoiceItem } from '../../model/invoices/invoiceItem';
 })
 export class SellRawTableComponent implements OnInit {
   displayedColumns: string[] = [ 
-    "position",
     "name",
     "count",
     "unit",
@@ -39,13 +38,13 @@ export class SellRawTableComponent implements OnInit {
   
   isRowSelected(row:ProductToSell):boolean{
     if(this.selectedRow != undefined){
-      return this.selectedRow!.position === row.position;
+      return this.selectedRow!.productId === row.productId;
     }
     return false; 
   }
   clickRow(row:ProductToSell):ProductToSell | undefined{
     
-    if(this.selectedRow != undefined && this.selectedRow.position === row.position)
+    if(this.selectedRow != undefined && this.selectedRow.productId === row.productId)
       return undefined;
     
     return row; 

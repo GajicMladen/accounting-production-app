@@ -38,7 +38,7 @@ export class AddNewCompanyComponent implements OnInit {
       this.form.get("jib")?.setValue(this.data.company?.jib);
       this.form.get("ib")?.setValue(this.data.company?.ib);
       this.form.get("address")?.setValue(this.data.company?.address);
-      this.form.get("phoneNumbe")?.setValue(this.data.company?.phoneNumber);
+      this.form.get("phoneNumber")?.setValue(this.data.company?.phoneNumber);
       this.form.get("contactPerson")?.setValue(this.data.company?.contactPerson);
       this.form.get("email")?.setValue(this.data.company?.email);
     }

@@ -1,18 +1,17 @@
 <div class="body">
-    <div class="title">
+    
+    <div class="generalInfoForm">
         <h2>{{data.title}}</h2>
-        <div class="generalInfoForm">
-            <mat-form-field >
-                <mat-label>Broj fakture</mat-label>
-                <input matInput placeholder="Broj fakture" [(ngModel)]="invoiceID" [readonly]="data.isReadonly">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Datum fakture</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="date"  [readonly]="data.isReadonly">
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </div>
+        <mat-form-field >
+            <mat-label>Broj fakture</mat-label>
+            <input matInput placeholder="Broj fakture" [(ngModel)]="invoiceID" [readonly]="data.isReadonly">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Datum fakture</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="date"  [readonly]="data.isReadonly">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
     </div>
     <div *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE">
         <div (click)="showCompany=!showCompany" style="cursor: pointer;">

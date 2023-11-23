@@ -1,52 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProductToSell } from '../../model/productToSell';
 import { Product } from '../../model/product';
 ;
-
-let ELEMENT_DATA: ProductToSell[] = [
-  {
-    position: 1,
-    name: "sirce",
-    count: 96,
-    price_single: 0.94,
-    price_total:90.24,
-    rabat:21.89,
-    discount: 0,
-    osnovica_pdv_a:68.35,
-    pdv:11.62,
-    price_pdv:79.97,
-    price_single_no_pdv:0.712,
-    price_single_pdv:0.83,
-  },
-  {
-    position: 2,
-    name: "sirce",
-    count: 96,
-    price_single: 0.94,
-    price_total:90.24,
-    rabat:21.89,
-    discount: 0,
-    osnovica_pdv_a:68.35,
-    pdv:11.62,
-    price_pdv:79.97,
-    price_single_no_pdv:0.712,
-    price_single_pdv:0.83,
-  },
-  {
-    position: 3,
-    name: "sirce",
-    count: 96,
-    price_single: 0.94,
-    price_total:90.24,
-    rabat:21.89,
-    discount: 0,
-    osnovica_pdv_a:68.35,
-    pdv:11.62,
-    price_pdv:79.97,
-    price_single_no_pdv:0.712,
-    price_single_pdv:0.83,
-  }
-];
 
 @Component({
   selector: 'app-sell-product-table',
@@ -55,21 +10,22 @@ let ELEMENT_DATA: ProductToSell[] = [
 })
 export class SellProductTableComponent implements OnInit {
   displayedColumns: string[] = [ 
-    "position",
     "name",
-    "count",
+    "amount",
     "price_single",
-    "price_total",
     "rabat",
     "discount",
-    "osnovica_pdv_a",
+    "total_value_out_pdv",
     "pdv",
-    "price_pdv",
+    "total_value_pdv",
+    "total_value",
     "price_single_no_pdv",
     "price_single_pdv",
     "delete"
   ];
-  dataSource = ELEMENT_DATA;
+  @Input() productsToSell : ProductToSell[] = [];
+  
+  @Output() deletedRow: EventEmitter<any> = new EventEmitter();
 
   selectedRow : ProductToSell | undefined;
   constructor(
@@ -79,25 +35,20 @@ export class SellProductTableComponent implements OnInit {
   }
   isRowSelected(row:ProductToSell):boolean{
     if(this.selectedRow != undefined){
-      return this.selectedRow!.position === row.position;
+      return this.selectedRow!.productId === row.productId;
     }
     return false; 
   }
   clickRow(row:ProductToSell):ProductToSell | undefined{
     
-    if(this.selectedRow != undefined && this.selectedRow.position === row.position)
+    if(this.selectedRow != undefined && this.selectedRow.productId === row.productId)
       return undefined;
     
     return row; 
   }
   
   deleteProduct(product:ProductToSell){
-    this.dataSource = this.dataSource.filter(item => item !== product);
-    console.log(this.dataSource);
+    this.deletedRow.emit(product);
   }
 
-  addProduct(newProduct:ProductToSell){
-    this.dataSource = [...this.dataSource, newProduct];
-    console.log(this.dataSource);
-  }
 }

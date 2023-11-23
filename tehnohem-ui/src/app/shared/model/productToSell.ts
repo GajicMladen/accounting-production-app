@@ -1,15 +1,17 @@
 
 export interface ProductToSell {
-    position: number;
+    productId:number;
     name: string;
-    count: number;
     price_single: number;
-    price_total:number;
+    amount: number;
     rabat:number;
     discount: number;
-    osnovica_pdv_a:number;
     pdv:number;
-    price_pdv:number;
+
+    total_value_out_pdv:number;
+    total_value_pdv:number;
+    total_value:number;
+
     price_single_no_pdv:number;
     price_single_pdv:number;
   }

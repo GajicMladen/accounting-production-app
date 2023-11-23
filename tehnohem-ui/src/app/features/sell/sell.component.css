@@ -87,3 +87,12 @@
     width: 100%;
     justify-content: flex-end;
 }
+
+.warnings{
+    color:red;
+    padding-right: 50px;
+}
+.generalInfoForm{
+    display: flex;
+    justify-content: space-between;
+}

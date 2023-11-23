@@ -90,3 +90,8 @@
     color:red;
     padding-right: 50px;
 }
+
+.generalInfoForm{
+    display: flex;
+    justify-content: space-between;
+}
