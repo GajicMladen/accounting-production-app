@@ -31,8 +31,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule }from '@angular/material/progress-spinner';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -70,13 +68,7 @@ import { ToastrModule } from "ngx-toastr";
     MatSlideToggleModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      timeOut: 10000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-    })
+    ReactiveFormsModule
   ],
   exports: [
     MatSidenavModule,

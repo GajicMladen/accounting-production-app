@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { SellProductTableComponent } from 'src/app/shared/components/sell-product-table/sell-product-table.component';
+import { Company } from 'src/app/shared/model/company';
 import { Product } from 'src/app/shared/model/product';
 import { ProductToSell } from 'src/app/shared/model/productToSell';
+import { CompanyService } from 'src/app/shared/services/company-service/company.service';
 
 @Component({
   selector: 'app-sell',
@@ -12,6 +14,11 @@ export class SellComponent implements OnInit {
 
   @ViewChild(SellProductTableComponent) sellComponent! :SellProductTableComponent;
 
+  @Input() selectedCompany : Company | undefined ;
+  @Input() selectedDeliveryPlace : Company | undefined;
+
+  companies : Company[] = [];
+  deliveryPlaces : Company[] = [];
 
   selectedProduct : Product | undefined;
   newProductToSell : ProductToSell =  {
@@ -29,9 +36,28 @@ export class SellComponent implements OnInit {
     price_single_pdv:0.83,
   }
 
-  constructor() { }
+  constructor(
+    private companyService: CompanyService
+  ) { }
 
   ngOnInit(): void {
+    this.companyService.getAllCustomerCompanies().subscribe(data => {
+      this.companies = data.sort((a,b)=> a.name.charCodeAt(0) - b.name.charCodeAt(0));
+    })
+  }
+
+  changeSelectedCompany(selectedCompany: Company){
+    this.selectedCompany = selectedCompany;
+    this.selectedDeliveryPlace = undefined;
+    this.companyService.getAllDeliveryPlaces(this.selectedCompany.id).subscribe(data=> {
+        this.deliveryPlaces = data;
+      }
+    );
+  }
+
+  
+  changeSelectedDeliveryPlace(selectedDeliveryPlace: Company){
+    this.selectedDeliveryPlace = selectedDeliveryPlace;
   }
 
   changedSelectedProduct(newProduct:Product|undefined){

@@ -4,13 +4,13 @@
     <div>
         <h3>Kupac</h3>
         <div class="customer-picker">
-            <app-company-picker></app-company-picker>
+            <app-company-picker [companies]="companies" (companySelected)="changeSelectedCompany($event)" [selectedCompany]="selectedCompany"></app-company-picker>
         </div>
     </div>
-    <div>
+    <div *ngIf="deliveryPlaces.length > 0">
         <h3>Isporuka</h3>
         <div class="customer-picker">
-            <app-company-picker></app-company-picker>
+            <app-company-picker [companies]="deliveryPlaces" (companySelected)="changeSelectedDeliveryPlace($event)" [selectedCompany]="selectedDeliveryPlace"></app-company-picker>
         </div>
     </div>
 </mat-card>

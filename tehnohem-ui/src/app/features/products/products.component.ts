@@ -32,7 +32,7 @@ export class ProductsComponent implements OnInit {
   updateProducts(){
     this.productService.getAllProducts().subscribe(
       data=>{
-        this.products = data;
+        this.products = data.sort((a,b) => a.name.charCodeAt(0) - b.name.charCodeAt(0) );;
       }
     )
   }
