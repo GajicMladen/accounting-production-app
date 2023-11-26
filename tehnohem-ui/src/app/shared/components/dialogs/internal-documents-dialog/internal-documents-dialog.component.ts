@@ -12,6 +12,7 @@ import { InvoicesService } from 'src/app/shared/services/invoices-service/invoic
 import { IncomingInvoiceDTO } from 'src/app/shared/model/invoices/incomingInvoiceDTO';
 import { InvoiceItem } from 'src/app/shared/model/invoices/invoiceItem';
 import { Product } from 'src/app/shared/model/product';
+import { ProductToSell } from 'src/app/shared/model/productToSell';
 
 @Component({
   selector: 'app-internal-documents-dialog',
@@ -48,7 +49,8 @@ export class InternalDocumentsDialogComponent implements OnInit {
     pdv: new FormControl(17)
   })
 
-  rawsToSell : RawToSell[] | InvoiceItem[] =[];
+  rawsToSell : RawToSell[] =[];
+  prodcutsToSell : ProductToSell[] = [];
   
   total_value_without_pdv : number = 0;
   total_value_of_pdv : number = 0;
@@ -90,7 +92,20 @@ export class InternalDocumentsDialogComponent implements OnInit {
         );
       }
 
-      this.rawsToSell = this.data.invoice!.items;
+      if(this.data.documentType === InternalDocumentType.OUTGOING_INVOICE){
+        this.companyService.getCompanyInfo(this.data.invoice!.customerID).subscribe(
+          data =>{
+            this.selectedCompany = data;
+          }
+        );
+      }
+
+      if(this.data.documentType === InternalDocumentType.OUTGOING_INVOICE){
+        this.prodcutsToSell = this.data.invoice!.items as ProductToSell[];
+      }else{
+
+        this.rawsToSell = this.data.invoice!.items as RawToSell[];
+      }
       this.updateTotalPrices();
     }
   }
@@ -182,12 +197,18 @@ export class InternalDocumentsDialogComponent implements OnInit {
     this.total_value_without_pdv =  0;
     this.total_value_of_pdv =  0;
     this.total_value_with_pdv=  0;
-
-    this.rawsToSell.forEach(x =>{
-      this.total_value_without_pdv += x.value_out_pdv;
-      this.total_value_of_pdv += x.value_pdv;
-      this.total_value_with_pdv += x.value_total;
-    })
+    if(this.rawsToSell.length > 0)
+      this.rawsToSell.forEach(x =>{
+        this.total_value_without_pdv += x.value_out_pdv;
+        this.total_value_of_pdv += x.value_pdv;
+        this.total_value_with_pdv += x.value_total;
+      })
+    if( this.prodcutsToSell.length > 0 )
+      this.prodcutsToSell.forEach(x =>{
+        this.total_value_without_pdv += x.value_out_pdv;
+        this.total_value_of_pdv += x.value_pdv;
+        this.total_value_with_pdv += x.value_total;
+      })
     this.total_value_without_pdv = +this.total_value_without_pdv.toFixed(2);
     this.total_value_of_pdv = +this.total_value_of_pdv.toFixed(2);
     this.total_value_with_pdv = +this.total_value_with_pdv.toFixed(2);

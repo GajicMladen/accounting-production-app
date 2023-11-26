@@ -116,6 +116,7 @@
                 [disabled]="selectedCompany === undefined ||
                             productsToSell.length === 0
                 "
+                (click)="addNewOutgoingInvoice()"
             >
                 <mat-icon>save</mat-icon>
                 Sačuvaj

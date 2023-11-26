@@ -37,5 +37,19 @@ namespace tehnohem_api.Model
             this.Customer = customer;
             this.CustomerID = customer?.ID;
         }
+
+        public Invoice(OutgoingInvoiceDTO incomingInvoiceDTO, Company? supplier, Company? customer, InvoiceType invoiceType)
+        {
+            this.ID = incomingInvoiceDTO.InvoiceID;
+            this.Date = incomingInvoiceDTO.Date;
+            this.TotalValueWithoutPDV = incomingInvoiceDTO.TotalValueWithoutPDV;
+            this.TotalValueOfPDV = incomingInvoiceDTO.TotalValueOfPDV;
+            this.TotalValue = incomingInvoiceDTO.TotalValue;
+            this.InvoiceType = invoiceType;
+            this.SupplierID = supplier?.ID;
+            this.Supplier = supplier;
+            this.Customer = customer;
+            this.CustomerID = customer?.ID;
+        }
     }
 }

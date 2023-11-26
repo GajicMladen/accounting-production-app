@@ -18,9 +18,9 @@ namespace tehnohem_api.Repositories.Implementation
             this.invoices = this.postgresqlContext.invoices;
         }
 
-        public void AddNewIncomingInvoice(Invoice newIncomingInvoice)
+        public void AddNewInvoice(Invoice newInvoice)
         {
-            this.invoices.Add(newIncomingInvoice);
+            this.invoices.Add(newInvoice);
         }
 
         public List<Invoice> GetAllIncomingInvoices()
@@ -44,6 +44,15 @@ namespace tehnohem_api.Repositories.Implementation
         public List<Invoice> GetAllInternalIssueRaw()
         {
             return this.invoices.Where(i => i.InvoiceType == InvoiceType.INTERNAL_ISSUE_RAW)
+                .Include(ii => ii.InvoiceItems)
+                .Include(ii => ii.Supplier)
+                .Include(ii => ii.Customer)
+                .ToList();
+        }
+
+        public List<Invoice> GetAllOutgoingInvoices()
+        {
+            return this.invoices.Where(i => i.InvoiceType == InvoiceType.OUTGOING_INVOICE)
                 .Include(ii => ii.InvoiceItems)
                 .Include(ii => ii.Supplier)
                 .Include(ii => ii.Customer)

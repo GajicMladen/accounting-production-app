@@ -15,6 +15,8 @@ namespace tehnohem_api.Services.Interface
         void AddNewInternalIssueRaw(IncomingInvoiceDTO newIncomingInvoice);
         void AddNewInternalIssueProduct(IncomingInvoiceDTO newIncomingInvoice);
 
+        void AddNewOutgoingInvoice(OutgoingInvoiceDTO newIncomingInvoice);
+
         List<GeneralInvoiceInfoDTO> GetGeneralInvoicesInfo(List<Invoice> invoices);
         List<DetailInvoiceInfoDTO> GetDetailInvoicesInfo(List<Invoice> invoices);
 

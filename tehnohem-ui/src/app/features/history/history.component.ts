@@ -24,10 +24,12 @@ export class HistoryComponent implements OnInit {
   invoicesIncoming: DetailInvoiceInfo[] =[];
   invoicesInternalIssueRaw: DetailInvoiceInfo[] =[];
   invoicesInternalIssueProduct: DetailInvoiceInfo[] =[];
+  invoicesOutgoing: DetailInvoiceInfo[] =[];
 
   displayedColumnsIncomingInvoice: string[] = [ 'supplierName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
   displayedColumnsIssueRaw: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
   displayedColumnsIssueProduct: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
+  displayedColumnsOutgoingInvoice: string[] = [ 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
 
   statistics: boolean = true;
 
@@ -54,6 +56,12 @@ export class HistoryComponent implements OnInit {
 
     this.invoicesService.getAllInternalIssueProduct().subscribe(data =>{
       this.invoicesInternalIssueProduct = data.sort(function(a,b): any{
+        return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
+      });
+    });
+    
+    this.invoicesService.getAllOutgoingInvoices().subscribe(data =>{
+      this.invoicesOutgoing = data.sort(function(a,b): any{
         return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
       });
     });

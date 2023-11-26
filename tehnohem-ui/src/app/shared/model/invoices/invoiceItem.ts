@@ -8,4 +8,11 @@ export interface InvoiceItem{
     value_out_pdv:number; //100 (price_out_pdv * count)
     value_pdv:number; //17 ( price_out_pdv * pdv )
     value_total:number; //117 ( price_out_pdv + pdv_value  )
+    
+    productId? : number;
+    rabat? :number ;
+    discount? : number;
+    price_single_no_pdv?:number;
+    price_single_pdv?:number;
+    amount? : number;
 }

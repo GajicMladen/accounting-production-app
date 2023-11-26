@@ -24,7 +24,7 @@ export class SellRawTableComponent implements OnInit {
     "delete"
   ];
   
-  @Input() rawsToSell : RawToSell[] | InvoiceItem[] = [];
+  @Input() rawsToSell : RawToSell[]  = [];
   @Input() isReadonly: boolean = false;
 
   @Output() deletedRow: EventEmitter<any> = new EventEmitter();

@@ -37,7 +37,7 @@ namespace tehnohem_api.Services.Implementation
 
             newInvoice.InvoiceItems = invoiceItems;
 
-            this.unitOfWork.InvoiceRepository.AddNewIncomingInvoice(newInvoice);
+            this.unitOfWork.InvoiceRepository.AddNewInvoice(newInvoice);
             this.unitOfWork.Commit();
         }
         private int addNewRaw(IncomingInvoiceItemDTO incomingInvoiceItemDTO) {
@@ -83,7 +83,7 @@ namespace tehnohem_api.Services.Implementation
 
         public List<Invoice> GetAllOutgoingInvoices()
         {
-            throw new NotImplementedException();
+            return this.unitOfWork.InvoiceRepository.GetAllOutgoingInvoices();
         }
 
         public List<GeneralInvoiceInfoDTO> GetGeneralInvoicesInfo(List<Invoice> invoices)
@@ -129,7 +129,7 @@ namespace tehnohem_api.Services.Implementation
 
             newInvoice.InvoiceItems = invoiceItems;
 
-            this.unitOfWork.InvoiceRepository.AddNewIncomingInvoice(newInvoice);
+            this.unitOfWork.InvoiceRepository.AddNewInvoice(newInvoice);
             this.unitOfWork.Commit();
         }
 
@@ -153,7 +153,7 @@ namespace tehnohem_api.Services.Implementation
 
             newInvoice.InvoiceItems = invoiceItems;
 
-            this.unitOfWork.InvoiceRepository.AddNewIncomingInvoice(newInvoice);
+            this.unitOfWork.InvoiceRepository.AddNewInvoice(newInvoice);
             this.unitOfWork.Commit();
         }
 
@@ -166,10 +166,38 @@ namespace tehnohem_api.Services.Implementation
             updatedProduct.SinglePrice = (float)(updatedProduct.TotalValue / updatedProduct.CurrentAmount);
             this.unitOfWork.ProductRepository.UpdateProduct(currentProduct, updatedProduct);
         }
-
+        private void updateProductStateMinus(OutgoingInvoiceItemDTO incomingInvoiceItemDTO)
+        {
+            Product currentProduct = this.unitOfWork.ProductRepository.GetProductById(incomingInvoiceItemDTO.productId);
+            Product updatedProduct = new Product(currentProduct);
+            updatedProduct.TotalValue = currentProduct.TotalValue - incomingInvoiceItemDTO.value_total;
+            updatedProduct.CurrentAmount = currentProduct.CurrentAmount - incomingInvoiceItemDTO.amount;
+            updatedProduct.SinglePrice = (float)(updatedProduct.TotalValue / updatedProduct.CurrentAmount);
+            this.unitOfWork.ProductRepository.UpdateProduct(currentProduct, updatedProduct);
+        }
         public List<Invoice> GetAllInternalIssueProduct()
         {
             return this.unitOfWork.InvoiceRepository.GetAllInternalIssueProduct();
+        }
+
+        public void AddNewOutgoingInvoice(OutgoingInvoiceDTO newIncomingInvoice)
+        {
+            Company customer = this.unitOfWork.CompanyRepository.getById(newIncomingInvoice.BuyerID);
+            Invoice newInvoice = new Invoice(newIncomingInvoice, null,customer, InvoiceType.OUTGOING_INVOICE);
+
+            List<InvoiceItem> invoiceItems = new List<InvoiceItem>();
+            foreach (OutgoingInvoiceItemDTO invoiceItemDTO in newIncomingInvoice.InvoiceItems)
+            {
+                InvoiceItem invoiceItem = new InvoiceItem(invoiceItemDTO, newInvoice);
+                invoiceItem.itemID = invoiceItemDTO.productId;
+                updateProductStateMinus(invoiceItemDTO);
+                invoiceItems.Add(invoiceItem);
+            }
+
+            newInvoice.InvoiceItems = invoiceItems;
+
+            this.unitOfWork.InvoiceRepository.AddNewInvoice(newInvoice);
+            this.unitOfWork.Commit();
         }
     }
 }

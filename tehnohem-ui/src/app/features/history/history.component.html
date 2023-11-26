@@ -38,3 +38,11 @@
             </div>
         </div>
     </div> 
+    <div *ngIf="tabToShow===5.4">
+        <app-bussines-table-expense *ngIf="statistics" [dataSource]="invoicesOutgoing" [displayedColumns]="displayedColumnsOutgoingInvoice"></app-bussines-table-expense>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesInternalIssueProduct">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div> 

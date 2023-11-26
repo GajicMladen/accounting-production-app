@@ -16,7 +16,7 @@ namespace tehnohem_api.DTO
         public float valuePdv { get; set; }
         public float valueTotal { get; set; }
 
-        public ICollection<IncomingInvoiceItemDTO> items { get; set; }
+        public ICollection<OutgoingInvoiceItemDTO> items { get; set; }
 
         public DetailInvoiceInfoDTO() { 
             
@@ -34,9 +34,9 @@ namespace tehnohem_api.DTO
             this.valueOutPdv = invoice.TotalValueWithoutPDV;
             this.valuePdv = invoice.TotalValueOfPDV;
             this.valueTotal = invoice.TotalValue;
-            this.items = new List<IncomingInvoiceItemDTO>();
+            this.items = new List<OutgoingInvoiceItemDTO>();
             foreach (InvoiceItem invoiceItem in invoice.InvoiceItems) { 
-                this.items.Add(new IncomingInvoiceItemDTO(invoiceItem));
+                this.items.Add(new OutgoingInvoiceItemDTO(invoiceItem));
             }
         }
     }

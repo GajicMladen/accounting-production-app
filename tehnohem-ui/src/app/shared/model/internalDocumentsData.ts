@@ -2,7 +2,6 @@ import { DetailInvoiceInfo } from "./invoices/detailInvoiceInfo";
 
 export enum InternalDocumentType{
     INCOMING_INVOICE,
-    ISSUE_PAPER,
     INCOMING_OTHER_INVOICE,
     OUTGOING_INVOICE,
     OUTGOING_CASH_INVOICE,

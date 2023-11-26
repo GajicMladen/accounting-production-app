@@ -3,9 +3,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { SellProductTableComponent } from 'src/app/shared/components/sell-product-table/sell-product-table.component';
 import { Company } from 'src/app/shared/model/company';
+import { OutgoingInvoiceDTO } from 'src/app/shared/model/invoices/outgoingInvoiceDTO';
 import { Product } from 'src/app/shared/model/product';
 import { ProductToSell } from 'src/app/shared/model/productToSell';
 import { CompanyService } from 'src/app/shared/services/company-service/company.service';
+import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
 
 @Component({
   selector: 'app-sell',
@@ -46,7 +48,8 @@ export class SellComponent implements OnInit {
   
   constructor(
     private companyService: CompanyService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private invoicesService : InvoicesService
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +95,7 @@ export class SellComponent implements OnInit {
     let rabat = this.formGroup.get("rabat")?.value;
     let discount = this.formGroup.get("discount")?.value;
     let pdv = this.formGroup.get("pdv")?.value;
+    let unit = this.formGroup.get('unit')?.value === '1'? "kom":"l";
     
     let total_value_out_pdv = this.round(singlePrice * amount );
     let total_value_pdv =this.round( total_value_out_pdv * (pdv/100));
@@ -103,14 +107,15 @@ export class SellComponent implements OnInit {
     let newProductToSell : ProductToSell =  {
       productId: this.selectedProduct!.id,
       name: this.selectedProduct!.name,
+      unit: unit,
       amount: amount,
       price_single: singlePrice,
       rabat: rabat,
       discount: discount,
       pdv: pdv,
-      total_value_out_pdv: total_value_out_pdv,
-      total_value_pdv: total_value_pdv,
-      total_value: total_value,
+      value_out_pdv: total_value_out_pdv,
+      value_pdv: total_value_pdv,
+      value_total: total_value,
 
       price_single_no_pdv: price_single_no_pdv,
       price_single_pdv: price_single_pdv,
@@ -139,10 +144,34 @@ export class SellComponent implements OnInit {
     this.total_value_with_pdv=  0;
 
     this.productsToSell.forEach(x =>{
-      this.total_value_without_pdv += x.total_value_out_pdv;
-      this.total_value_of_pdv += x.total_value_pdv;
-      this.total_value_with_pdv += x.total_value;
+      this.total_value_without_pdv += x.value_out_pdv;
+      this.total_value_of_pdv += x.value_pdv;
+      this.total_value_with_pdv += x.value_total;
     })
   }
 
+  addNewOutgoingInvoice(){
+    let newOutgoingInvoice : OutgoingInvoiceDTO ={
+      invoiceID: this.invoiceID,
+      buyerID: this.selectedCompany!.id,
+      date: this.date.toLocaleDateString('sv'),
+      totalValue: this.total_value_with_pdv,
+      totalValueOfPDV: this.total_value_of_pdv,
+      totalValueWithoutPDV: this.total_value_without_pdv,
+      invoiceItems: this.productsToSell
+    }
+    this.invoicesService.addNewOutgoingInvoice(newOutgoingInvoice).subscribe(
+      { 
+
+        error: x => {
+          this.toastr.error(x);
+        },
+        next: x => {
+          this.toastr.success(x);
+        }
+        
+      }
+    );
+
+  }
 }

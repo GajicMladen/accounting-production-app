@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProductToSell } from '../../model/productToSell';
 import { Product } from '../../model/product';
+import { InvoiceItem } from '../../model/invoices/invoiceItem';
 ;
 
 @Component({
@@ -15,10 +16,10 @@ export class SellProductTableComponent implements OnInit {
     "price_single",
     "rabat",
     "discount",
-    "total_value_out_pdv",
+    "value_out_pdv",
     "pdv",
-    "total_value_pdv",
-    "total_value",
+    "value_pdv",
+    "value_total",
     "price_single_no_pdv",
     "price_single_pdv",
     "delete"

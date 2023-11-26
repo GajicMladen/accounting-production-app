@@ -13,9 +13,10 @@
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     </div>
-    <div *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE">
+    <div *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE || data.documentType == allDocumentType.OUTGOING_INVOICE ">
         <div (click)="showCompany=!showCompany" style="cursor: pointer;">
-            <h3>Dobavljač</h3>
+            <h3 *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE ">Dobavljač</h3>
+            <h3 *ngIf="data.documentType == allDocumentType.OUTGOING_INVOICE ">Kupac</h3>
             <h2>{{selectedCompany?.name}}</h2>
         </div>
         <div *ngIf="showCompany && !data.isReadonly" class="company-picker">
@@ -130,8 +131,14 @@
     
     <div>
         <br />
-        <h3>Dodate sirovine</h3>
-        <app-sell-raw-table [rawsToSell]="rawsToSell" (deletedRow)="deleteRawToSell($event)" [isReadonly]="data.isReadonly"></app-sell-raw-table>
+        <div  *ngIf=" data.documentType === allDocumentType.OUTGOING_INVOICE">
+            <h3>Prodati proizvodi</h3>
+            <app-sell-product-table [productsToSell]="prodcutsToSell" (deletedRow)="deleteRawToSell($event)" ></app-sell-product-table>
+        </div>
+        <div  *ngIf=" data.documentType != allDocumentType.OUTGOING_INVOICE">
+            <h3>Dodate sirovine</h3>
+            <app-sell-raw-table [rawsToSell]="rawsToSell" (deletedRow)="deleteRawToSell($event)" [isReadonly]="data.isReadonly"></app-sell-raw-table>    
+        </div>
     </div>
     
     <div class="total-div">
@@ -160,14 +167,14 @@
                 <div *ngIf="(data.documentType === allDocumentType.INCOMING_INVOICE && !selectedCompany)">
                     Odaberi dobavljača
                 </div>
-                <div *ngIf="rawsToSell.length === 0">
+                <div *ngIf="rawsToSell.length === 0 && prodcutsToSell.length === 0 ">
                     Dodaj sirovine
                 </div>
             </div>
             <button mat-raised-button class="final-save-btn" [disabled]="
                         invoiceID === '' ||
                         (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
-                        rawsToSell.length === 0" (click)="addNewInvoice()">
+                        (rawsToSell.length === 0 && prodcutsToSell.length === 0)" (click)="addNewInvoice()">
                 <mat-icon>save</mat-icon>
                 <span>
                     Sačuvaj
