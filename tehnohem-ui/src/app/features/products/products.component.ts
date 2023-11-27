@@ -26,7 +26,6 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateProducts();
-    this.addProductInvoice();
   }
   
   updateProducts(){
