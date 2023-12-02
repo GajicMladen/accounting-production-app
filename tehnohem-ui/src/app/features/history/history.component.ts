@@ -26,10 +26,10 @@ export class HistoryComponent implements OnInit {
   invoicesInternalIssueProduct: DetailInvoiceInfo[] =[];
   invoicesOutgoing: DetailInvoiceInfo[] =[];
 
-  displayedColumnsIncomingInvoice: string[] = [ 'supplierName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
-  displayedColumnsIssueRaw: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
-  displayedColumnsIssueProduct: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
-  displayedColumnsOutgoingInvoice: string[] = [ 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
+  displayedColumnsIncomingInvoice: string[] = [ 'supplierName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
+  displayedColumnsIssueRaw: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
+  displayedColumnsIssueProduct: string[]= ['invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
+  displayedColumnsOutgoingInvoice: string[] = [ 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
 
   statistics: boolean = true;
 

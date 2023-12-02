@@ -31,12 +31,12 @@
         <div class="table-title">
             <h3>{{table1Title}}</h3>
             <div class="options">
-                <button mat-raised-button color="primary">{{table1Btn1}}</button>
+                <button mat-raised-button color="primary" (click)="table1Btn1Action()">{{table1Btn1}}</button>
             </div>
         </div>
         <hr />
         <div class="table1">
-            <!-- <app-bussines-table-expense [dataSource]="table1Data" ></app-bussines-table-expense> -->
+            <app-invoices-table [dataSource]="table1Data" [showSummary]="false"></app-invoices-table>
 
         </div>
     </div>
@@ -44,12 +44,12 @@
         <div class="table-title">
             <h3>{{table2Title}}</h3>
             <div class="options">
-                <button mat-raised-button color="primary" *ngIf="table2Btn1 !== '~'">{{table2Btn1}}</button>
+                <button mat-raised-button color="primary" *ngIf="table2Btn1 !== '~'" (click)="table2Btn1Action()">{{table2Btn1}}</button>
             </div>
         </div>
         <hr />
         <div class="table2">
-            <!-- <app-bussines-table-expense [dataSource]="table2Data"></app-bussines-table-expense> -->
+            <app-invoices-table [dataSource]="table1Data" [showSummary]="false"></app-invoices-table>
         </div>
     </div>
     <div class="table3-div">

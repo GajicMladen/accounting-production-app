@@ -1,20 +1,26 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InternalDocumentData, InternalDocumentType } from 'src/app/shared/model/internalDocumentsData';
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
 import { InternalDocumentsDialogComponent } from '../../dialogs/internal-documents-dialog/internal-documents-dialog.component';
 
 @Component({
-  selector: 'app-bussines-table-expense',
-  templateUrl: './bussines-table-expense.component.html',
-  styleUrls: ['./bussines-table-expense.component.css']
+  selector: 'app-invoices-table',
+  templateUrl: './invoices-table.component.html',
+  styleUrls: ['./invoices-table.component.css']
 })
-export class BussinesTableExpenseComponent implements OnInit ,OnChanges{
+export class InvoicesTableComponent implements OnInit ,OnChanges{
 
-  @Input() displayedColumns: string[] = [ 'supplierName', 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total' ];
+  @Input() displayedColumns: string[] = [ 'supplierName', 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
   @Input() dataSource : DetailInvoiceInfo[] = [];
+  @Input() showSummary : boolean = true;
+  @Input() viewDetailsOption : boolean = true;
+  @Input() enableSelectingInvoice : boolean = false;
+
+  @Output() selectedInvoice : EventEmitter<any> = new EventEmitter();  
   
-  
+  selectedInvoicee : DetailInvoiceInfo | undefined;
+
   total_value_out_pdv:number = 0;
   total_value_pdv : number= 0;
   total_value : number = 0;
@@ -55,5 +61,16 @@ export class BussinesTableExpenseComponent implements OnInit ,OnChanges{
       this.total_value_pdv += i.valuePdv;
       this.total_value  += i.valueTotal;
     })
+  }
+
+  selectInvoice(invoice:DetailInvoiceInfo){
+    if(this.enableSelectingInvoice){
+      this.selectedInvoicee = invoice;
+      this.selectedInvoice.emit(invoice);
+    }
+  }
+
+  isInvoiceSelected(invoice:DetailInvoiceInfo){
+    return this.selectedInvoicee?.invoiceID === invoice.invoiceID;
   }
 }

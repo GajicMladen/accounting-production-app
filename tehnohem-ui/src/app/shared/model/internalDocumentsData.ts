@@ -7,7 +7,8 @@ export enum InternalDocumentType{
     OUTGOING_CASH_INVOICE,
     PAYCHECK,
     INTERNAL_ISSUE_RAW,
-    INTERNAL_ISSUE_PRODUCT
+    INTERNAL_ISSUE_PRODUCT,
+    INCOMING_INVOICE_PAYMENT
 }
 
 export interface InternalDocumentData{

@@ -24,13 +24,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SellRawTableComponent } from './components/sell-raw-table/sell-raw-table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BussinesTablePaidComponent } from './components/bussines-tables/bussines-table-paid/bussines-table-paid.component';
-import { BussinesTableExpenseComponent } from './components/bussines-tables/bussines-table-expense/bussines-table-expense.component';
+import { InvoicesTableComponent } from './components/bussines-tables/invoices-table/invoices-table.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule }from '@angular/material/progress-spinner';
+import { PaymentRecordDialogComponent } from './components/dialogs/payment-record-dialog/payment-record-dialog.component';
+import { PaymentItemTableComponent } from './components/bussines-tables/payment-item-table/payment-item-table.component';
 
 @NgModule({
   declarations: [
@@ -44,8 +46,10 @@ import { MatProgressSpinnerModule }from '@angular/material/progress-spinner';
     InternalDocumentsDialogComponent,
     SellRawTableComponent,
     BussinesTablePaidComponent,
-    BussinesTableExpenseComponent,
+    InvoicesTableComponent,
     LoaderComponent,
+    PaymentRecordDialogComponent,
+    PaymentItemTableComponent,
   ],
   imports: [
     CommonModule,
@@ -94,7 +98,7 @@ import { MatProgressSpinnerModule }from '@angular/material/progress-spinner';
     FileInfoComponent,
     InternalDocumentsDialogComponent,
     MatCheckboxModule,
-    BussinesTableExpenseComponent,
+    InvoicesTableComponent,
     FormsModule,
     ReactiveFormsModule,
     MatSlideToggleModule,

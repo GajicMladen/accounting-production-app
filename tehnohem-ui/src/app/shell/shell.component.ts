@@ -15,7 +15,7 @@ export class ShellComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  tabToShow : number = 4;
+  tabToShow : number = 6.11;
 
   updateBussinesFlow(){
     this.bussinesFlowComponent.updateTab(this.tabToShow);
