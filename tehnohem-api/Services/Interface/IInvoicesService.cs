@@ -1,5 +1,5 @@
 ﻿using tehnohem_api.DTO;
-using tehnohem_api.Model;
+using tehnohem_api.Model.Invoice;
 
 namespace tehnohem_api.Services.Interface
 {
@@ -10,6 +10,8 @@ namespace tehnohem_api.Services.Interface
         List<Invoice> GetAllInternalIssueProduct();
         List<Invoice> GetAllOutgoingInvoices();
         List<Invoice> GetAllOutgoingCashInvoices();
+
+        void DeleteInvoice(string invoiceID);
 
         void AddNewIncomingInvoice(IncomingInvoiceDTO newIncomingInvoice);
         void AddNewInternalIssueRaw(IncomingInvoiceDTO newIncomingInvoice);

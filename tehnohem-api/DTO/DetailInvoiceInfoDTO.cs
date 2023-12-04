@@ -1,5 +1,6 @@
 ﻿using tehnohem_api.Model;
 using tehnohem_api.Model.Enums;
+using tehnohem_api.Model.Invoice;
 
 namespace tehnohem_api.DTO
 {

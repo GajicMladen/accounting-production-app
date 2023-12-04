@@ -1,11 +1,13 @@
 ﻿using tehnohem_api.DTO;
-using tehnohem_api.Model;
+using tehnohem_api.Model.Invoice;
 
 namespace tehnohem_api.Repositories.Interface
 {
     public interface IInvoiceRepository
     {
         public void AddNewInvoice(Invoice newIncomingInvoice);
+
+        public void DeleteInvoice(Invoice invoice);
 
         public List<Invoice> GetAllIncomingInvoices();
         public List<Invoice> GetAllOutgoingInvoices();

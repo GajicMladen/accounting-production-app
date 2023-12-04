@@ -147,7 +147,7 @@ namespace tehnohem_api.Migrations
                     b.ToTable("DatePeriod");
                 });
 
-            modelBuilder.Entity("tehnohem_api.Model.Invoice", b =>
+            modelBuilder.Entity("tehnohem_api.Model.Invoice.Invoice", b =>
                 {
                     b.Property<string>("ID")
                         .HasColumnType("text");
@@ -237,6 +237,59 @@ namespace tehnohem_api.Migrations
                     b.HasIndex("InvoiceID");
 
                     b.ToTable("InvoiceItem");
+                });
+
+            modelBuilder.Entity("tehnohem_api.Model.Payment", b =>
+                {
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("PayerID")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ReceiverID")
+                        .HasColumnType("text");
+
+                    b.Property<float>("TotalValue")
+                        .HasColumnType("real");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("PayerID");
+
+                    b.HasIndex("ReceiverID");
+
+                    b.ToTable("payments");
+                });
+
+            modelBuilder.Entity("tehnohem_api.Model.PaymentItem", b =>
+                {
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<float>("value")
+                        .HasColumnType("real");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PaymentID");
+
+                    b.ToTable("PaymentItem");
                 });
 
             modelBuilder.Entity("tehnohem_api.Model.Product", b =>
@@ -474,14 +527,14 @@ namespace tehnohem_api.Migrations
 
             modelBuilder.Entity("tehnohem_api.Model.HelperClass.DatePeriod", b =>
                 {
-                    b.HasOne("tehnohem_api.Model.Invoice", "Invoice")
+                    b.HasOne("tehnohem_api.Model.Invoice.Invoice", "Invoice")
                         .WithMany()
                         .HasForeignKey("InvoiceID");
 
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("tehnohem_api.Model.Invoice", b =>
+            modelBuilder.Entity("tehnohem_api.Model.Invoice.Invoice", b =>
                 {
                     b.HasOne("tehnohem_api.Model.Company", "Customer")
                         .WithMany("Invoices_Customer")
@@ -498,13 +551,39 @@ namespace tehnohem_api.Migrations
 
             modelBuilder.Entity("tehnohem_api.Model.InvoiceItem", b =>
                 {
-                    b.HasOne("tehnohem_api.Model.Invoice", "Invoice")
+                    b.HasOne("tehnohem_api.Model.Invoice.Invoice", "Invoice")
                         .WithMany("InvoiceItems")
                         .HasForeignKey("InvoiceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("tehnohem_api.Model.Payment", b =>
+                {
+                    b.HasOne("tehnohem_api.Model.Company", "Payer")
+                        .WithMany("Payments_Payer")
+                        .HasForeignKey("PayerID");
+
+                    b.HasOne("tehnohem_api.Model.Company", "Receiver")
+                        .WithMany("Payments_Receiver")
+                        .HasForeignKey("ReceiverID");
+
+                    b.Navigation("Payer");
+
+                    b.Navigation("Receiver");
+                });
+
+            modelBuilder.Entity("tehnohem_api.Model.PaymentItem", b =>
+                {
+                    b.HasOne("tehnohem_api.Model.Payment", "Payment")
+                        .WithMany("PaymentItems")
+                        .HasForeignKey("PaymentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("tehnohem_api.Model.Company", b =>
@@ -514,11 +593,20 @@ namespace tehnohem_api.Migrations
                     b.Navigation("Invoices_Customer");
 
                     b.Navigation("Invoices_Supplier");
+
+                    b.Navigation("Payments_Payer");
+
+                    b.Navigation("Payments_Receiver");
                 });
 
-            modelBuilder.Entity("tehnohem_api.Model.Invoice", b =>
+            modelBuilder.Entity("tehnohem_api.Model.Invoice.Invoice", b =>
                 {
                     b.Navigation("InvoiceItems");
+                });
+
+            modelBuilder.Entity("tehnohem_api.Model.Payment", b =>
+                {
+                    b.Navigation("PaymentItems");
                 });
 #pragma warning restore 612, 618
         }

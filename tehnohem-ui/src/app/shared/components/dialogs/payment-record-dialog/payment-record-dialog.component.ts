@@ -1,14 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Company } from 'src/app/shared/model/company';
-import { InternalDocumentType } from 'src/app/shared/model/internalDocumentsData';
+import { InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
+import { Payment } from 'src/app/shared/model/payment/payment';
 import { PaymentDialogData } from 'src/app/shared/model/payment/paymentDialogData';
 import { PaymentItem } from 'src/app/shared/model/payment/paymentItem';
 import { PaymentType } from 'src/app/shared/model/payment/paymentType';
 import { CompanyService } from 'src/app/shared/services/company-service/company.service';
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
+import { PaymentService } from 'src/app/shared/services/payment-service/payment.service';
 
 @Component({
   selector: 'app-payment-record-dialog',
@@ -26,7 +29,9 @@ export class PaymentRecordDialogComponent implements OnInit {
   selectedCompany? : Company ;
   showCompany : boolean = true;
 
-  displayedColumns: string[] = ['invoiceID','date','value_total','options' ];
+  displayedColumnsInvoicesTable : string[] = ['invoiceID','date','value_total','options' ];
+  
+  displayedColumnsPaymentItemsTable : string[]  = [ 'name', 'value','options'];
   invoices : DetailInvoiceInfo[] = [];
 
   singlePiceForm: FormGroup = new FormGroup({
@@ -44,9 +49,16 @@ export class PaymentRecordDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: PaymentDialogData,
     private companyService: CompanyService,
     private invoicesService: InvoicesService,
+    private paymentService: PaymentService,
+    private toastr: ToastrService,
    ){ }
 
   ngOnInit(): void {
+    if(this.data.isReadonly){
+      this.fillProvidedDataForReadonly();
+    }
+
+
     if( this.data.paymentType === PaymentType.INCOMING_INVOICE_PAYMENT){
       this.companyService.getAllSupplierCompanies().subscribe(data => {
         this.companies = data;
@@ -57,6 +69,24 @@ export class PaymentRecordDialogComponent implements OnInit {
         this.companies = data;
       });
     }
+  }
+
+  fillProvidedDataForReadonly(){
+
+    this.paymentID = this.data.payment!.paymentId;
+    this.date = new Date(this.data.payment!.date);
+    this.paymentItems = this.data.payment!.paymentItems;
+    let companyId = this.data.payment!.payerID;
+    if(this.data.paymentType == PaymentType.INCOMING_INVOICE_PAYMENT){
+      companyId = this.data.payment!.receiverID;
+    }
+    this.companyService.getCompanyInfo(companyId).subscribe(data=>{
+        this.selectedCompany = data;
+      }
+    )
+    
+    this.displayedColumnsPaymentItemsTable = [ 'name', 'value'];
+    this.updateTotalValues();
   }
 
   changeSelectedCompany(selectedCompany : Company){
@@ -71,6 +101,8 @@ export class PaymentRecordDialogComponent implements OnInit {
         this.invoices = data.filter(x => x.customerID === selectedCompany.id);
       });
     }
+    this.paymentItems = [];
+    this.updateTotalValues();
   }
 
   selectedInvoice(invoice:DetailInvoiceInfo){
@@ -81,14 +113,17 @@ export class PaymentRecordDialogComponent implements OnInit {
 
   addNewPaymentItem(){
     let newItem: PaymentItem = {
+      id: "",
       name: this.singlePiceForm.get('name')?.value,
       value: this.singlePiceForm.get('value')?.value
     }
     this.paymentItems = [...this.paymentItems,newItem];
+    this.updateTotalValues();
   }
 
   deletePaymentItem(paymentItem : PaymentItem){
     this.paymentItems = this.paymentItems.filter(x => x != paymentItem);
+    this.updateTotalValues();
   }
 
   updateTotalValues(){
@@ -97,5 +132,26 @@ export class PaymentRecordDialogComponent implements OnInit {
       this.total_value_with_pdv += x.value;
     });
     
+  }
+
+  addNewPayment(){
+    let newPayment : Payment={
+      paymentId: this.paymentID,
+      paymentType: PaymentType.INCOMING_INVOICE_PAYMENT,
+      date: this.date.toLocaleDateString('sv'),
+      payerID: "",
+      payerName: "",
+      receiverID: this.selectedCompany!.id,
+      receiverName: this.selectedCompany!.name,
+      paymentItems: this.paymentItems,
+      totalValue: this.total_value_with_pdv,
+    }
+    this.paymentService.addNewPayment(newPayment).subscribe(
+      {
+        next:()=>{
+          this.toastr.success("Uspešno ste evidentirali plaćanje");
+        },
+      }
+    )
   }
 }

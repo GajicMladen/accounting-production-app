@@ -1,6 +1,7 @@
 ﻿using tehnohem_api.DTO;
 using tehnohem_api.Model;
 using tehnohem_api.Model.Enums;
+using tehnohem_api.Model.Invoice;
 using tehnohem_api.Services.Interface;
 using tehnohem_api.UnitOfWork.Interface;
 
@@ -198,6 +199,15 @@ namespace tehnohem_api.Services.Implementation
 
             this.unitOfWork.InvoiceRepository.AddNewInvoice(newInvoice);
             this.unitOfWork.Commit();
+        }
+
+        public void DeleteInvoice(string invoiceID)
+        {
+            Invoice? invoice = this.unitOfWork.InvoiceRepository.GetInvoiceFullInfo(invoiceID);
+            if (invoice != null) {
+                this.unitOfWork.InvoiceRepository.DeleteInvoice(invoice);
+                this.unitOfWork.Commit();
+            }
         }
     }
 }

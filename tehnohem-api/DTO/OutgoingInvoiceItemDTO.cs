@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using tehnohem_api.Model;
-using tehnohem_api.Model.Enums;
 
 namespace tehnohem_api.DTO
 {

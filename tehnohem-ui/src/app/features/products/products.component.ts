@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InternalDocumentsDialogComponent } from 'src/app/shared/components/dialogs/internal-documents-dialog/internal-documents-dialog.component';
-import { InternalDocumentData, InternalDocumentType } from 'src/app/shared/model/internalDocumentsData';
+import { InternalDocumentData } from 'src/app/shared/model/internalDocumentsData';
+
+import {InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
 import { Product } from 'src/app/shared/model/product';
 import { Raw } from 'src/app/shared/model/raw';
 import { ProductService } from 'src/app/shared/services/product-service/product.service';

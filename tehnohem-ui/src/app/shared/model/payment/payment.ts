@@ -1,17 +1,20 @@
+import { PaymentItem } from "./paymentItem";
 import { PaymentType } from "./paymentType";
 
+
 export interface Payment{
-    
+    paymentId:string;
     paymentType:PaymentType;
+    date: string;
     
-    payerId: string;
+    payerID: string;
     payerName: string;
 
-    receiverId:string;
+    receiverID:string;
     receiverName: string;
 
     paymentItems: PaymentItem[];
 
-    valueTotal : number;
+    totalValue : number;
 
 }

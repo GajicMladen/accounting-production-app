@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using tehnohem_api.DTO;
-using tehnohem_api.Model;
+using tehnohem_api.Model.Invoice;
 using tehnohem_api.Services.Interface;
 
 namespace tehnohem_api.Controllers

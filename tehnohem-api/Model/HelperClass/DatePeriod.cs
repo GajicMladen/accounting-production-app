@@ -2,7 +2,7 @@
 {
     public class DatePeriod
     {
-        public Invoice? Invoice { get; set; }
+        public Invoice.Invoice? Invoice { get; set; }
         public DateOnly StartDate {  get; set; }
         public DateOnly EndDate { get; set; }
     }

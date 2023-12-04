@@ -19,6 +19,7 @@ namespace tehnohem_api.Autofac
             builder.RegisterType<CompanyService>().As<ICompanyService>();
             builder.RegisterType<ProductService>().As<IProductService>();
             builder.RegisterType<InvoicesService>().As<IInvoicesService>();
+            builder.RegisterType<PaymentService>().As<IPaymentService>();
         }
     }
 }

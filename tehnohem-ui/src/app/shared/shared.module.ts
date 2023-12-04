@@ -33,6 +33,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule }from '@angular/material/progress-spinner';
 import { PaymentRecordDialogComponent } from './components/dialogs/payment-record-dialog/payment-record-dialog.component';
 import { PaymentItemTableComponent } from './components/bussines-tables/payment-item-table/payment-item-table.component';
+import { PaymentsTableComponent } from './components/bussines-tables/payments-table/payments-table.component';
+import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { PaymentItemTableComponent } from './components/bussines-tables/payment-
     LoaderComponent,
     PaymentRecordDialogComponent,
     PaymentItemTableComponent,
+    PaymentsTableComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -103,6 +107,7 @@ import { PaymentItemTableComponent } from './components/bussines-tables/payment-
     ReactiveFormsModule,
     MatSlideToggleModule,
     LoaderComponent,
+    PaymentsTableComponent
   ],
 })
 export class SharedModule {}

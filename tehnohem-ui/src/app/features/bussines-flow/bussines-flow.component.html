@@ -5,7 +5,7 @@
             <mat-label>{{selectorName}}</mat-label>
             <mat-select (selectionChange)="filterTables($event.value)">
                 <mat-option [value]="'~'"> / </mat-option>
-              <mat-option *ngFor="let raw of selectData" [value]="raw.name">
+              <mat-option *ngFor="let raw of selectData" [value]="raw.id">
                 {{raw.name}}
               </mat-option>
             </mat-select>
@@ -36,7 +36,7 @@
         </div>
         <hr />
         <div class="table1">
-            <app-invoices-table [dataSource]="table1Data" [showSummary]="false"></app-invoices-table>
+            <app-invoices-table [dataSource]="table1Data" [showSummary]="false" [enableSelectingInvoice]="true"></app-invoices-table>
 
         </div>
     </div>
@@ -49,7 +49,11 @@
         </div>
         <hr />
         <div class="table2">
-            <app-invoices-table [dataSource]="table1Data" [showSummary]="false"></app-invoices-table>
+            <app-payments-table [dataSource]="table2Data"   
+                                [displayedColumns]="table2DisplayColumns" 
+                                [enableSelectingInvoice]="true"
+                                (deletedPayment)="deletePayment($event)"
+                                ></app-payments-table>
         </div>
     </div>
     <div class="table3-div">

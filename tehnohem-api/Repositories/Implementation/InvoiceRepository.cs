@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using tehnohem_api.DB;
 using tehnohem_api.DTO;
-using tehnohem_api.Model;
 using tehnohem_api.Model.Enums;
+using tehnohem_api.Model.Invoice;
 using tehnohem_api.Repositories.Interface;
 
 namespace tehnohem_api.Repositories.Implementation
@@ -21,6 +21,11 @@ namespace tehnohem_api.Repositories.Implementation
         public void AddNewInvoice(Invoice newInvoice)
         {
             this.invoices.Add(newInvoice);
+        }
+
+        public void DeleteInvoice(Invoice invoice)
+        {
+            this.invoices.Remove(invoice);
         }
 
         public List<Invoice> GetAllIncomingInvoices()

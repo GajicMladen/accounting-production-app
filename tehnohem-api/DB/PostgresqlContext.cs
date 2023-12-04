@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using tehnohem_api.Model;
 using tehnohem_api.Model.Enums;
 using tehnohem_api.Model.HelperClass;
+using tehnohem_api.Model.Invoice;
 
 namespace tehnohem_api.DB
 {
@@ -13,6 +14,7 @@ namespace tehnohem_api.DB
 
         public DbSet<Company> companies { get; set; }
         public DbSet<Invoice> invoices { get; set; }
+        public DbSet<Payment> payments{ get; set; }
         public DbSet<Product> products { get; set; }
         public DbSet<Raw> raws { get; set; }
 
@@ -62,6 +64,29 @@ namespace tehnohem_api.DB
             //    .HasOne(i => i.DatePeriod)
             //    .WithOne(dp => dp.Invoice)
             //    .IsRequired(false);
+
+            //==========PAYMENT =======================
+            modelBuilder.Entity<Payment>()
+                .HasOne<Company>(i => i.Payer)
+                .WithMany(c => c.Payments_Payer)
+                .HasForeignKey(i => i.PayerID)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne<Company>(i => i.Receiver)
+                .WithMany(c => c.Payments_Receiver)
+                .HasForeignKey(i => i.ReceiverID)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Payment>()
+                .HasMany(i => i.PaymentItems)
+                .WithOne(ii => ii.Payment)
+                .HasForeignKey(ii => ii.PaymentID)
+                .IsRequired(true);
+
+            //==========PAYMENT ITEM==================
+            modelBuilder.Entity<PaymentItem>().Property(ii => ii.ID).ValueGeneratedOnAdd();
+
 
             modelBuilder.Entity<DatePeriod>().HasNoKey();
            

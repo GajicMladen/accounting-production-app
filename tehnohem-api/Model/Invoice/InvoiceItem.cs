@@ -12,7 +12,7 @@ namespace tehnohem_api.Model
         public int? itemID { get; set; }
 
         [JsonIgnore]
-        public Invoice Invoice {  get; set; }
+        public Invoice.Invoice Invoice {  get; set; }
         public string InvoiceID { get; set; }
         public string Name { get; set; }
         public string? Unit { get; set; }
@@ -32,7 +32,7 @@ namespace tehnohem_api.Model
         public float? SinglePricePdv { get; set; }
 
         public InvoiceItem() { }
-        public InvoiceItem(IncomingInvoiceItemDTO incomingInvoiceItemDTO,Invoice newInvoice) {
+        public InvoiceItem(IncomingInvoiceItemDTO incomingInvoiceItemDTO,Invoice.Invoice newInvoice) {
             this.Invoice = newInvoice;
             this.Name = incomingInvoiceItemDTO.name;
             this.TotalValueWithoutPDV = incomingInvoiceItemDTO.value_out_pdv;
@@ -43,7 +43,7 @@ namespace tehnohem_api.Model
             this.Unit = incomingInvoiceItemDTO.unit;
             this.Pdv = incomingInvoiceItemDTO.pdv;
         }
-        public InvoiceItem(OutgoingInvoiceItemDTO outgoingInvoiceItemDTO, Invoice newInvoice)
+        public InvoiceItem(OutgoingInvoiceItemDTO outgoingInvoiceItemDTO, Invoice.Invoice newInvoice)
         {
             this.Invoice = newInvoice;
             this.Name = outgoingInvoiceItemDTO.name;

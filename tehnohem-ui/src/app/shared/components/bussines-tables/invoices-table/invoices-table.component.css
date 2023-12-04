@@ -44,3 +44,15 @@ th{
 .row-is-selected td{
     color: white;
 }
+
+.options-th , .options-td{
+    position: absolute;
+    border: 0;
+}
+.options-td div{
+    position: relative;
+    top: 5px;
+    left: 5px;
+    display: flex;
+    gap: 4px;
+}

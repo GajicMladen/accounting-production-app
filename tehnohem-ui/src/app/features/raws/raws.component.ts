@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InternalDocumentsDialogComponent } from 'src/app/shared/components/dialogs/internal-documents-dialog/internal-documents-dialog.component';
 import { RawType } from 'src/app/shared/model/enums/rawType';
-import { InternalDocumentData, InternalDocumentType } from 'src/app/shared/model/internalDocumentsData';
+
+import {InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
+import { InternalDocumentData } from 'src/app/shared/model/internalDocumentsData';
 import { Raw } from 'src/app/shared/model/raw';
 import { RawService } from 'src/app/shared/services/raw-service/raw.service';
 import { AddNewRawComponent } from './components/add-new-raw/add-new-raw.component';

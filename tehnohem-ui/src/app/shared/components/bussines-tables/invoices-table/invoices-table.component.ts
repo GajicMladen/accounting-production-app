@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { InternalDocumentData, InternalDocumentType } from 'src/app/shared/model/internalDocumentsData';
+import { InternalDocumentData} from 'src/app/shared/model/internalDocumentsData';
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
 import { InternalDocumentsDialogComponent } from '../../dialogs/internal-documents-dialog/internal-documents-dialog.component';
 
@@ -16,6 +16,7 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
   @Input() showSummary : boolean = true;
   @Input() viewDetailsOption : boolean = true;
   @Input() enableSelectingInvoice : boolean = false;
+  @Input() inlineOptions: boolean = false;
 
   @Output() selectedInvoice : EventEmitter<any> = new EventEmitter();  
   
@@ -65,7 +66,10 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
 
   selectInvoice(invoice:DetailInvoiceInfo){
     if(this.enableSelectingInvoice){
-      this.selectedInvoicee = invoice;
+      if(this.selectedInvoicee == invoice)
+        this.selectedInvoicee = undefined
+      else
+        this.selectedInvoicee = invoice;
       this.selectedInvoice.emit(invoice);
     }
   }

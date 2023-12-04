@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Da li ste sigurni?</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>{{data.title}}</h3>
+  <p>{{data.text}}</p>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button [mat-dialog-close]="false">Otkaži</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="warn">Potvrdi</button>
+</mat-dialog-actions>

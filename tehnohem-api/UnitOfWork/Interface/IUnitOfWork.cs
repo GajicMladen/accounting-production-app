@@ -14,5 +14,7 @@ namespace tehnohem_api.UnitOfWork.Interface
         IProductRepository ProductRepository { get; }
 
         IInvoiceRepository InvoiceRepository { get; }
+
+        IPaymentRepository PaymentRepository { get; }
     }
 }

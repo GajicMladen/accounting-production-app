@@ -45,12 +45,11 @@
                     data.paymentType === allPaymentTypes.OUTGOING_INVOICE_PAYMENT  "
             class="invoices-table-div"
         >
-            <!-- <app-product-picker (selectedProductEmiter)="changeSelectedProduct($event)"></app-product-picker> -->
-            <!-- INCOMING_INVOICE_PICKER -->
             <app-invoices-table [dataSource]="invoices" 
                                 [showSummary]="false" 
-                                [displayedColumns]="displayedColumns"
+                                [displayedColumns]="displayedColumnsInvoicesTable"
                                 [enableSelectingInvoice]="true"
+                                [inlineOptions]="true"
                                 (selectedInvoice)="selectedInvoice($event)"></app-invoices-table>
         </div>
         
@@ -79,23 +78,13 @@
         <br />
         <div  *ngIf=" data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT">
             <h3>Dodate stavke</h3>
-            <!-- <app-sell-product-table [productsToSell]="prodcutsToSell" (deletedRow)="deleteRawToSell($event)" ></app-sell-product-table> -->
-            <!-- Payment-items-table -->
-            <app-payment-item-table [dataSource]="paymentItems" (deletedPaymentItem)="deletePaymentItem($event)"></app-payment-item-table>
+            <app-payment-item-table [dataSource]="paymentItems" [displayedColumns]="displayedColumnsPaymentItemsTable" (deletedPaymentItem)="deletePaymentItem($event)"></app-payment-item-table>
         </div>
     </div>
     
     <div class="total-div">
         <div class="total-end">
             <div class="total">
-              <div class="property">
-                  <span class="label">Osnovica PDV-a:</span>
-                  <span class="value"> {{total_value_without_pdv}} </span>
-              </div>
-              <div class="property">
-                  <span class="label">Iznos PDV-a (stopa 17%):</span>
-                  <span class="value"> {{total_value_of_pdv}}</span>
-              </div>
               <div class="property">
                   <span class="label">Ukupan iznos za uplatu sa PDV-om:</span>
                   <span class="value">{{total_value_with_pdv}}</span>
@@ -119,11 +108,14 @@
                 paymentID === '' ||
                 (data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT && !selectedCompany) ||
                 paymentItems.length === 0
-            ">
+            "
+                (click)="addNewPayment()"
+            >
                 <mat-icon>save</mat-icon>
                 <span>
-                    Sačuvaj
-                    <span *ngIf="data.isReadonly">Izmene</span>
+                    Evidentiraj 
+                    <span *ngIf="data.isReadonly">izmene</span> 
+                    plaćanje
                 </span>
             </button>
         </div>

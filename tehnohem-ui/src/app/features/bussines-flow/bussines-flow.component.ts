@@ -1,12 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmDialogComponent } from 'src/app/shared/components/dialogs/confirm-dialog/confirm-dialog.component';
+import { InternalDocumentsDialogComponent } from 'src/app/shared/components/dialogs/internal-documents-dialog/internal-documents-dialog.component';
 import { PaymentRecordDialogComponent } from 'src/app/shared/components/dialogs/payment-record-dialog/payment-record-dialog.component';
 import { Company } from 'src/app/shared/model/company';
 import { Expenses } from 'src/app/shared/model/expenses';
+
+import {InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
+import { Payment } from 'src/app/shared/model/payment/payment';
 import { PaymentType } from 'src/app/shared/model/payment/paymentType';
+import { CompanyService } from 'src/app/shared/services/company-service/company.service';
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
+import { PaymentService } from 'src/app/shared/services/payment-service/payment.service';
 import { customers, dugovanja, dugovanjaOstala, getters, izlazneFakture, thirdFaces, uplate, uplateKupci, uplateOstalo } from 'src/app/shared/test-data/test-data-bussines';
 
 @Component({
@@ -33,9 +41,31 @@ export class BussinesFlowComponent implements OnInit {
   table1Btn1Action = this.openIncomingInvoicePayment;
   table2Btn1Action = this.openIncomingInvoicePayment;
 
+  supplierCompanies : Company[] = [];
+  customerCompanies: Company[] = [];
+  thirdPartyCompanies: Company[] = [];
+
+  incomingInvoices: DetailInvoiceInfo[] = [];
+  incomingInvoicesPayment : Payment[] = [];
+
+  incomingThirdPartyInvoices: DetailInvoiceInfo[] = [];
+  incomingThirdPartyInvoicesPayment: Payment[] = [];
+
+  outgoingInvoices: DetailInvoiceInfo[] = [];
+  outgoingInvoicesPayment: Payment[] = [];
+
+  outgoingCashInvoices:DetailInvoiceInfo[] = [];
+  outgoingCashInvoicesPayment: Payment[] = [];
+
+  allInvoicesTable1: DetailInvoiceInfo[] = [];
+  allPaymentsTable2: Payment[] = [];
+  
   table1Data: DetailInvoiceInfo[] = []; 
-  table2Data: DetailInvoiceInfo[] = [];
-  selectData : Company[] =getters;
+  table2Data: Payment[] = [];
+
+  table2DisplayColumns: string[] = [ 'paymentID', 'payerName','receiverName','date','value_total','options' ];
+
+  selectData : Company[] = [];
 
   summaryTable1:number = 0;
   summaryTable2:number = 0;
@@ -63,11 +93,66 @@ export class BussinesFlowComponent implements OnInit {
   
   constructor(
     public dialog:MatDialog,
-    private invoicesService : InvoicesService
+    private invoicesService : InvoicesService,
+    private paymentService: PaymentService,
+    private companyService: CompanyService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-    this.updateTab(this.shownTab);
+    this.getNewValuesForInvoicesAndPayments();
+  }
+
+  getNewValuesForInvoicesAndPayments(){
+
+    this.companyService.getAllSupplierCompanies().subscribe(
+      data => {
+        this.supplierCompanies = data;
+        this.updateTab(this.shownTab);
+      }
+    );
+    
+    this.companyService.getAllCustomerCompanies().subscribe(
+      data => {
+        this.customerCompanies = data;
+        this.updateTab(this.shownTab);
+      }
+    );
+
+    this.companyService.getAllThirdPartyCompanies().subscribe(
+      data => {
+        this.thirdPartyCompanies = data;
+        this.updateTab(this.shownTab);
+      }
+    );
+
+    this.invoicesService.getAllIncomingInvoices().subscribe(
+      data=>{
+        this.incomingInvoices = data;
+        this.updateTab(this.shownTab);
+      }
+    );
+    this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
+      data=>{
+        this.incomingInvoicesPayment = data;
+        this.updateTab(this.shownTab);
+      }
+    )
+    
+    this.invoicesService.getAllOutgoingInvoices().subscribe(
+      data=>{
+        this.outgoingInvoices = data;
+        this.updateTab(this.shownTab);
+      }
+    );
+
+    this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
+      data=>{
+        this.outgoingInvoicesPayment = data;
+        this.updateTab(this.shownTab);
+      }
+    )
+    
   }
 
   updateTab(shownTabT:number){
@@ -80,21 +165,14 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Btn1 = "Evidentiraj novu ulaznu fakturu";
       this.table2Btn1 = "Evidentiraj novo razduzivanje ulaznih faktura";
       
-      // this.table1Data = dugovanja; 
-      // this.table2Data = uplate;
-      // this.selectData  =getters;
+      this.table2DisplayColumns = [ 'paymentID', 'receiverName','date','value_total','options' ];
 
       this.table2Btn1Action = this.openIncomingInvoicePayment;
 
-      this.invoicesService.getAllIncomingInvoices().subscribe(
-        data=>{
-          this.table1Data = data;
-          this.updateSummary();
+      this.allInvoicesTable1 = this.incomingInvoices;
+      this.allPaymentsTable2 = this.incomingInvoicesPayment;
 
-        }
-      );
-
-
+      this.selectData = this.supplierCompanies;
     }
     else if( this.shownTab === 6.12){
       
@@ -104,9 +182,10 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Btn1 = "Evidentiraj novi ostali trošak";
       this.table2Btn1 = "Evidentiraj novo razduzivanje ostalih troškova";
 
-      // this.selectData = thirdFaces;
-      // this.table1Data = dugovanjaOstala;
-      // this.table2Data = uplateOstalo;
+      this.allInvoicesTable1 = this.incomingThirdPartyInvoices;
+      this.allPaymentsTable2 = this.incomingThirdPartyInvoicesPayment;
+
+      this.selectData = this.thirdPartyCompanies;
 
     }
     else if( this.shownTab === 6.21){
@@ -118,9 +197,11 @@ export class BussinesFlowComponent implements OnInit {
       this.table2Btn1 = "Evidentiraj novo razduzivanje od strane kupca";
 
       this.table2Btn1Action = this.openOutgoingInvoicePayment;
-      // this.selectData = customers;
-      // this.table1Data = izlazneFakture;
-      // this.table2Data = uplateKupci;
+      
+      this.allInvoicesTable1 = this.outgoingInvoices;
+      this.allPaymentsTable2 = this.outgoingInvoicesPayment;
+
+      this.selectData = this.customerCompanies;
 
       
     }
@@ -132,11 +213,15 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Btn1 = "Dodaj novi rashod";
       this.table2Btn1 = "~";
 
-      // this.selectData = customers;
-      // this.table1Data = [...dugovanja,...dugovanjaOstala];
-      // this.table2Data = izlazneFakture;
+      this.allInvoicesTable1 = this.outgoingCashInvoices;
+      this.allPaymentsTable2 = this.outgoingCashInvoicesPayment;
+
+      this.selectData = this.customerCompanies;
       
     }
+    
+    this.table1Data= this.allInvoicesTable1;
+    this.table2Data = this.allPaymentsTable2;
     this.updateSummary();
   }
 
@@ -150,7 +235,7 @@ export class BussinesFlowComponent implements OnInit {
     });
     
     this.table2Data.forEach(x => {
-      this.summaryTable2 += x.valueTotal;
+      this.summaryTable2 += x.totalValue;
     });
 
     this.summaryTable1PDV = this.summaryTable1 * 0.17;
@@ -177,10 +262,15 @@ export class BussinesFlowComponent implements OnInit {
   }
 
   filterTables(selectValue:string){
-    this.updateTab(this.shownTab);
     if(selectValue != "~"){
-      this.table1Data = this.table1Data.filter( x => x.customerName == selectValue);
-      this.table2Data = this.table2Data.filter( x => x.customerName == selectValue);
+      if(this.shownTab === 6.11 ||this.shownTab === 6.12 ){
+        this.table1Data = this.allInvoicesTable1.filter( x => x.supplierID == selectValue);
+        this.table2Data = this.allPaymentsTable2.filter( x => x.receiverID == selectValue);
+      }
+      else if( this.shownTab === 6.21 || this.shownTab === 6.22){
+        this.table1Data = this.allInvoicesTable1.filter( x => x.customerID == selectValue);
+        this.table2Data = this.allPaymentsTable2.filter( x => x.payerID == selectValue);
+      }
     }
     this.updateSummary();
   }
@@ -203,6 +293,43 @@ export class BussinesFlowComponent implements OnInit {
 
     const dialogRefAddNewProduct = this.dialog.open(PaymentRecordDialogComponent,{
       data: { paymentType: PaymentType.OUTGOING_INVOICE_PAYMENT, isReadonly:false}
+    });
+    dialogRefAddNewProduct.afterClosed().subscribe(
+      data=>{
+        if(data=="addedPayment"){
+          this.updateTab(this.shownTab);
+        }
+      }
+    )
+  }
+
+  deletePayment(payment: Payment){
+    
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+      data:{
+        title:"Brisanje plaćanja",
+        text: " Da li želite da obrišete plaćanje: "+ payment.paymentId
+      }
+    });
+    confirmDialog.afterClosed().subscribe(
+      data=>{
+        if(data){
+          this.paymentService.deletePayment(payment.paymentId).subscribe({
+            next: (data)=>{
+                this.toastr.success("Uspešno uklonjeno");
+                this.updateTab(this.shownTab);
+            }
+          });
+        }
+      }
+    );
+    
+  }
+
+  openNewIncomingThirdPartyInvoice(){
+
+    const dialogRefAddNewProduct = this.dialog.open(InternalDocumentsDialogComponent,{
+      data: { internalDocumentType : InternalDocumentType.INCOMING_OTHER_INVOICE, isReadonly:false}
     });
     dialogRefAddNewProduct.afterClosed().subscribe(
       data=>{

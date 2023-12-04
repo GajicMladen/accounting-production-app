@@ -1,4 +1,5 @@
-import { InternalDocumentType } from "../internalDocumentsData";
+
+import { InternalDocumentType } from "../enums/invoiceType";
 import { InvoiceItem } from "./invoiceItem";
 
 export interface DetailInvoiceInfo{

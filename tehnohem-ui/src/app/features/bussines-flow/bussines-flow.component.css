@@ -35,7 +35,7 @@
 .tables .table3-div{
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: start;
 }
 
 .tables .table-title{

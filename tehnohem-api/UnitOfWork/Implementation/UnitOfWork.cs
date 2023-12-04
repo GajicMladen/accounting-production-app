@@ -15,6 +15,8 @@ namespace tehnohem_api.UnitOfWork.Implementation
         private IRawRepository _rawRepository = null;
         private IProductRepository _productRepository = null;
         private IInvoiceRepository _invoiceRepository = null;
+        private IPaymentRepository _paymentRepository = null;
+
         public UnitOfWork(PostgresqlContext dbContext)
         {
             _dbContext = dbContext;
@@ -63,6 +65,18 @@ namespace tehnohem_api.UnitOfWork.Implementation
                     _invoiceRepository = new InvoiceRepository(_dbContext);
                 }
                 return _invoiceRepository;
+            }
+        }
+
+        public IPaymentRepository PaymentRepository
+        {
+            get
+            {
+                if (_paymentRepository== null)
+                {
+                    _paymentRepository= new PaymentRepository(_dbContext);
+                }
+                return _paymentRepository;
             }
         }
 
