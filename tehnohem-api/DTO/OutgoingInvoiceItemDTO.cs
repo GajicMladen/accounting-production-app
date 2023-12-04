@@ -5,7 +5,7 @@ namespace tehnohem_api.DTO
 {
     public class OutgoingInvoiceItemDTO
     {
-        public int productId { get; set; }
+        public int? productId { get; set; }
         public string name { get; set; }
         public float amount { get; set; }
         public string unit{ get; set; }
@@ -23,7 +23,7 @@ namespace tehnohem_api.DTO
 
         public OutgoingInvoiceItemDTO() { }
         public OutgoingInvoiceItemDTO(InvoiceItem invoiceItem) {
-            this.productId = (int)invoiceItem.itemID;
+            this.productId = invoiceItem.itemID;
             this.unit = invoiceItem.Unit;
             this.price_single = invoiceItem.SinglePrice;
             this.value_total = invoiceItem.TotalValue;

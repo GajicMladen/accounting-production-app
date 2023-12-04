@@ -27,6 +27,10 @@
     gap: 20px;
 }
 
+.singlePiceForm{
+    display: flex;
+    flex-direction: column;
+}
 .options{
     width: 100%;
     display: flex;

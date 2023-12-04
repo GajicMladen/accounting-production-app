@@ -13,10 +13,11 @@
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     </div>
-    <div *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE || data.documentType == allDocumentType.OUTGOING_INVOICE ">
+    <div *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE || data.documentType == allDocumentType.OUTGOING_INVOICE || data.documentType == allDocumentType.INCOMING_OTHER_INVOICE ">
         <div (click)="showCompany=!showCompany" style="cursor: pointer;">
             <h3 *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE ">Dobavljač</h3>
             <h3 *ngIf="data.documentType == allDocumentType.OUTGOING_INVOICE ">Kupac</h3>
+            <h3 *ngIf="data.documentType == allDocumentType.INCOMING_OTHER_INVOICE ">Treće lice</h3>
             <h2>{{selectedCompany?.name}}</h2>
         </div>
         <div *ngIf="showCompany && !data.isReadonly" class="company-picker">
@@ -33,6 +34,7 @@
     
     <h3  *ngIf="!data.isReadonly && data.documentType == allDocumentType.INCOMING_INVOICE" >Dodavanje sirovine</h3>
     <h3  *ngIf="!data.isReadonly && data.documentType == allDocumentType.INTERNAL_ISSUE_PRODUCT" >Dodavanje proizvoda</h3>
+    <h3  *ngIf="!data.isReadonly && data.documentType == allDocumentType.INCOMING_OTHER_INVOICE" >Dodavanje stavki za naplatu</h3>
     
     <div class="single-raw-info" *ngIf="!data.isReadonly">
         <div class="raw-categories"
@@ -49,7 +51,8 @@
                 <mat-radio-button value="label">Etiketa</mat-radio-button>
             </mat-radio-group>
         </div>
-        <div class="selects" *ngIf="!newRaw && data.documentType != allDocumentType.INTERNAL_ISSUE_PRODUCT">
+        <div class="selects" *ngIf="!newRaw && 
+                (data.documentType != allDocumentType.INTERNAL_ISSUE_PRODUCT && data.documentType != allDocumentType.INCOMING_OTHER_INVOICE )">
             <h4>Postojeće sirovine</h4>
             <mat-form-field *ngIf="newRawType == 'raw'">
                 <mat-label>Sirovina</mat-label>
@@ -89,7 +92,7 @@
         </div>
         
         <div class="info">
-                <form [formGroup]="singlePiceForm">
+                <form [formGroup]="singlePiceForm" class="singlePiceForm">
                 <mat-form-field class="example-full-width"  *ngIf="data.documentType != allDocumentType.INTERNAL_ISSUE_PRODUCT">
                     <mat-label>Naziv</mat-label>
                     <input matInput placeholder="Naziv sirovine"formControlName="name">
@@ -107,18 +110,12 @@
                 
                 <mat-form-field class="example-full-width">
                     <mat-label>Jedinica mere</mat-label>
-                    <mat-select formControlName="unit">
-                        <mat-option [value]="'kom'">
-                            kom
-                        </mat-option>
-                        <mat-option [value]="'l'">
-                            l
-                        </mat-option>
-                        <mat-option [value]="'paket'">
-                            paket
-                        </mat-option>
-                    </mat-select>
-
+                    <input matInput placeholder="Količina" formControlName="unit">
+                </mat-form-field>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>PDV (%)</mat-label>
+                    <input matInput placeholder="PDV (%)" formControlName="pdv">
                 </mat-form-field>
             </form>
         </div>
@@ -167,6 +164,9 @@
                 <div *ngIf="(data.documentType === allDocumentType.INCOMING_INVOICE && !selectedCompany)">
                     Odaberi dobavljača
                 </div>
+                <div *ngIf="(data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany)">
+                    Odaberi treće lice
+                </div>
                 <div *ngIf="rawsToSell.length === 0 && prodcutsToSell.length === 0 ">
                     Dodaj sirovine
                 </div>
@@ -174,6 +174,7 @@
             <button mat-raised-button class="final-save-btn" [disabled]="
                         invoiceID === '' ||
                         (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                        (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
                         (rawsToSell.length === 0 && prodcutsToSell.length === 0)" (click)="addNewInvoice()">
                 <mat-icon>save</mat-icon>
                 <span>

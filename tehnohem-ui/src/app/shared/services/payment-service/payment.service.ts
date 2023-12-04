@@ -28,4 +28,8 @@ export class PaymentService {
   getAllPaymentsOfIncomingInvoices():Observable<Payment[]>{
     return this.http.get<Payment[]>(this.url+"/getAllPaymentsIncomingInvoices");
   }
+  
+  getAllPaymentsOfIncomingOtherInvoices():Observable<Payment[]>{
+    return this.http.get<Payment[]>(this.url+"/getAllPaymentsIncomingOtherInvoices");
+  }
 }

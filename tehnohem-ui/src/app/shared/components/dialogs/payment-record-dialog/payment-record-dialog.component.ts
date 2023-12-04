@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Company } from 'src/app/shared/model/company';
 import { InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
@@ -46,6 +46,7 @@ export class PaymentRecordDialogComponent implements OnInit {
   total_value_with_pdv: number = 0;
 
   constructor(
+    public dialogRef: MatDialogRef<PaymentRecordDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PaymentDialogData,
     private companyService: CompanyService,
     private invoicesService: InvoicesService,
@@ -66,6 +67,11 @@ export class PaymentRecordDialogComponent implements OnInit {
     }
     else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_PAYMENT){
       this.companyService.getAllCustomerCompanies().subscribe(data =>{
+        this.companies = data;
+      });
+    }
+    else if( this.data.paymentType === PaymentType.THIRD_PARTY_COST_PAYMENT){
+      this.companyService.getAllThirdPartyCompanies().subscribe(data =>{
         this.companies = data;
       });
     }
@@ -97,8 +103,13 @@ export class PaymentRecordDialogComponent implements OnInit {
       });
     }
     else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_PAYMENT){
-      this.invoicesService.getAllIncomingInvoices().subscribe(data =>{
+      this.invoicesService.getAllOutgoingInvoices().subscribe(data =>{
         this.invoices = data.filter(x => x.customerID === selectedCompany.id);
+      });
+    }
+    else if( this.data.paymentType === PaymentType.THIRD_PARTY_COST_PAYMENT){
+      this.invoicesService.getAllIncomingOtherInvoices().subscribe(data =>{
+        this.invoices = data.filter(x => x.supplierID === selectedCompany.id);
       });
     }
     this.paymentItems = [];
@@ -137,7 +148,7 @@ export class PaymentRecordDialogComponent implements OnInit {
   addNewPayment(){
     let newPayment : Payment={
       paymentId: this.paymentID,
-      paymentType: PaymentType.INCOMING_INVOICE_PAYMENT,
+      paymentType: this.data.paymentType,
       date: this.date.toLocaleDateString('sv'),
       payerID: "",
       payerName: "",
@@ -150,6 +161,7 @@ export class PaymentRecordDialogComponent implements OnInit {
       {
         next:()=>{
           this.toastr.success("Uspešno ste evidentirali plaćanje");
+          this.dialogRef.close("addedPayment");
         },
       }
     )

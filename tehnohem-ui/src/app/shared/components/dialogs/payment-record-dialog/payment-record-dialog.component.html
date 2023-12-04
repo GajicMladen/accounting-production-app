@@ -17,11 +17,13 @@
     </div>
     <div *ngIf="data.paymentType == allPaymentTypes.INCOMING_INVOICE_PAYMENT ||
          data.paymentType == allPaymentTypes.OUTGOING_INVOICE_PAYMENT ||
-         data.paymentType == allPaymentTypes.OUTGOING_INVOICE_CASH_PAYMENT 
+         data.paymentType == allPaymentTypes.OUTGOING_INVOICE_CASH_PAYMENT ||
+         data.paymentType == allPaymentTypes.THIRD_PARTY_COST_PAYMENT 
          ">
         <div (click)="showCompany=!showCompany" style="cursor: pointer;">
             <h3 *ngIf="data.paymentType == allPaymentTypes.INCOMING_INVOICE_PAYMENT ">Dobavljač</h3>
             <h3 *ngIf="data.paymentType == allPaymentTypes.OUTGOING_INVOICE_PAYMENT ">Kupac</h3>
+            <h3 *ngIf="data.paymentType == allPaymentTypes.THIRD_PARTY_COST_PAYMENT ">Treća strana</h3>
             <h2>{{selectedCompany?.name}}</h2>
         </div>
         <div *ngIf="showCompany && !data.isReadonly" class="company-picker">
@@ -42,6 +44,7 @@
         
         
         <div  *ngIf=" data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT || 
+                    data.paymentType === allPaymentTypes.THIRD_PARTY_COST_PAYMENT || 
                     data.paymentType === allPaymentTypes.OUTGOING_INVOICE_PAYMENT  "
             class="invoices-table-div"
         >
@@ -76,7 +79,7 @@
     
     <div>
         <br />
-        <div  *ngIf=" data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT">
+        <div >
             <h3>Dodate stavke</h3>
             <app-payment-item-table [dataSource]="paymentItems" [displayedColumns]="displayedColumnsPaymentItemsTable" (deletedPaymentItem)="deletePaymentItem($event)"></app-payment-item-table>
         </div>

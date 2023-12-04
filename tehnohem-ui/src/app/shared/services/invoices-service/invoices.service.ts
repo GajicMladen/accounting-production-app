@@ -20,6 +20,10 @@ export class InvoicesService {
     return this.http.post<any>(this.url+"/addNewIncomingInvoice",incomingInvoiceDTO);
   }
 
+  addNewIncomingOtherInvoice(incomingInvoiceDTO:IncomingInvoiceDTO):Observable<any>{
+    return this.http.post<any>(this.url+"/addNewIncomingOtherInvoice",incomingInvoiceDTO);
+  }
+
   addNewOutgoingInvoice(outgoingInvoiceDTO:OutgoingInvoiceDTO):Observable<any>{
     return this.http.post<any>(this.url+"/addNewOutgoingInvoice",outgoingInvoiceDTO);
   }
@@ -33,6 +37,10 @@ export class InvoicesService {
 
   getAllIncomingInvoices():Observable<DetailInvoiceInfo[]>{
     return this.http.get<DetailInvoiceInfo[]>(this.url+"/allIncomingInvoices");
+  }
+  
+  getAllIncomingOtherInvoices():Observable<DetailInvoiceInfo[]>{
+    return this.http.get<DetailInvoiceInfo[]>(this.url+"/allIncomingOtherInvoices");
   }
   
   getAllInternalIssueRaw():Observable<DetailInvoiceInfo[]>{

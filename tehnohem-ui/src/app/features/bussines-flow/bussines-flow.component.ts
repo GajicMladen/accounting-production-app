@@ -132,6 +132,14 @@ export class BussinesFlowComponent implements OnInit {
         this.updateTab(this.shownTab);
       }
     );
+    
+    this.invoicesService.getAllIncomingOtherInvoices().subscribe(
+      data=>{
+        this.incomingThirdPartyInvoices = data;
+        this.updateTab(this.shownTab);
+      }
+    );
+
     this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
       data=>{
         this.incomingInvoicesPayment = data;
@@ -149,6 +157,13 @@ export class BussinesFlowComponent implements OnInit {
     this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
       data=>{
         this.outgoingInvoicesPayment = data;
+        this.updateTab(this.shownTab);
+      }
+    )
+
+    this.paymentService.getAllPaymentsOfIncomingOtherInvoices().subscribe(
+      data=>{
+        this.incomingThirdPartyInvoicesPayment = data;
         this.updateTab(this.shownTab);
       }
     )
@@ -181,6 +196,9 @@ export class BussinesFlowComponent implements OnInit {
       this.table2Title = "Moje uplate";
       this.table1Btn1 = "Evidentiraj novi ostali trošak";
       this.table2Btn1 = "Evidentiraj novo razduzivanje ostalih troškova";
+
+      this.table1Btn1Action = this.openNewIncomingThirdPartyInvoice;
+      this.table2Btn1Action = this.openThirdPartyPayment;
 
       this.allInvoicesTable1 = this.incomingThirdPartyInvoices;
       this.allPaymentsTable2 = this.incomingThirdPartyInvoicesPayment;
@@ -283,7 +301,7 @@ export class BussinesFlowComponent implements OnInit {
     dialogRefAddNewProduct.afterClosed().subscribe(
       data=>{
         if(data=="addedPayment"){
-          this.updateTab(this.shownTab);
+          this.getNewValuesForInvoicesAndPayments();
         }
       }
     )
@@ -297,7 +315,7 @@ export class BussinesFlowComponent implements OnInit {
     dialogRefAddNewProduct.afterClosed().subscribe(
       data=>{
         if(data=="addedPayment"){
-          this.updateTab(this.shownTab);
+          this.getNewValuesForInvoicesAndPayments();
         }
       }
     )
@@ -317,7 +335,7 @@ export class BussinesFlowComponent implements OnInit {
           this.paymentService.deletePayment(payment.paymentId).subscribe({
             next: (data)=>{
                 this.toastr.success("Uspešno uklonjeno");
-                this.updateTab(this.shownTab);
+                this.getNewValuesForInvoicesAndPayments();
             }
           });
         }
@@ -329,12 +347,26 @@ export class BussinesFlowComponent implements OnInit {
   openNewIncomingThirdPartyInvoice(){
 
     const dialogRefAddNewProduct = this.dialog.open(InternalDocumentsDialogComponent,{
-      data: { internalDocumentType : InternalDocumentType.INCOMING_OTHER_INVOICE, isReadonly:false}
+      data: { documentType : InternalDocumentType.INCOMING_OTHER_INVOICE, isReadonly:false}
     });
     dialogRefAddNewProduct.afterClosed().subscribe(
       data=>{
         if(data=="addedPayment"){
-          this.updateTab(this.shownTab);
+          this.getNewValuesForInvoicesAndPayments();
+        }
+      }
+    )
+  }
+
+  openThirdPartyPayment(){
+    
+    const dialogRefAddNewProduct = this.dialog.open(PaymentRecordDialogComponent,{
+      data: { paymentType: PaymentType.THIRD_PARTY_COST_PAYMENT, isReadonly:false}
+    });
+    dialogRefAddNewProduct.afterClosed().subscribe(
+      data=>{
+        if(data=="addedPayment"){
+          this.getNewValuesForInvoicesAndPayments();
         }
       }
     )

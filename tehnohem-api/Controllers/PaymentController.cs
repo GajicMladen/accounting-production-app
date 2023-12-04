@@ -30,6 +30,13 @@ namespace tehnohem_api.Controllers
             return this.PaymentService.getPaymentDTOs(ret);
         }
 
+        [HttpGet("getAllPaymentsIncomingOtherInvoices")]
+        public List<PaymentDTO> getAllPaymentsOfIncomingOtherInvoices()
+        {
+            List<Payment> ret = this.PaymentService.getAllPaymentsOfThirdParty();
+            return this.PaymentService.getPaymentDTOs(ret);
+        }
+
         [HttpDelete("delete/{id}")]
         public IActionResult deletePayment(string id) {
             this.PaymentService.deletePayment(id);

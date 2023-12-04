@@ -27,6 +27,7 @@ namespace tehnohem_api.Model
             this.PaymentId = paymentDTO.PaymentId;
             this.TotalValue = paymentDTO.TotalValue;
             this.Date = paymentDTO.Date;
+            this.PaymentType = paymentDTO.PaymentType;
         }
     }
 

@@ -47,7 +47,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
     singlePrice : new FormControl(),
     count: new FormControl(),
     unit:new FormControl("kom"),
-    pdv: new FormControl(17)
+    pdv: new FormControl(17),
   })
 
   rawsToSell : RawToSell[] =[];
@@ -81,6 +81,14 @@ export class InternalDocumentsDialogComponent implements OnInit {
       );
     }
     
+    if(this.data.documentType == InternalDocumentType.INCOMING_OTHER_INVOICE && this.data.isReadonly === false){
+      this.companyService.getAllThirdPartyCompanies().subscribe(
+        data =>{
+          this.companies = data;
+        }
+      );
+    }
+
     if(this.data.isReadonly){
       this.invoiceID = this.data.invoice!.invoiceID;
       this.date = this.data.invoice!.date;
@@ -227,6 +235,9 @@ export class InternalDocumentsDialogComponent implements OnInit {
     if(this.data.documentType == InternalDocumentType.INTERNAL_ISSUE_PRODUCT){
       this.addNewIssueProduct();
     }
+    if(this.data.documentType == InternalDocumentType.INCOMING_OTHER_INVOICE){
+      this.addNewIncomingOtherInvoice();
+    }
   }
 
   addNewIncomingInvoice(){
@@ -242,6 +253,24 @@ export class InternalDocumentsDialogComponent implements OnInit {
     };
 
     this.invoicesService.addNewIncomingInvoice(newIncomingInvoice).subscribe(
+      data=>{
+        this.dialogRef.close("addedNewInvoice");
+      }
+    )
+  }
+  addNewIncomingOtherInvoice(){
+
+    let newIncomingInvoice : IncomingInvoiceDTO ={
+      invoiceID: this.invoiceID,
+      date: this.date.toLocaleDateString('sv'),
+      supplierID: this.selectedCompany!.id,
+      invoiceItems: this.rawsToSell as RawToSell[],
+      totalValueOfPdv: this.total_value_of_pdv,
+      totalValueWithoutPdv: this.total_value_without_pdv,
+      totalValue: this.total_value_with_pdv
+    };
+
+    this.invoicesService.addNewIncomingOtherInvoice(newIncomingInvoice).subscribe(
       data=>{
         this.dialogRef.close("addedNewInvoice");
       }
