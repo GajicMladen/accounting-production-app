@@ -32,4 +32,11 @@ export class PaymentService {
   getAllPaymentsOfIncomingOtherInvoices():Observable<Payment[]>{
     return this.http.get<Payment[]>(this.url+"/getAllPaymentsIncomingOtherInvoices");
   }
+  
+  getAllPaymentsOfOutgoingInvoices():Observable<Payment[]>{
+    return this.http.get<Payment[]>(this.url+"/getAllPaymentsOutgoingInvoices");
+  }
+  getAllPaymentsOfOutgoingCashInvoices():Observable<Payment[]>{
+    return this.http.get<Payment[]>(this.url+"/getAllPaymentsOutgoingCashInvoices");
+  }
 }

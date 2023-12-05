@@ -85,5 +85,12 @@ namespace tehnohem_api.Controllers
             List<Invoice> invoices = this.invoicesService.GetAllOutgoingInvoices();
             return this.invoicesService.GetDetailInvoicesInfo(invoices);
         }
+
+        [HttpGet("allOutgoingCashInvoices")]
+        public List<DetailInvoiceInfoDTO> getAllOutgoingCashInvoices()
+        {
+            List<Invoice> invoices = this.invoicesService.GetAllOutgoingCashInvoices();
+            return this.invoicesService.GetDetailInvoicesInfo(invoices);
+        }
     }
 }

@@ -79,7 +79,7 @@ namespace tehnohem_api.Services.Implementation
 
         public List<Invoice> GetAllOutgoingCashInvoices()
         {
-            throw new NotImplementedException();
+            return this.unitOfWork.InvoiceRepository.GetAllOutgoingCashInvoices();
         }
 
         public List<Invoice> GetAllOutgoingInvoices()

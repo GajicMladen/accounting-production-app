@@ -64,6 +64,15 @@ namespace tehnohem_api.Repositories.Implementation
                 .ToList();
         }
 
+        public List<Invoice> GetAllOutgoingCashInvoices()
+        {
+            return this.invoices.Where(i => i.InvoiceType == InvoiceType.OUTGOING_CASH_INVOICE)
+                .Include(ii => ii.InvoiceItems)
+                .Include(ii => ii.Supplier)
+                .Include(ii => ii.Customer)
+                .ToList();
+        }
+
         public List<Invoice> GetAllOutgoingInvoices()
         {
             return this.invoices.Where(i => i.InvoiceType == InvoiceType.OUTGOING_INVOICE)

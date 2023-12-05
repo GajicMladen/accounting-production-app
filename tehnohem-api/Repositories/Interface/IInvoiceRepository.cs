@@ -12,6 +12,7 @@ namespace tehnohem_api.Repositories.Interface
         public List<Invoice> GetAllIncomingInvoices();
         public List<Invoice> GetAllIncomingOtherInvoices();
         public List<Invoice> GetAllOutgoingInvoices();
+        public List<Invoice> GetAllOutgoingCashInvoices();
         public List<Invoice> GetAllInternalIssueRaw();
         public List<Invoice> GetAllInternalIssueProduct();
 

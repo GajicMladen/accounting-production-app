@@ -93,7 +93,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
       this.invoiceID = this.data.invoice!.invoiceID;
       this.date = this.data.invoice!.date;
 
-      if(this.data.documentType === InternalDocumentType.INCOMING_INVOICE){
+      if(this.data.documentType === InternalDocumentType.INCOMING_INVOICE ||this.data.documentType === InternalDocumentType.INCOMING_OTHER_INVOICE  ){
         this.companyService.getCompanyInfo(this.data.invoice!.supplierID).subscribe(
           data =>{
             this.selectedCompany = data;
@@ -272,7 +272,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
 
     this.invoicesService.addNewIncomingOtherInvoice(newIncomingInvoice).subscribe(
       data=>{
-        this.dialogRef.close("addedNewInvoice");
+        this.dialogRef.close("addedNewOtherInvoice");
       }
     )
   }

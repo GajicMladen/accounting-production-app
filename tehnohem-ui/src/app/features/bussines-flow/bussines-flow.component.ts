@@ -138,35 +138,43 @@ export class BussinesFlowComponent implements OnInit {
         this.incomingThirdPartyInvoices = data;
         this.updateTab(this.shownTab);
       }
-    );
+      );
+      
+      this.invoicesService.getAllOutgoingInvoices().subscribe(
+        data=>{
+          this.outgoingInvoices = data;
+          this.updateTab(this.shownTab);
+        }
+      );
 
-    this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
-      data=>{
-        this.incomingInvoicesPayment = data;
-        this.updateTab(this.shownTab);
-      }
-    )
-    
-    this.invoicesService.getAllOutgoingInvoices().subscribe(
-      data=>{
-        this.outgoingInvoices = data;
-        this.updateTab(this.shownTab);
-      }
-    );
+      this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
+        data=>{
+          this.incomingInvoicesPayment = data;
+          this.updateTab(this.shownTab);
+        }
+      );
+      
 
-    this.paymentService.getAllPaymentsOfIncomingInvoices().subscribe(
-      data=>{
-        this.outgoingInvoicesPayment = data;
-        this.updateTab(this.shownTab);
-      }
-    )
+      this.paymentService.getAllPaymentsOfOutgoingInvoices().subscribe(
+        data=>{
+          this.outgoingInvoicesPayment = data;
+          this.updateTab(this.shownTab);
+        }
+      );
 
-    this.paymentService.getAllPaymentsOfIncomingOtherInvoices().subscribe(
-      data=>{
-        this.incomingThirdPartyInvoicesPayment = data;
-        this.updateTab(this.shownTab);
-      }
-    )
+      this.paymentService.getAllPaymentsOfOutgoingCashInvoices().subscribe(
+        data=>{
+          this.outgoingCashInvoicesPayment = data;
+          this.updateTab(this.shownTab);
+        }
+      );
+
+      this.paymentService.getAllPaymentsOfIncomingOtherInvoices().subscribe(
+        data=>{
+          this.incomingThirdPartyInvoicesPayment = data;
+          this.updateTab(this.shownTab);
+        }
+      );
     
   }
 
@@ -212,12 +220,29 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Title  = "Izlazne fakture";
       this.table2Title = "Uplate kupaca";
       this.table1Btn1 = "Evidentiraj novu izlaznu fakturu";
-      this.table2Btn1 = "Evidentiraj novo razduzivanje od strane kupca";
+      this.table2Btn1 = "Evidentiraj novo razduživanje od strane kupca";
 
       this.table2Btn1Action = this.openOutgoingInvoicePayment;
       
       this.allInvoicesTable1 = this.outgoingInvoices;
       this.allPaymentsTable2 = this.outgoingInvoicesPayment;
+
+      this.selectData = this.customerCompanies;
+
+      
+    }
+    else if( this.shownTab === 6.22){
+      
+      this.selectorName  = "Odaberi kupca";
+      this.table1Title  = "Izlazne keš fakture";
+      this.table2Title = "Uplate kupaca";
+      this.table1Btn1 = "Evidentiraj novu izlaznu keš fakturu";
+      this.table2Btn1 = "Evidentiraj novo plaćanje od strane kupca";
+
+      this.table2Btn1Action = this.openOutgoingInvoicePayment;
+      
+      this.allInvoicesTable1 = this.outgoingCashInvoices;
+      this.allPaymentsTable2 = this.outgoingCashInvoicesPayment;
 
       this.selectData = this.customerCompanies;
 
@@ -231,8 +256,8 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Btn1 = "Dodaj novi rashod";
       this.table2Btn1 = "~";
 
-      this.allInvoicesTable1 = this.outgoingCashInvoices;
-      this.allPaymentsTable2 = this.outgoingCashInvoicesPayment;
+      this.allInvoicesTable1 = [...this.incomingThirdPartyInvoices,...this.incomingInvoices];
+      this.allPaymentsTable2 = [...this.outgoingCashInvoicesPayment, ...this.outgoingInvoicesPayment];
 
       this.selectData = this.customerCompanies;
       
@@ -351,7 +376,7 @@ export class BussinesFlowComponent implements OnInit {
     });
     dialogRefAddNewProduct.afterClosed().subscribe(
       data=>{
-        if(data=="addedPayment"){
+        if(data=="addedNewOtherInvoice"){
           this.getNewValuesForInvoicesAndPayments();
         }
       }
