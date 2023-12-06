@@ -130,7 +130,7 @@
         <br />
         <div  *ngIf=" data.documentType === allDocumentType.OUTGOING_INVOICE">
             <h3>Prodati proizvodi</h3>
-            <app-sell-product-table [productsToSell]="prodcutsToSell" (deletedRow)="deleteRawToSell($event)" ></app-sell-product-table>
+            <app-sell-product-table [productsToSell]="prodcutsToSell" (deletedRow)="deleteRawToSell($event)" [isReadonly]="data.isReadonly" ></app-sell-product-table>
         </div>
         <div  *ngIf=" data.documentType != allDocumentType.OUTGOING_INVOICE">
             <h3>Dodate sirovine</h3>
@@ -171,17 +171,51 @@
                     Dodaj sirovine
                 </div>
             </div>
-            <button mat-raised-button class="final-save-btn" [disabled]="
-                        invoiceID === '' ||
-                        (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
-                        (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
-                        (rawsToSell.length === 0 && prodcutsToSell.length === 0)" (click)="addNewInvoice()">
-                <mat-icon>save</mat-icon>
-                <span>
-                    Sačuvaj
-                    <span *ngIf="data.isReadonly">Izmene</span>
-                </span>
-            </button>
+            <div class="final-buttons">
+
+                <button mat-raised-button class="final-save-btn" 
+                        style="height: 100%;"
+                        *ngIf="!data.isReadonly"
+                            [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="addNewInvoice()">
+                    <mat-icon>save</mat-icon>
+                    <span>
+                        Sačuvaj
+                    </span>
+                </button>
+                
+                <button mat-raised-button class="final-save-btn"
+                        style="height: 50%;" 
+                        *ngIf="data.isReadonly"
+                        [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="addNewInvoice()">
+                    <mat-icon>save</mat-icon>
+                    <span>
+                        Sačuvaj izmene
+                    </span>
+                </button>
+                <button mat-raised-button color="warn"
+                        *ngIf="data.isReadonly"
+                        [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="addNewInvoice()">
+                    <mat-icon>delete</mat-icon>
+                    <span>
+                        Obriši
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

@@ -13,3 +13,7 @@
     min-width: 300px;
     max-width: 300px;
 }
+.newBtn{
+    display: flex;
+    justify-content: flex-end;
+}

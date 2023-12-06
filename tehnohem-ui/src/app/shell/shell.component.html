@@ -47,16 +47,16 @@
             </div>
             
             <div *ngIf="tabToShow>=5 && tabToShow<6" class="buttons">
-              <button mat-raised-button (click)="tabToShow = 5.1" [color]="tabToShow === 5.1 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="tabToShow = 5.1;updateHistoryComponent()" [color]="tabToShow === 5.1 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Ulaznih Faktrura
               </button>
-              <button mat-raised-button (click)="tabToShow = 5.2" [color]="tabToShow === 5.2 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="tabToShow = 5.2;updateHistoryComponent()" [color]="tabToShow === 5.2 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Izdatnica repromaterijala
               </button>
-              <button mat-raised-button (click)="tabToShow = 5.3" [color]="tabToShow === 5.3 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="tabToShow = 5.3;updateHistoryComponent()" [color]="tabToShow === 5.3 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Predatnica
               </button>
-              <button mat-raised-button (click)="tabToShow = 5.4" [color]="tabToShow === 5.4 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="tabToShow = 5.4;updateHistoryComponent()" [color]="tabToShow === 5.4 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Izlaznih faktura
               </button>
             </div>

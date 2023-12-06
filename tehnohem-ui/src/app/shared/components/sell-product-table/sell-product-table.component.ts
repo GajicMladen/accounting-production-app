@@ -25,6 +25,7 @@ export class SellProductTableComponent implements OnInit {
     "delete"
   ];
   @Input() productsToSell : ProductToSell[] = [];
+  @Input() isReadonly : boolean = false;
   
   @Output() deletedRow: EventEmitter<any> = new EventEmitter();
 
@@ -50,6 +51,10 @@ export class SellProductTableComponent implements OnInit {
   
   deleteProduct(product:ProductToSell){
     this.deletedRow.emit(product);
+  }
+
+  editProduct(product:ProductToSell){
+    
   }
 
 }

@@ -1,6 +1,15 @@
 
     <div class="filters">
-
+        
+        <mat-form-field *ngIf="selectorName !== '~'">
+            <mat-label>{{selectorName}}</mat-label>
+            <mat-select (selectionChange)="filterTables($event.value)">
+                <mat-option [value]="'~'"> / </mat-option>
+              <mat-option *ngFor="let company of selectData" [value]="company.id">
+                {{company.name}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
         <mat-form-field>
             <mat-label>Odaberi period</mat-label>
             <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
