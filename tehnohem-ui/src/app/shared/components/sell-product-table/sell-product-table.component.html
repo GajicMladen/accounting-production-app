@@ -61,8 +61,11 @@
     <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let row" >
-            <button mat-raised-button color="accent" (click)="deleteProduct(row)"> 
+            <button mat-raised-button color="accent" (click)="deleteProduct(row)" *ngIf="!isReadonly"> 
                 <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-raised-button color="accent" (click)="editProduct(row)" *ngIf="isReadonly"> 
+              <mat-icon>edit</mat-icon>
             </button>
         </td>
     </ng-container>

@@ -1,6 +1,5 @@
 <div>
     <div class="filters">
-        <mat-icon>filter_list</mat-icon>
         <mat-form-field *ngIf="selectorName !== '~'">
             <mat-label>{{selectorName}}</mat-label>
             <mat-select (selectionChange)="filterTables($event.value)">
