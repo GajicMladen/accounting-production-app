@@ -5,6 +5,7 @@ import { AddNewCompanyDialogData } from 'src/app/shared/model/dialogs/addNewComp
 import { CompanyType } from 'src/app/shared/model/enums/companyType';
 import { CompanyService } from 'src/app/shared/services/company-service/company.service';
 import { AddNewCompanyComponent } from './components/add-new-company/add-new-company.component';
+import { TabService } from 'src/app/shared/services/tabService/tab.service';
 
 @Component({
   selector: 'app-companies',
@@ -20,10 +21,14 @@ export class CompaniesComponent implements OnInit {
 
   constructor(
     private companyService:CompanyService,
-    public dialog:MatDialog
+    public dialog:MatDialog,
+    private tabService: TabService,
   ) { }
 
   ngOnInit(): void {
+    this.tabService.getTab$().subscribe(data => {
+      this.tabToShow = data;
+    });
     this.updateData();
   }
 

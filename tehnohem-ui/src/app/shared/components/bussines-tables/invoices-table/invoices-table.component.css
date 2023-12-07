@@ -56,3 +56,10 @@ th{
     display: flex;
     gap: 4px;
 }
+.option-btns{
+    display: flex;
+    justify-content: space-evenly;
+}
+.print-button{
+    background-color:#8feaf7
+}

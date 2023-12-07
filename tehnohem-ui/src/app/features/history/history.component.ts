@@ -4,6 +4,7 @@ import { Company } from 'src/app/shared/model/company';
 import { CompanyType } from 'src/app/shared/model/enums/companyType';
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
+import { TabService } from 'src/app/shared/services/tabService/tab.service';
 import { izlazneFakture } from 'src/app/shared/test-data/test-data-bussines';
 
 @Component({
@@ -53,10 +54,14 @@ export class HistoryComponent implements OnInit {
   total_value : number = 0;
 
   constructor(
-    private invoicesService:InvoicesService
+    private invoicesService:InvoicesService,
+    private tabService: TabService,
   ) { }
 
   ngOnInit(): void {
+    this.tabService.getTab$().subscribe(data => {
+      this.tabToShow = data;
+    });
     this.getAllData();
 
   }

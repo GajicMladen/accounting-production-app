@@ -16,6 +16,7 @@ import { CompanyService } from 'src/app/shared/services/company-service/company.
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
 import { PaymentService } from 'src/app/shared/services/payment-service/payment.service';
 import { customers, dugovanja, dugovanjaOstala, getters, izlazneFakture, thirdFaces, uplate, uplateKupci, uplateOstalo } from 'src/app/shared/test-data/test-data-bussines';
+import { TabService } from 'src/app/shared/services/tabService/tab.service';
 
 @Component({
   selector: 'app-bussines-flow',
@@ -97,9 +98,13 @@ export class BussinesFlowComponent implements OnInit {
     private paymentService: PaymentService,
     private companyService: CompanyService,
     private toastr: ToastrService,
+    private tabService:TabService
   ) { }
 
   ngOnInit(): void {
+    this.tabService.getTab$().subscribe(data => {
+      this.shownTab = data;
+    });
     this.getNewValuesForInvoicesAndPayments();
   }
 

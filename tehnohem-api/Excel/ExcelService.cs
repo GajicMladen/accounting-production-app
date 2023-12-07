@@ -89,7 +89,7 @@ namespace tehnohem_api.Excel
 
             insertTableRow(ws, 26, 1, invoiceItem);
 
-            insertTableRow(ws, 28, 2, invoiceItem);
+            insertTableRow(ws, 28, 2, invoiceItem2);
 
             insertTableTotalRow(ws, 30);
 
@@ -137,8 +137,7 @@ namespace tehnohem_api.Excel
 
             ws.Cell(x, 10).SetValue("Vrednost\ndobara bez\nPDVa");
 
-            ws.Cell(x, 11).SetValue("rabat%");
-            ws.Cell(x, 11).SetValue(10);
+            ws.Cell(x, 11).SetValue("rabat%\n10");
 
             ws.Cell(x, 12).SetValue("osnovica\nPDV-a");
 
@@ -196,7 +195,7 @@ namespace tehnohem_api.Excel
             ws.Cell(x, 13).SetValue(37.85);
             ws.Cell(x, 14).SetValue(260.47);
 
-            for (int i = 9; i < 15; i++) {
+            for (int i = 10; i < 15; i++) {
                 tableheader(ws, x, i);
             }
         }
@@ -212,7 +211,7 @@ namespace tehnohem_api.Excel
                 ws.Range(x+i, 13, x+i, 14).Merge();
             }
 
-            ws.Cell(x, 10).SetValue("Osnovica PDV-a:").Style.Font.Bold = true;
+            ws.Cell(x, 9).SetValue("Osnovica PDV-a:").Style.Font.Bold = true;
             ws.Cell(x, 13).SetValue(222.62).Style.Font.Bold = true;
 
 
@@ -225,7 +224,7 @@ namespace tehnohem_api.Excel
 
         public void insertFooter(IXLWorksheet ws,int x) {
 
-            ws.Cell(x, 1).SetValue("Reklamacije se primaju u roku od 3 dana, na osnovu propisanog zapisnika.");
+            ws.Cell(x + 1, 1).SetValue("Reklamacije se primaju u roku od 3 dana, na osnovu propisanog zapisnika.");
             ws.Cell(x + 2, 1).SetValue("Plaćanje virmanom u roku od    20 dana ili do 09.04.2020. godine");
             ws.Cell(x + 3, 1).SetValue("Za plaćanje preko 20 dana zaračunava se zakonska zatezna kamata.");
             ws.Cell(x + 4, 1).SetValue("U slučaju spora nadležan je opštinski sud u Zvorniku.");

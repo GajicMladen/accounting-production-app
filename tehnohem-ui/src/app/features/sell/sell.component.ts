@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SellProductTableComponent } from 'src/app/shared/components/sell-product-table/sell-product-table.component';
 import { Company } from 'src/app/shared/model/company';
@@ -49,7 +50,8 @@ export class SellComponent implements OnInit {
   constructor(
     private companyService: CompanyService,
     private toastr: ToastrService,
-    private invoicesService : InvoicesService
+    private invoicesService : InvoicesService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -168,6 +170,7 @@ export class SellComponent implements OnInit {
         },
         next: x => {
           this.toastr.success(x);
+          this.router.navigate(["/history/"+this.invoiceID]);
         }
         
       }
