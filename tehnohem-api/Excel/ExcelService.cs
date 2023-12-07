@@ -60,50 +60,7 @@ namespace tehnohem_api.Excel
 
             //table 
             //header
-            ws.Cell(22, 1).SetValue("red.\nbroj");
-            tableheader(ws, 22, 1);
-            ws.Range("A22:A25").Merge();
-            
-            ws.Cell(22, 2).SetValue("\tNAZIV I VRSTA DOBRA");
-            tableheader(ws, 22, 2);
-            ws.Range("B22:F25").Merge();
-
-            ws.Cell(22, 7).SetValue("jed.\nmere");
-            tableheader(ws, 22, 7);
-            ws.Range("G22:G25").Merge();
-
-            ws.Cell(22, 8).SetValue("koli\nčina");
-            tableheader(ws, 22, 8);
-            ws.Range("H22:H25").Merge();
-
-            ws.Cell(22, 9).SetValue("Cena\njde.\nbez\nPDVa");
-            tableheader(ws, 22, 9);
-            ws.Range("I22:I25").Merge();
-
-            ws.Cell(22, 10).SetValue("Vrednost\ndobara bez\nPDVa");
-            tableheader(ws, 22, 10);
-            ws.Range("J22:J25").Merge();
-
-            ws.Cell(22, 11).SetValue("rabat%");
-            ws.Cell(23, 11).SetValue(10);
-            tableheader(ws, 22, 11);
-            ws.Range("K22:K25").Merge();
-
-            ws.Cell(22, 12).SetValue("osnovica\nPDV-a");
-            tableheader(ws, 22, 12);
-            ws.Range("L22:L25").Merge();
-
-            ws.Cell(22, 13).SetValue("iznos\nPDV-a\nstopa E\n17%");
-            tableheader(ws, 22, 13);
-            ws.Range("M22:M25").Merge();
-
-            ws.Cell(22, 14).SetValue("vrednost\ndobara sa\nPDV-om");
-            tableheader(ws, 22, 14);
-            ws.Range("N22:N25").Merge();
-
-            ws.Cell(22, 15).SetValue("cena\njed.\nsa\nPDV-om");
-            tableheader(ws, 22, 15);
-            ws.Range("O22:O25").Merge();
+            this.insertTableHeaderRow(ws, 22);
 
             InvoiceItem invoiceItem = new InvoiceItem() { 
                 Name = "Jestivo sirce 1/1",
@@ -130,56 +87,15 @@ namespace tehnohem_api.Excel
                 SinglePricePdv = 2.89f,
             };
 
-            insertRow(ws, 26, 1, invoiceItem);
+            insertTableRow(ws, 26, 1, invoiceItem);
 
-            insertRow(ws, 28, 2, invoiceItem);
+            insertTableRow(ws, 28, 2, invoiceItem);
 
-            ws.Cell(30, 7).SetValue("Ukupno").Style.Font.Bold = true;
-            centerCell(ws,30, 7);
-            ws.Range("G30:I30").Merge();
+            insertTableTotalRow(ws, 30);
 
-            ws.Cell(30, 10).SetValue(247.36);
-            ws.Cell(30, 11).SetValue(24.36);
-            ws.Cell(30, 12).SetValue(222.36);
-            ws.Cell(30, 13).SetValue(37.85);
-            ws.Cell(30, 14).SetValue(260.47);
+            insertSummary(ws, 33);
 
-            ws.Cell(32, 10).SetValue("Osnovica PDV-a:").Style.Font.Bold = true;
-            ws.Range("J32:L32").Merge();
-            ws.Cell(32, 13).SetValue(222.62).Style.Font.Bold = true;
-            centerCell(ws, 32, 13);
-            ws.Range("M32:N32").Merge();
-
-
-            ws.Cell(33, 9).SetValue("Iznos PDV-a (stopa 17%):").Style.Font.Bold = true;
-            ws.Range("I33:L33").Merge();
-            ws.Cell(33, 13).SetValue(37.85).Style.Font.Bold = true;
-            centerCell(ws, 33, 13);
-            ws.Range("M33:N33").Merge();
-
-            ws.Cell(34, 9).SetValue("Ukupan iznos za uplatu sa PDV-om:").Style.Font.Bold = true;
-            ws.Range("I34:L34").Merge();
-            ws.Cell(34, 13).SetValue(260.47).Style.Font.Bold = true;
-            centerCell(ws, 34, 13);
-            ws.Range("M34:N34").Merge();
-
-
-            ws.Cell(36, 1).SetValue("Reklamacije se primaju u roku od 3 dana, na osnovu propisanog zapisnika.");
-            ws.Cell(37, 1).SetValue("Plaćanje virmanom u roku od    20 dana ili do 09.04.2020. godine");
-            ws.Cell(38, 1).SetValue("Za plaćanje preko 20 dana zaračunava se zakonska zatezna kamata.");
-            ws.Cell(39, 1).SetValue("U slučaju spora nadležan je opštinski sud u Zvorniku.");
-
-            ws.Cell(41, 2).SetValue("Fakturisao:");
-            ws.Cell(42, 2).SetValue("_______________________");
-            centerCell(ws, 42, 2);
-            ws.Range("B42:D42").Merge();
-
-            ws.Cell(41, 10).SetValue("Dobra (robu) primio:");
-            ws.Cell(42, 10).SetValue("______________________");
-            centerCell(ws, 42, 10);
-            ws.Range("J42:L42").Merge();
-
-            ws.Cell(44, 2).SetValue("MP");
+            insertFooter(ws, 36);
 
             return workbook;
         }
@@ -195,49 +111,136 @@ namespace tehnohem_api.Excel
         }
 
         public void borderCell(IXLWorksheet ws, int x, int y) {
-            ws.Cell(x, y).Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
+            ws.Cell(x, y).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
         }
+        public void insertTableHeaderRow(IXLWorksheet ws,int x) {
 
-        public void insertRow(IXLWorksheet ws, int x,int rowNum, InvoiceItem invoiceItem) {
+            for (int i = 1; i < 16; i++)
+            {
+                tableheader(ws, x, i);
+                tableheader(ws, x + 1, i);
+                tableheader(ws, x + 2, i);
+                tableheader(ws, x + 3, i);
+                ws.Range(x, i, x + 3, i).Merge();
+            }
+
+            ws.Cell(x, 1).SetValue("red.\nbroj");
+
+            ws.Cell(x, 2).SetValue("\tNAZIV I VRSTA DOBRA");
+            ws.Range(x,2,x+3,7).Merge();
+
+            ws.Cell(x, 7).SetValue("jed.\nmere");
+
+            ws.Cell(x, 8).SetValue("koli\nčina");
+
+            ws.Cell(x, 9).SetValue("Cena\njde.\nbez\nPDVa");
+
+            ws.Cell(x, 10).SetValue("Vrednost\ndobara bez\nPDVa");
+
+            ws.Cell(x, 11).SetValue("rabat%");
+            ws.Cell(x, 11).SetValue(10);
+
+            ws.Cell(x, 12).SetValue("osnovica\nPDV-a");
+
+            ws.Cell(x, 13).SetValue("iznos\nPDV-a\nstopa E\n17%");
+
+            ws.Cell(x, 14).SetValue("vrednost\ndobara sa\nPDV-om");
+
+            ws.Cell(x, 15).SetValue("cena\njed.\nsa\nPDV-om");
+        }
+        public void insertTableRow(IXLWorksheet ws, int x,int rowNum, InvoiceItem invoiceItem) {
+
+            for (int i = 1; i < 16; i++)
+            {
+                tableheader(ws, x, i);
+                tableheader(ws, x + 1, i);
+                ws.Range(x, i, x + 1, i).Merge();
+            }
+
             ws.Cell(x, 1).SetValue(rowNum);
-            centerCell(ws, x, 1);
+            ws.Range(x, 1, x+1, 1).Merge();
+
 
             ws.Cell(x, 2).SetValue(invoiceItem.Name+ "\nbar kod: 3877000735037");
-            ws.Range("B" + x.ToString() + ":F" + x.ToString()).Merge();
-            ws.Range("B" + (x+1).ToString() + ":F" + (x+1).ToString()).Merge();
-
-            for (int i = 7; i < 16; i++) {
-                tableheader(ws, x, i);
-            }
+            ws.Range(x,2,x+1,7).Merge();
 
             ws.Cell(x, 7).SetValue(invoiceItem.Unit);
             centerCell(ws, x, 7);
 
             ws.Cell(x, 8).SetValue(invoiceItem.Amount);
-            centerCell(ws, x, 8);
 
             ws.Cell(x, 9).SetValue(Math.Round(invoiceItem.SinglePrice,2));
-            centerCell(ws, x, 9);
 
             //Change!!!! without rabat
             ws.Cell(x, 10).SetValue(Math.Round(invoiceItem.TotalValueWithoutPDV,2));
-            centerCell(ws, x, 10);
 
             ws.Cell(x, 11).SetValue(Math.Round(invoiceItem.Rabat.Value,2));
-            centerCell(ws, x, 11);
 
             ws.Cell(x, 12).SetValue(Math.Round(invoiceItem.TotalValueWithoutPDV,2));
-            centerCell(ws, x, 12);
 
             ws.Cell(x, 13).SetValue(Math.Round(invoiceItem.TotalValueOfPDV,2));
-            centerCell(ws, x, 13);
 
             ws.Cell(x, 14).SetValue(Math.Round(invoiceItem.TotalValue,2));
-            centerCell(ws, x, 14);
             
             ws.Cell(x, 15).SetValue(Math.Round(invoiceItem.SinglePricePdv.Value,2));
-            centerCell(ws, x, 15);
         }
 
+        public void insertTableTotalRow(IXLWorksheet ws, int x) {
+            ws.Cell(x, 7).SetValue("Ukupno").Style.Font.Bold = true;
+            centerCell(ws, x, 7);
+            ws.Range(x,7,x,9).Merge();
+
+            ws.Cell(x, 10).SetValue(247.36);
+            ws.Cell(x, 11).SetValue(24.36);
+            ws.Cell(x, 12).SetValue(222.36);
+            ws.Cell(x, 13).SetValue(37.85);
+            ws.Cell(x, 14).SetValue(260.47);
+
+            for (int i = 9; i < 15; i++) {
+                tableheader(ws, x, i);
+            }
+        }
+
+        public void insertSummary(IXLWorksheet ws, int x) {
+
+            for (int i = 0; i < 3; i++) {
+                centerCell(ws, x + i, 9);
+                ws.Range(x + i, 9, x + i, 12).Merge();
+
+                tableheader(ws,x + i, 13);
+                tableheader(ws, x + i, 14);
+                ws.Range(x+i, 13, x+i, 14).Merge();
+            }
+
+            ws.Cell(x, 10).SetValue("Osnovica PDV-a:").Style.Font.Bold = true;
+            ws.Cell(x, 13).SetValue(222.62).Style.Font.Bold = true;
+
+
+            ws.Cell(x + 1, 9).SetValue("Iznos PDV-a (stopa 17%):").Style.Font.Bold = true;
+            ws.Cell(x + 1, 13).SetValue(37.85).Style.Font.Bold = true;
+
+            ws.Cell(x + 2, 9).SetValue("Ukupan iznos za uplatu sa PDV-om:").Style.Font.Bold = true;
+            ws.Cell(x + 2, 13).SetValue(260.47).Style.Font.Bold = true;
+        }
+
+        public void insertFooter(IXLWorksheet ws,int x) {
+
+            ws.Cell(x, 1).SetValue("Reklamacije se primaju u roku od 3 dana, na osnovu propisanog zapisnika.");
+            ws.Cell(x + 2, 1).SetValue("Plaćanje virmanom u roku od    20 dana ili do 09.04.2020. godine");
+            ws.Cell(x + 3, 1).SetValue("Za plaćanje preko 20 dana zaračunava se zakonska zatezna kamata.");
+            ws.Cell(x + 4, 1).SetValue("U slučaju spora nadležan je opštinski sud u Zvorniku.");
+
+            ws.Cell(x + 6, 2).SetValue("Fakturisao:");
+            ws.Cell(x + 7, 2).SetValue("_______________________");
+            centerCell(ws, x + 7, 2);
+            ws.Range("B" + (x + 7).ToString() + ":D" + (x + 7).ToString()).Merge();
+
+            ws.Cell(x + 6, 10).SetValue("Dobra (robu) primio:");
+            ws.Cell(x + 7, 10).SetValue("______________________");
+            centerCell(ws, 7, 10);
+            ws.Range("J" + (x + 7).ToString() + ":L" + (x + 7).ToString()).Merge();
+
+            ws.Cell(x + 9, 2).SetValue("MP");
+        }
     }
 }
