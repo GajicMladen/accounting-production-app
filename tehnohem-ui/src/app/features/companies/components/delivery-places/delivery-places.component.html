@@ -1,0 +1,20 @@
+<div class="all-thing">
+    <div class="centrala">
+        <h3>
+            Centrala
+        </h3>
+        <app-company-info [company]="data" [deleteOption]="false" [deliveryPlacesOption]="false" ></app-company-info>
+    </div>
+    <hr />
+    <div class="options">
+        <h3>
+            Dostavna mesta
+        </h3>
+        <button mat-raised-button color="primary" (click)="addNewDeliveryPlace()">Dodaj novo mesto dostave <mat-icon>add</mat-icon></button>
+    </div>
+    <div class="delivery-places">
+        <div *ngFor="let company of deliveryPlaces" >
+            <app-company-info [company]="company" (deletedEmiter)="updateDeliveryPlaces()" [deliveryPlacesOption]="false" ></app-company-info>
+        </div>
+    </div>
+</div>

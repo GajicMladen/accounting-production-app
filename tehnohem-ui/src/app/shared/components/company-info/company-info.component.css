@@ -1,0 +1,74 @@
+.company{
+    display: flex;
+    flex-direction: column;
+   background-color: #f5f1fc;
+    min-width: 300px;
+    max-width: 300px;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+.company:hover{
+    transform: scale(0.98);
+    background-color: #ded4f0;
+    cursor: pointer;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-height: 100px;
+}
+
+.logo img{
+
+    max-width: 100px;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+}
+.property{
+    display: flex;
+    flex-direction: row;
+}
+
+.property .label{
+    font-size: small;
+    color: grey;
+    width: 20%;
+    text-align: right;
+    padding: 5px;
+}
+
+.property .value{
+    font-size: medium;
+    color: black;
+    width: 80%;
+    padding: 5px;
+}
+
+
+.manage-commands{
+    display: flex;
+}
+
+.delete-icon{
+    justify-content: end;
+}
+.delete-button{
+    transition: 0.3;
+}
+.delete-button:hover{
+    color: red;
+}
+
+.add-icon{
+    justify-content: end;
+}
+
+.delivery-places-button:hover{
+   color:  #ffd740;
+}

@@ -1,0 +1,48 @@
+<mat-card class="product-picker">
+    <div>
+
+        <form class="product-picker-input">
+            <mat-form-field class="example-full-width">
+              <mat-label>Unesite naziv proizvoda</mat-label>
+              <input matInput placeholder="Ime kupca" value="">
+            </mat-form-field>
+        </form>
+        
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 product-picker-table">
+        
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+          
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>  Proizvod</th>
+              <td mat-cell *matCellDef="let element"> 
+                    
+                        {{element.name}}
+                    
+                </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="volume">
+                <th mat-header-cell *matHeaderCellDef>  Zapremina</th>
+                <td mat-cell *matCellDef="let element"> 
+                          {{element.volume}}
+                  </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr 
+                mat-row
+                (click)="selectedProduct = clickProduct(row)"
+                [class.row-is-selected]="isRowSelected(row)"
+                style="cursor:pointer;"
+                *matRowDef="let row; columns: displayedColumns;"
+            ></tr>
+        </table>
+    </div>
+    <div>
+        <app-product-info *ngIf="selectedProduct" [product]="selectedProduct"></app-product-info>
+    </div>
+</mat-card>

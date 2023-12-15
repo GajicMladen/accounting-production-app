@@ -1,0 +1,32 @@
+<h2 class="title"></h2>
+<div class="newBtn">
+    <button mat-raised-button color="primary" (click)="addNewCompany()">
+         <mat-icon>add</mat-icon>
+         <span *ngIf="tabToShow === 3.1">
+             Novi dobavljač
+         </span>
+            
+            <span *ngIf="tabToShow === 3.2">
+                Novi kupac
+            </span>
+            
+            <span *ngIf="tabToShow === 3.3">
+                Novo treće lice
+            </span>
+    </button>
+</div>
+<div class="companies"  *ngIf="tabToShow===3.1" >
+    <div class="company" *ngFor="let comp of suppliers">
+        <app-company-info [company]="comp" (deletedEmiter)="companyDeleted()" [deliveryPlacesOption]="false"></app-company-info>
+    </div>
+</div>
+<div class="companies"  *ngIf="tabToShow===3.2" >
+    <div class="company" *ngFor="let comp of customers">
+        <app-company-info [company]="comp" (deletedEmiter)="companyDeleted()"></app-company-info>
+    </div>
+</div>
+<div class="companies"  *ngIf="tabToShow===3.3" >
+    <div class="company" *ngFor="let comp of thirdPartyCompanies">
+        <app-company-info [company]="comp" (deletedEmiter)="companyDeleted()" [deliveryPlacesOption]="false"></app-company-info>
+    </div>
+</div>

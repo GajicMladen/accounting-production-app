@@ -1,0 +1,60 @@
+<div>
+    <h2>
+        <span>
+            Dodaj novi
+        </span>
+        proizvod
+    </h2>
+
+    <form [formGroup]="form">
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Naziv</mat-label>
+                <input matInput placeholder="Naziv" value="" formControlName="name" >
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Barkod</mat-label>
+                <input matInput placeholder="barkod" value="" formControlName="barCode">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Zapremina</mat-label>
+                <input matInput placeholder="Zapremina" value="" formControlName="volume">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Cena po komadu</mat-label>
+                <input matInput placeholder="Cena po komadu" value="" formControlName="singlePrice">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Trenutna količina</mat-label>
+                <input matInput placeholder="Trenutna količina" value="" formControlName="currentAmount">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Ukupna vrednost</mat-label>
+                <input matInput placeholder="Ukupna cena" value="" formControlName="totalValue">
+            </mat-form-field>
+        </div>
+        
+        
+        <div>
+            <button mat-raised-button (click)="saveProduct()">
+                <mat-icon>save</mat-icon>
+                Sačuvaj
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,76 @@
+
+    <div class="filters">
+        
+        <mat-form-field *ngIf="selectorName !== '~'">
+            <mat-label>{{selectorName}}</mat-label>
+            <mat-select (selectionChange)="filterTables($event.value)">
+                <mat-option [value]="'~'"> / </mat-option>
+              <mat-option *ngFor="let company of selectData" [value]="company.id">
+                {{company.name}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Odaberi period</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date">
+              <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-slide-toggle [(ngModel)]="statistics" (change)="onChange()">Statistika</mat-slide-toggle>
+    </div>
+    <h2>Istorija</h2>
+    <div *ngIf="tabToShow===5.1">
+        <app-invoices-table *ngIf="statistics" 
+                            [dataSource]="invoicesIncoming" 
+                            [displayedColumns]="displayedColumnsIncomingInvoice"
+                            [inlineOptions]="true"
+                            [enableSelectingInvoice]="true"
+                            ></app-invoices-table>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesIncoming">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="tabToShow===5.2">
+        <app-invoices-table *ngIf="statistics" [dataSource]="invoicesInternalIssueRaw"
+                                                [displayedColumns]="displayedColumnsIssueRaw"
+                                                [inlineOptions]="true"
+                                                [enableSelectingInvoice]="true"
+                                                ></app-invoices-table>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesInternalIssueRaw">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div>    
+    <div *ngIf="tabToShow===5.3">
+        <app-invoices-table *ngIf="statistics" 
+                            [dataSource]="invoicesInternalIssueProduct" 
+                            [displayedColumns]="displayedColumnsIssueProduct"
+                            [inlineOptions]="true"
+                            [enableSelectingInvoice]="true"
+                            ></app-invoices-table>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesInternalIssueProduct">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div> 
+    <div *ngIf="tabToShow===5.4">
+        <app-invoices-table *ngIf="statistics" 
+                            [dataSource]="invoicesOutgoing" 
+                            [displayedColumns]="displayedColumnsOutgoingInvoice"
+                            [inlineOptions]="true"
+                            [enableSelectingInvoice]="true"
+                            ></app-invoices-table>
+        <div class="companies" *ngIf="!statistics">
+            <div class="company" *ngFor="let v of invoicesOutgoing">
+                <app-file-info [invoice]="v"></app-file-info>
+            </div>
+        </div>
+    </div> 

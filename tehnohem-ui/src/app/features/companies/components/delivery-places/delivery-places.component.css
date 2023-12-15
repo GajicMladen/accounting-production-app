@@ -1,0 +1,19 @@
+.all-thing{
+    height: 90vh;
+    overflow-y: auto;
+}
+
+.options{
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+}
+
+
+.delivery-places{
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 20px;
+}

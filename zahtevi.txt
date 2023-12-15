@@ -1,0 +1,45 @@
+Zahtevi:
+========================
+--------Proizvodnja-----
+
+Evidentirati ULAZ / izlaz u magacin sirovina 
+
+Magacin moze u minus 
+
+Stampanje trenutnog stanja magacina ( sirovine / proizvodi )
+
+Svi dokumenti se stampaju 
+
+Excel format za izdavanje 
+
+ID , datumi -> dokumenata 
+Radni nalog--> proizvodi - kolicine za odredjeni period za proizvodnju
+
+*gotovinski ne skida sa magacina
+
+tabelarni prikaz istorije dokumenata 
+
+======================================
+------------Finansije-----------------
+Filtriranje po datumu 
+
+*IZVOD!!!!!
+
+Moja potrazivanja (sta ja dugujem dobavljacima) 
+Dugovanja kupaca na osnovu faktura (ukupno)
+	+ Razduzivanje izlazne fakture
+		kupac, broj izvoda, datum uplate , iznos 
+	+ Razduzenje ulazne 
+		dobavljac, broj izvoda, datum uplate , iznos 
+**gotovinski
+
+Evidencija dodatnih ulaznih faktura ( dodatnih troskova ) struja, gorivo, knjizara.....
+	Dobavljac, naziv usluge, cena
+
+Evidencija dodnih ostalih troskova (plate, porezi,takse,kirija) 
+	+treca lica 
+	trece lice, datum uplate
+	
+	+Razduzivanje ostalih troskova 
+ 
+

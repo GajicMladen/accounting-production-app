@@ -1,0 +1,34 @@
+<div class="options">
+    <button mat-raised-button  color="primary" (click)="addIncomingInovice()"><mat-icon>download</mat-icon> Dodaj ulaznu fakturu</button>
+    <button mat-raised-button  color="accent" (click)="addIssuePaper()"><mat-icon>upload</mat-icon> Dodaj izdatnicu repro materijala</button>
+</div>
+<hr />
+<div class="categories">
+    
+    <div class="category">
+        <h3>Sirovine</h3>
+        <div>
+            <app-simple-count-table [dataSource]="raws" (addClicked)="addNewRaw(rawTypes.RAW)" (deleteRowClicked)="deleteRaw($event)" (editRowClicked)="editRaw($event)"></app-simple-count-table>
+        </div>
+    </div>
+    <div class="category">
+        <h3>Flaše</h3>
+        <div>
+            <app-simple-count-table [dataSource]="bottles" (addClicked)="addNewRaw(rawTypes.BOTTLE)"  (deleteRowClicked)="deleteRaw($event)" (editRowClicked)="editRaw($event)"></app-simple-count-table>
+        </div>
+    </div>
+    <div class="category">
+        <h3>Čepovi</h3>
+        <div>
+            <app-simple-count-table [dataSource]="caps" (addClicked)="addNewRaw(rawTypes.CAP)"  (deleteRowClicked)="deleteRaw($event)" (editRowClicked)="editRaw($event)"></app-simple-count-table>
+        </div>
+    </div>
+    <div class="category">
+        <h3>Etikete</h3>
+        <div>
+            <app-simple-count-table [dataSource]="labels" (addClicked)="addNewRaw(rawTypes.LABEL)"  (deleteRowClicked)="deleteRaw($event)" (editRowClicked)="editRaw($event)"></app-simple-count-table>
+        </div>
+    </div>
+    
+
+</div>

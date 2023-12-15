@@ -1,0 +1,126 @@
+<div class="body">
+    
+    <div class="generalInfoForm">
+        <h2 *ngIf="data.paymentType == allPaymentTypes.INCOMING_INVOICE_PAYMENT ">Plaćanje ulazne fakture</h2>
+        <h2 *ngIf="data.paymentType == allPaymentTypes.OUTGOING_INVOICE_PAYMENT ">Plaćanje izlazne fakture</h2>
+
+        <mat-form-field >
+            <mat-label>Broj fakture</mat-label>
+            <input matInput placeholder="Broj fakture" [(ngModel)]="paymentID" [readonly]="data.isReadonly">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Datum fakture</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="date"  [readonly]="data.isReadonly">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div *ngIf="data.paymentType == allPaymentTypes.INCOMING_INVOICE_PAYMENT ||
+         data.paymentType == allPaymentTypes.OUTGOING_INVOICE_PAYMENT ||
+         data.paymentType == allPaymentTypes.OUTGOING_INVOICE_CASH_PAYMENT ||
+         data.paymentType == allPaymentTypes.THIRD_PARTY_COST_PAYMENT 
+         ">
+        <div (click)="showCompany=!showCompany" style="cursor: pointer;">
+            <h3 *ngIf="data.paymentType == allPaymentTypes.INCOMING_INVOICE_PAYMENT ">Dobavljač</h3>
+            <h3 *ngIf="data.paymentType == allPaymentTypes.OUTGOING_INVOICE_PAYMENT ">Kupac</h3>
+            <h3 *ngIf="data.paymentType == allPaymentTypes.THIRD_PARTY_COST_PAYMENT ">Treća strana</h3>
+            <h2>{{selectedCompany?.name}}</h2>
+        </div>
+        <div *ngIf="showCompany && !data.isReadonly" class="company-picker">
+            <app-company-picker  [companies]="companies" (companySelected)="changeSelectedCompany($event)" [selectedCompany]="selectedCompany"> </app-company-picker>
+            <div class="options">
+                <button mat-raised-button color="primary" (click)="showCompany=!showCompany"> <mat-icon>check</mat-icon></button>
+            </div>
+        </div>
+        <div *ngIf="data.isReadonly && selectedCompany">
+            <app-company-info [company]="selectedCompany" [deleteOption]="false" [deliveryPlacesOption]="false" [isReadonly]="true"></app-company-info>
+        </div>
+        <hr />
+    </div>
+    
+    <h3 >Stavke plaćanja</h3>
+    
+    <div class="single-raw-info" *ngIf="!data.isReadonly">
+        
+        
+        <div  *ngIf=" data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT || 
+                    data.paymentType === allPaymentTypes.THIRD_PARTY_COST_PAYMENT || 
+                    data.paymentType === allPaymentTypes.OUTGOING_INVOICE_PAYMENT  "
+            class="invoices-table-div"
+        >
+            <app-invoices-table [dataSource]="invoices" 
+                                [showSummary]="false" 
+                                [displayedColumns]="displayedColumnsInvoicesTable"
+                                [enableSelectingInvoice]="true"
+                                [inlineOptions]="true"
+                                (selectedInvoice)="selectedInvoice($event)"></app-invoices-table>
+        </div>
+        
+        <div class="info">
+                <form [formGroup]="singlePiceForm">
+                <mat-form-field class="example-full-width"  >
+                    <mat-label>Stavka plaćanja (broj fakture, napomena ...)</mat-label>
+                    <input matInput placeholder="Naziv stavke računa" formControlName="name">
+                </mat-form-field>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>Cena </mat-label>
+                    <input matInput placeholder="Cena"  formControlName="value">
+                </mat-form-field>
+                
+            </form>
+        </div>
+        <div class="options">
+            <div>
+                <button mat-raised-button color="primary" class="add-btn" (click)="addNewPaymentItem()"><mat-icon>check</mat-icon></button>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <br />
+        <div >
+            <h3>Dodate stavke</h3>
+            <app-payment-item-table [dataSource]="paymentItems" [displayedColumns]="displayedColumnsPaymentItemsTable" (deletedPaymentItem)="deletePaymentItem($event)"></app-payment-item-table>
+        </div>
+    </div>
+    
+    <div class="total-div">
+        <div class="total-end">
+            <div class="total">
+              <div class="property">
+                  <span class="label">Ukupan iznos za uplatu sa PDV-om:</span>
+                  <span class="value">{{total_value_with_pdv}}</span>
+              </div>
+            </div>
+        
+        </div>
+        <div class="final-options">
+            <div class="warnings">
+                <div *ngIf="paymentID === ''" >
+                    Unesi broj fakture
+                </div>
+                <div *ngIf="(data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT && !selectedCompany)">
+                    Odaberi dobavljača
+                </div>
+                <div *ngIf="paymentItems.length === 0 ">
+                    Dodaj stavke placanja
+                </div>
+            </div>
+            <button mat-raised-button class="final-save-btn" [disabled]="
+                paymentID === '' ||
+                (data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT && !selectedCompany) ||
+                paymentItems.length === 0
+            "
+                (click)="addNewPayment()"
+            >
+                <mat-icon>save</mat-icon>
+                <span>
+                    Evidentiraj 
+                    <span *ngIf="data.isReadonly">izmene</span> 
+                    plaćanje
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

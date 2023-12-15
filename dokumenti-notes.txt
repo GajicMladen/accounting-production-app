@@ -1,0 +1,45 @@
+ulazna fakture
+
+broj fakture, datum, dobavljac, 
+sirovina, jedinica mere (kom, kg, l), kolicina, cena, ukupna cena/bez sa pdv  
+
+I)
+magicin sirovina -> povecava kolicinu sirovine -> jedinicna cena se racuna ( cena/kolicina )
+						-> povecava se ukupna 
+
+
+==========================================
+izlazne fakture
+
+
+
+faktura prodaje
+
+smanjuje stanje kolicine proizvoda,
+
+
+===========================================
+
+izdatnica repromaterijala (*mesecni nivo)
+
+ID,datum izdavanja, period za koji se izdaje,
+sirovina,jed mere(iz magacina),kolicica,cena(iz magacina) (bez i sa pdv) ,ukupno
+
+odaberes sirovinu --> kolicina --> gotovo
+
+I) 
+smanjuje se kolicina u magacinu , (smanjuje se vrednost magacina)
+
+
+============================================
+
+predatnica
+
+ID,period,
+prozivod, jed mer, kolicina, cena(proizvod), ukupna vrednost(pdv/bez)
+
+odabiras proizvod --> kolicina --> cena 
+
+I)
+povecava se kolicina u magacinu -> racuna se prosecna cena ( ukpna cena/kolicina ) 
+===========================================

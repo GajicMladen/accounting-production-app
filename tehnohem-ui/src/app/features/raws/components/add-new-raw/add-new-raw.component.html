@@ -1,0 +1,44 @@
+<div>
+    <h3 *ngIf="data.update === false"> Nova sirovina</h3>
+    <h3 *ngIf="data.update === true"> Uredi sirovinu</h3>
+    <h2 *ngIf="data.rawType === rawType.BOTTLE "> Flaša </h2>
+    <h2 *ngIf="data.rawType === rawType.CAP "> Čepova </h2>
+    <h2 *ngIf="data.rawType === rawType.LABEL "> Etiketa </h2>
+    <form [formGroup]="form">
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Naziv</mat-label>
+                <input matInput placeholder="Naziv" value="" formControlName="name" >
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Cena po jedinici</mat-label>
+                <input matInput placeholder="Cena po jedinici" value="" formControlName="singlePrice" >
+            </mat-form-field>
+        </div>
+        
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Trenutna količina</mat-label>
+                <input matInput placeholder="Trenutna količina" value="" formControlName="currentAmount">
+            </mat-form-field>
+        </div>
+        
+        <div>
+            <mat-form-field class="example-full-width">
+                <mat-label>Ukupna vrednost</mat-label>
+                <input matInput placeholder="Ukupna cena" value="" formControlName="totalValue" >
+            </mat-form-field>
+        </div>
+
+        <div>
+            <button mat-raised-button (click)="saveRaw()">
+                <mat-icon>save</mat-icon>
+                Sačuvaj
+            </button>
+        </div>
+    </form>
+</div>

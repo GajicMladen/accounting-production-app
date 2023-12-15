@@ -1,0 +1,221 @@
+<div class="body">
+    
+    <div class="generalInfoForm">
+        <h2>{{data.title}}</h2>
+        <mat-form-field >
+            <mat-label>Broj fakture</mat-label>
+            <input matInput placeholder="Broj fakture" [(ngModel)]="invoiceID" [readonly]="data.isReadonly">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Datum fakture</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="date"  [readonly]="data.isReadonly">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE || data.documentType == allDocumentType.OUTGOING_INVOICE || data.documentType == allDocumentType.INCOMING_OTHER_INVOICE ">
+        <div (click)="showCompany=!showCompany" style="cursor: pointer;">
+            <h3 *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE ">Dobavljač</h3>
+            <h3 *ngIf="data.documentType == allDocumentType.OUTGOING_INVOICE ">Kupac</h3>
+            <h3 *ngIf="data.documentType == allDocumentType.INCOMING_OTHER_INVOICE ">Treće lice</h3>
+            <h2>{{selectedCompany?.name}}</h2>
+        </div>
+        <div *ngIf="showCompany && !data.isReadonly" class="company-picker">
+            <app-company-picker  [companies]="companies" (companySelected)="changeSelectedCompany($event)" [selectedCompany]="selectedCompany"> </app-company-picker>
+            <div class="options">
+                <button mat-raised-button color="primary" (click)="showCompany=!showCompany"> <mat-icon>check</mat-icon></button>
+            </div>
+        </div>
+        <div *ngIf="data.isReadonly && selectedCompany">
+            <app-company-info [company]="selectedCompany" [deleteOption]="false" [deliveryPlacesOption]="false" [isReadonly]="true"></app-company-info>
+        </div>
+        <hr />
+    </div>
+    
+    <h3  *ngIf="!data.isReadonly && data.documentType == allDocumentType.INCOMING_INVOICE" >Dodavanje sirovine</h3>
+    <h3  *ngIf="!data.isReadonly && data.documentType == allDocumentType.INTERNAL_ISSUE_PRODUCT" >Dodavanje proizvoda</h3>
+    <h3  *ngIf="!data.isReadonly && data.documentType == allDocumentType.INCOMING_OTHER_INVOICE" >Dodavanje stavki za naplatu</h3>
+    
+    <div class="single-raw-info" *ngIf="!data.isReadonly">
+        <div class="raw-categories"
+        *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE">
+            <mat-slide-toggle class="example-margin"
+             *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE"
+            (change)="newRaw = !newRaw" [checked]="newRaw">
+                 Novi proizvod
+            </mat-slide-toggle>
+            <mat-radio-group aria-label="Select an option" class="categories-buttons" [(ngModel)]="newRawType">
+                <mat-radio-button value="raw">Sirovina</mat-radio-button>
+                <mat-radio-button value="bottle">Flaša</mat-radio-button>
+                <mat-radio-button value="cap">Čep</mat-radio-button>
+                <mat-radio-button value="label">Etiketa</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="selects" *ngIf="!newRaw && 
+                (data.documentType != allDocumentType.INTERNAL_ISSUE_PRODUCT && data.documentType != allDocumentType.INCOMING_OTHER_INVOICE )">
+            <h4>Postojeće sirovine</h4>
+            <mat-form-field *ngIf="newRawType == 'raw'">
+                <mat-label>Sirovina</mat-label>
+                <mat-select [(value)]="selectedRaw" (selectionChange)="changedSelectedRaw()">
+                  <mat-option *ngFor="let raw of raws" [value]="raw">
+                    {{raw.name}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf=" newRawType == 'bottle'">
+                <mat-label>Flase</mat-label>
+                <mat-select [(value)]="selectedRaw" (selectionChange)="changedSelectedRaw()">
+                  <mat-option *ngFor="let raw of bottles" [value]="raw">
+                    {{raw.name}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf=" newRawType == 'cap'">
+                <mat-label>Čepovi</mat-label>
+                <mat-select [(value)]="selectedRaw" (selectionChange)="changedSelectedRaw()">
+                  <mat-option *ngFor="let raw of caps" [value]="raw">
+                    {{raw.name}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf=" newRawType == 'label'">
+                <mat-label>Etikete</mat-label>
+                <mat-select [(value)]="selectedRaw" (selectionChange)="changedSelectedRaw()">
+                  <mat-option *ngFor="let raw of labels" [value]="raw">
+                    {{raw.name}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div  *ngIf=" data.documentType === allDocumentType.INTERNAL_ISSUE_PRODUCT">
+            <app-product-picker (selectedProductEmiter)="changeSelectedProduct($event)"></app-product-picker>
+        </div>
+        
+        <div class="info">
+                <form [formGroup]="singlePiceForm" class="singlePiceForm">
+                <mat-form-field class="example-full-width"  *ngIf="data.documentType != allDocumentType.INTERNAL_ISSUE_PRODUCT">
+                    <mat-label>Naziv</mat-label>
+                    <input matInput placeholder="Naziv sirovine"formControlName="name">
+                </mat-form-field>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>Cena po jedinici </mat-label>
+                    <input matInput placeholder="Cena"  formControlName="singlePrice">
+                </mat-form-field>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>Količina</mat-label>
+                    <input matInput placeholder="Količina" formControlName="count">
+                </mat-form-field>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>Jedinica mere</mat-label>
+                    <input matInput placeholder="Količina" formControlName="unit">
+                </mat-form-field>
+                
+                <mat-form-field class="example-full-width">
+                    <mat-label>PDV (%)</mat-label>
+                    <input matInput placeholder="PDV (%)" formControlName="pdv">
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="options">
+            <div>
+                <button mat-raised-button color="primary" class="add-btn" (click)="addNewPiceToList()"><mat-icon>check</mat-icon></button>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <br />
+        <div  *ngIf=" data.documentType === allDocumentType.OUTGOING_INVOICE">
+            <h3>Prodati proizvodi</h3>
+            <app-sell-product-table [productsToSell]="prodcutsToSell" (deletedRow)="deleteRawToSell($event)" [isReadonly]="data.isReadonly" ></app-sell-product-table>
+        </div>
+        <div  *ngIf=" data.documentType != allDocumentType.OUTGOING_INVOICE">
+            <h3>Dodate sirovine</h3>
+            <app-sell-raw-table [rawsToSell]="rawsToSell" (deletedRow)="deleteRawToSell($event)" [isReadonly]="data.isReadonly"></app-sell-raw-table>    
+        </div>
+    </div>
+    
+    <div class="total-div">
+        <div class="total-end">
+            <div class="total">
+              <div class="property">
+                  <span class="label">Osnovica PDV-a:</span>
+                  <span class="value"> {{total_value_without_pdv}} </span>
+              </div>
+              <div class="property">
+                  <span class="label">Iznos PDV-a (stopa 17%):</span>
+                  <span class="value"> {{total_value_of_pdv}}</span>
+              </div>
+              <div class="property">
+                  <span class="label">Ukupan iznos za uplatu sa PDV-om:</span>
+                  <span class="value">{{total_value_with_pdv}}</span>
+              </div>
+            </div>
+        
+        </div>
+        <div class="final-options">
+            <div class="warnings">
+                <div *ngIf="invoiceID === ''" >
+                    Unesi broj fakture
+                </div>
+                <div *ngIf="(data.documentType === allDocumentType.INCOMING_INVOICE && !selectedCompany)">
+                    Odaberi dobavljača
+                </div>
+                <div *ngIf="(data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany)">
+                    Odaberi treće lice
+                </div>
+                <div *ngIf="rawsToSell.length === 0 && prodcutsToSell.length === 0 ">
+                    Dodaj sirovine
+                </div>
+            </div>
+            <div class="final-buttons">
+
+                <button mat-raised-button class="final-save-btn" 
+                        style="height: 100%;"
+                        *ngIf="!data.isReadonly"
+                            [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="addNewInvoice()">
+                    <mat-icon>save</mat-icon>
+                    <span>
+                        Sačuvaj
+                    </span>
+                </button>
+                
+                <button mat-raised-button class="final-save-btn"
+                        style="height: 50%;" 
+                        *ngIf="data.isReadonly"
+                        [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="addNewInvoice()">
+                    <mat-icon>save</mat-icon>
+                    <span>
+                        Sačuvaj izmene
+                    </span>
+                </button>
+                <button mat-raised-button color="warn"
+                        *ngIf="data.isReadonly"
+                        [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="addNewInvoice()">
+                    <mat-icon>delete</mat-icon>
+                    <span>
+                        Obriši
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<mat-card class="product">
+    <div class="logo">
+        <img src="../../../../assets/sirce1.png" *ngIf="product.id % 4 ===0"/>
+        <img src="../../../../assets/deter55.png" *ngIf="product.id % 4 ===1"/>
+        <img src="../../../../assets/rivalp.png" *ngIf="product.id % 4 ===2"/>
+        <img src="../../../../assets/glas5.png" *ngIf="product.id % 4 ===3"/>
+    </div>
+    <div class="info">
+        <div class="property">
+            <span class="label"> Naziv </span>
+            <span class="value"> {{product.name}}</span>
+        </div>
+        <div class="property">
+            <span class="label"> Zapremina</span>
+            <span class="value"> {{product.volume}}	</span>
+        </div>
+        <div class="property">
+            <span class="label"> Bar kod </span>
+            <span class="value"> {{product.barCode}} </span>
+        </div>
+    </div>
+</mat-card>

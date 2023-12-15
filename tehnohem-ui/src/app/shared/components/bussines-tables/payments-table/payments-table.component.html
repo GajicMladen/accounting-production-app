@@ -1,0 +1,52 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="paymentID">
+      <th mat-header-cell *matHeaderCellDef> Plćanje </th>
+      <td mat-cell *matCellDef="let element"> 
+          {{element.paymentId}} 
+       </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> datum </th>
+      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="payerName">
+    <th mat-header-cell *matHeaderCellDef> Uplatilac </th>
+    <td mat-cell *matCellDef="let element"> {{element.payerName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="receiverName">
+    <th mat-header-cell *matHeaderCellDef> Primalac </th>
+    <td mat-cell *matCellDef="let element"> {{element.receiverName}} </td>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="value_total">
+    <th mat-header-cell *matHeaderCellDef> Ukupna vrednost </th>
+    <td mat-cell *matCellDef="let element"> <b>{{element.totalValue}}</b> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+    <th mat-header-cell *matHeaderCellDef [class.options-th]="!inlineOptions" >  </th>
+    <td mat-cell *matCellDef="let element" [class.options-td]="!inlineOptions"> 
+        <div *ngIf="isPaymentSelected(element)">
+            <button *ngIf="viewDetailsOption" mat-raised-button color="accent" class="edit-button" (click)="openPaymentDetails(element)">
+                <mat-icon>find_in_page</mat-icon>
+            </button>
+            <button *ngIf="viewDetailsOption" mat-raised-button color="warn" class="delete-button" (click)="deletePayment(element)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row 
+        *matRowDef="let row; columns: displayedColumns;"
+        [class.row-is-selected]="isPaymentSelected(row)"
+        style="cursor:pointer;"
+        (click)="selectPayment(row)"></tr>
+</table>
+    

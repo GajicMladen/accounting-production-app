@@ -1,0 +1,23 @@
+table{
+    width: 100%;
+}
+
+.edit-button{
+    font-size: 2px;
+}
+.add-btn{
+    width: 100%;
+}
+
+.row-is-selected{
+    background-color: #673ab7;
+}
+
+.row-is-selected td{
+    color: white;
+}
+
+.options-btn{
+    display: flex;
+    gap: 10px;
+}

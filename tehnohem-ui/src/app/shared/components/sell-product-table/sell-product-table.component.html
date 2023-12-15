@@ -1,0 +1,81 @@
+<table mat-table [dataSource]="productsToSell" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Naziv </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    
+    <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Količina( kom. ) </th>
+        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price_single">
+      <th mat-header-cell *matHeaderCellDef> Cena po komadu </th>
+      <td mat-cell *matCellDef="let element"> {{element.price_single}} </td>
+    </ng-container>
+    
+      
+    <ng-container matColumnDef="rabat">
+        <th mat-header-cell *matHeaderCellDef> Rabat </th>
+        <td mat-cell *matCellDef="let element"> {{element.rabat}} </td>
+      </ng-container>
+      
+    <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef> Akcija </th>
+        <td mat-cell *matCellDef="let element"> {{element.discount}} </td>
+      </ng-container>
+      
+    <ng-container matColumnDef="pdv">
+      <th mat-header-cell *matHeaderCellDef> Iznos pdv-a ( % ) </th>
+      <td mat-cell *matCellDef="let element"> {{element.pdv}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="value_out_pdv">
+        <th mat-header-cell *matHeaderCellDef> Osnovica pdv-a</th>
+        <td mat-cell *matCellDef="let element"> {{element.value_out_pdv}} </td>
+      </ng-container>
+      
+      
+    <ng-container matColumnDef="value_pdv">
+        <th mat-header-cell *matHeaderCellDef> Vrednost PDV-a</th>
+        <td mat-cell *matCellDef="let element"> {{element.value_pdv}} </td>
+      </ng-container>
+      
+    <ng-container matColumnDef="value_total">
+      <th mat-header-cell *matHeaderCellDef> Ukupna vrenost </th>
+      <td mat-cell *matCellDef="let element"> {{element.value_total}} </td>
+    </ng-container>
+      
+    <ng-container matColumnDef="price_single_no_pdv">
+        <th mat-header-cell *matHeaderCellDef> Cena po komadu be PDV-a</th>
+        <td mat-cell *matCellDef="let element"> {{element.price_single_no_pdv}} </td>
+      </ng-container>
+      
+    <ng-container matColumnDef="price_single_pdv">
+        <th mat-header-cell *matHeaderCellDef> Cena po komadu sa PDV-om </th>
+        <td mat-cell *matCellDef="let element"> {{element.price_single_pdv}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let row" >
+            <button mat-raised-button color="accent" (click)="deleteProduct(row)" *ngIf="!isReadonly"> 
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-raised-button color="accent" (click)="editProduct(row)" *ngIf="isReadonly"> 
+              <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr 
+      mat-row
+      (click)="selectedRow = clickRow(row);"
+      [class.row-is-selected]="isRowSelected(row)"
+      style="cursor:pointer;"
+      *matRowDef="let row; columns: displayedColumns;"
+    ></tr>
+  </table>
