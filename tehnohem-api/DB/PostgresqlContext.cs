@@ -39,6 +39,7 @@ namespace tehnohem_api.DB
             modelBuilder.Entity<Product>().Property(c => c.ID).ValueGeneratedOnAdd();
 
             //==========INVOICE==================
+            modelBuilder.Entity<Invoice>().Property(i => i.ID).ValueGeneratedOnAdd();
             modelBuilder.Entity<Invoice>()
                 .HasOne<Company>(i => i.Supplier)
                 .WithMany(c => c.Invoices_Supplier)

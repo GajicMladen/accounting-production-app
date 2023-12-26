@@ -30,7 +30,7 @@ export class BussinesFlowComponent implements OnInit {
     end: new FormControl(null),
   });
 
-  @Input() shownTab:number = 6.11; 
+  shownTab:number = 6.11; 
   
   selectorName: string = "Dobavljč";
   table1Title: string = "Sve ulazne fakture";
@@ -104,6 +104,7 @@ export class BussinesFlowComponent implements OnInit {
   ngOnInit(): void {
     this.tabService.getTab$().subscribe(data => {
       this.shownTab = data;
+      this.updateTab(this.shownTab);
     });
     this.getNewValuesForInvoicesAndPayments();
   }

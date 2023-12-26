@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using tehnohem_api.Model.Invoice;
 
 namespace tehnohem_api.Excel
 {
@@ -7,5 +8,6 @@ namespace tehnohem_api.Excel
     {
 
         public XLWorkbook gnerateXMLFile();
+        public XLWorkbook gnerateXMLFile(Invoice invoice);
     }
 }

@@ -47,27 +47,27 @@
             </div>
             
             <div *ngIf="tabToShow>=5 && tabToShow<6" class="buttons">
-              <button mat-raised-button (click)="changeTab(5.1);updateHistoryComponent()" [color]="tabToShow === 5.1 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(5.1)" [color]="tabToShow === 5.1 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Ulaznih Faktrura
               </button>
-              <button mat-raised-button (click)="changeTab(5.2);updateHistoryComponent()" [color]="tabToShow === 5.2 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(5.2)" [color]="tabToShow === 5.2 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Izdatnica repromaterijala
               </button>
-              <button mat-raised-button (click)="changeTab(5.3);updateHistoryComponent()" [color]="tabToShow === 5.3 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(5.3)" [color]="tabToShow === 5.3 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Predatnica
               </button>
-              <button mat-raised-button (click)="changeTab(5.4);updateHistoryComponent()" [color]="tabToShow === 5.4 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(5.4)" [color]="tabToShow === 5.4 ? 'accent': 'primary'">
                 <mat-icon>history</mat-icon> Izlaznih faktura
               </button>
             </div>
             <div *ngIf="tabToShow>=6 && tabToShow<7" class="buttons">
-              <button mat-raised-button (click)="changeTab(6.11);updateBussinesFlow()" [color]="tabToShow >= 6.11 && tabToShow < 6.2 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(6.11)" [color]="tabToShow >= 6.11 && tabToShow < 6.2 ? 'accent': 'primary'">
                 <mat-icon>bar_charts</mat-icon> Moja dugovanja
               </button>
-              <button mat-raised-button (click)="changeTab(6.21);updateBussinesFlow()" [color]="tabToShow >= 6.2 && tabToShow < 6.3 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(6.21)" [color]="tabToShow >= 6.2 && tabToShow < 6.3 ? 'accent': 'primary'">
                 <mat-icon>bar_charts</mat-icon> Moje prodaje
               </button>
-              <button mat-raised-button (click)="changeTab(6.3);updateBussinesFlow()" [color]="tabToShow === 6.3 ? 'accent': 'primary'">
+              <button mat-raised-button (click)="changeTab(6.3)" [color]="tabToShow === 6.3 ? 'accent': 'primary'">
                 <mat-icon>bar_charts</mat-icon> Ukupno poslovanje
               </button>
             </div>
@@ -75,24 +75,24 @@
           
           <div class="subtabs">
             <div *ngIf="tabToShow>=6.1 && tabToShow<6.2" class="buttons">
-              <button mat-raised-button (click)="changeTab(6.11);updateBussinesFlow()" [color]="tabToShow === 6.11 ? 'accent': 'primary'" >
+              <button mat-raised-button (click)="changeTab(6.11)" [color]="tabToShow === 6.11 ? 'accent': 'primary'" >
                 <mat-icon>file_copy</mat-icon>Fakturisani troškovi
               </button>
-              <button mat-raised-button (click)="changeTab(6.12);updateBussinesFlow()" [color]="tabToShow === 6.12 ? 'accent': 'primary'" >
+              <button mat-raised-button (click)="changeTab(6.12)" [color]="tabToShow === 6.12 ? 'accent': 'primary'" >
                 <mat-icon>file_copy</mat-icon>Ostali troškovi
               </button>
             </div>
             
             <div *ngIf="tabToShow>=6.2 && tabToShow<6.3" class="buttons">
-              <button mat-raised-button (click)="changeTab(6.21);updateBussinesFlow()" [color]="tabToShow === 6.21 ? 'accent': 'primary'" >
+              <button mat-raised-button (click)="changeTab(6.21)" [color]="tabToShow === 6.21 ? 'accent': 'primary'" >
                 <mat-icon>file_copy</mat-icon>Fakturisane prodaje
               </button>
-              <button mat-raised-button (click)="changeTab(6.22);updateBussinesFlow()" [color]="tabToShow === 6.22 ? 'accent': 'primary'" >
+              <button mat-raised-button (click)="changeTab(6.22)" [color]="tabToShow === 6.22 ? 'accent': 'primary'" >
                 <mat-icon>monetization_on</mat-icon>Gotovinske prodaje
               </button>
             </div>
           </div>
-          <router-outlet></router-outlet>
+          <router-outlet ></router-outlet>
           <!-- <app-products *ngIf="tabToShow === 1"></app-products>
           <app-raws *ngIf="tabToShow===2"></app-raws>
           <app-companies *ngIf="tabToShow >= 3 && tabToShow < 4" [tabToShow]="tabToShow"></app-companies>

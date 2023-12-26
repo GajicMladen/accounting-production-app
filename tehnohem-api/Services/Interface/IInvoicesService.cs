@@ -24,6 +24,7 @@ namespace tehnohem_api.Services.Interface
         List<GeneralInvoiceInfoDTO> GetGeneralInvoicesInfo(List<Invoice> invoices);
         List<DetailInvoiceInfoDTO> GetDetailInvoicesInfo(List<Invoice> invoices);
 
-        DetailInvoiceInfoDTO GetIncomingInvoice(string invoiceID);
+        DetailInvoiceInfoDTO GetInvoiceDTO(string invoiceID);
+        Invoice GetInvoice(string invoiceID);
     }
 }

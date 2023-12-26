@@ -10,6 +10,7 @@ namespace tehnohem_api.Model.Invoice
     {
         [Key]
         public string ID { get; set; }
+        public string companyInvoiceID { get; set; }
         public InvoiceType InvoiceType { get; set; }
         public Company? Supplier { get; set; }
         public string? SupplierID { get; set; }
@@ -26,7 +27,7 @@ namespace tehnohem_api.Model.Invoice
         public Invoice() { }
         public Invoice(IncomingInvoiceDTO incomingInvoiceDTO, Company? supplier, Company? customer, InvoiceType invoiceType)
         {
-            ID = incomingInvoiceDTO.invoiceID;
+            companyInvoiceID = incomingInvoiceDTO.invoiceID;
             Date = incomingInvoiceDTO.Date;
             TotalValueWithoutPDV = incomingInvoiceDTO.TotalValueWithoutPDV;
             TotalValueOfPDV = incomingInvoiceDTO.TotalValueOfPDV;
@@ -40,7 +41,7 @@ namespace tehnohem_api.Model.Invoice
 
         public Invoice(OutgoingInvoiceDTO incomingInvoiceDTO, Company? supplier, Company? customer, InvoiceType invoiceType)
         {
-            ID = incomingInvoiceDTO.InvoiceID;
+            companyInvoiceID = incomingInvoiceDTO.InvoiceID;
             Date = incomingInvoiceDTO.Date;
             TotalValueWithoutPDV = incomingInvoiceDTO.TotalValueWithoutPDV;
             TotalValueOfPDV = incomingInvoiceDTO.TotalValueOfPDV;

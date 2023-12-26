@@ -49,10 +49,10 @@ export class ShellComponent implements OnInit {
   }
 
   updateBussinesFlow(){
-    this.bussinesFlowComponent.updateTab(this.tabToShow);
+    // this.bussinesFlowComponent.updateTab(this.tabToShow);
   }
 
   updateHistoryComponent(){
-    this.historyComponent.updateTab(this.tabToShow);
+    // this.historyComponent.updateTab(this.tabToShow);
   }
 }

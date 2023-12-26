@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { InternalDocumentData} from 'src/app/shared/model/internalDocumentsData';
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
 import { InternalDocumentsDialogComponent } from '../../dialogs/internal-documents-dialog/internal-documents-dialog.component';
+import { ExcelService } from 'src/app/shared/services/excel-service/excel.service';
 
 @Component({
   selector: 'app-invoices-table',
@@ -28,6 +29,7 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
 
   constructor(
     public dialog:MatDialog,
+    private excelService: ExcelService,
   ) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['dataSource']) {
@@ -52,6 +54,20 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
     });
   }
   
+  printInvoice(invoice: DetailInvoiceInfo){
+    this.excelService.getInvoiceExcelFile(invoice.invoiceIDsystem).subscribe(
+      blob => this.downloadExcel(blob,'test.xlsx')
+    )
+  } 
+
+  
+  downloadExcel(response:any, fileName:string) {
+    // Doing it this way allows you to name the file
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(response);
+    link.download = fileName;
+    link.click();
+  }
 
   updateTotalValues(){
     this.total_value_out_pdv = 0;

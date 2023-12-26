@@ -4,7 +4,8 @@ namespace tehnohem_api.DTO
 {
     public class GeneralInvoiceInfoDTO
     {
-        public string invoiceID{get;set;}
+        public string invoiceID{get;set; }
+        public string invoiceIDSystem { get; set; }
         public DateOnly date {get;set;}
         public string supplierName{get;set;}
         public string customerName{get;set;}
@@ -15,7 +16,8 @@ namespace tehnohem_api.DTO
         public GeneralInvoiceInfoDTO() { }
 
         public GeneralInvoiceInfoDTO(Invoice invoice) {
-            this.invoiceID = invoice.ID;
+            this.invoiceIDSystem = invoice.ID;
+            this.invoiceID = invoice.companyInvoiceID;
             this.date = invoice.Date;
             this.supplierName = invoice.Supplier?.Name;
             this.customerName = invoice.Customer?.Name;

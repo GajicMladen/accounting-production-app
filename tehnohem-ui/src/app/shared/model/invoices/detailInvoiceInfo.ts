@@ -4,6 +4,7 @@ import { InvoiceItem } from "./invoiceItem";
 
 export interface DetailInvoiceInfo{
     invoiceID: string;
+    invoiceIDsystem: string;
     date : Date;
 
     invoiceType: InternalDocumentType;

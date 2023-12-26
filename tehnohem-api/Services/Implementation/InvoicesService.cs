@@ -98,7 +98,13 @@ namespace tehnohem_api.Services.Implementation
             return retVal;
         }
 
-        public DetailInvoiceInfoDTO GetIncomingInvoice(string invoiceID) { 
+        public Invoice GetInvoice(string invoiceID)
+        {
+            return this.unitOfWork.InvoiceRepository.GetInvoiceFullInfo(invoiceID);
+            
+        }
+
+        public DetailInvoiceInfoDTO GetInvoiceDTO(string invoiceID) { 
             Invoice invoice = this.unitOfWork.InvoiceRepository.GetInvoiceFullInfo(invoiceID);
             return new DetailInvoiceInfoDTO(invoice);
         }

@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc;
 using tehnohem_api.Model;
+using tehnohem_api.Model.Invoice;
 
 namespace tehnohem_api.Excel
 {
@@ -96,6 +97,75 @@ namespace tehnohem_api.Excel
             insertSummary(ws, 33);
 
             insertFooter(ws, 36);
+
+            return workbook;
+        }
+
+        public XLWorkbook gnerateXMLFile(Invoice invoice)
+        {
+            XLWorkbook workbook = new XLWorkbook();
+            var ws = workbook.Worksheets.Add("Faktura");
+
+            //Dobavljac
+            ws.Cell(9, 1).SetValue("DOBAVLJAČ: \"TEHNOHEM\" doo Zvornik");
+            ws.Cell(10, 1).SetValue("SJEDIŠTE: Karakaj 80, Karakaj, 75400 Zvornik");
+            ws.Cell(11, 1).SetValue("MBS: 59-01-0056-16, Okružni privredni sud Bijeljina");
+            ws.Cell(12, 1).SetValue("MB: 11146406");
+            ws.Cell(13, 1).SetValue("JIB: 4404057800001");
+            ws.Cell(14, 1).SetValue("IB: 404057800001");
+            ws.Cell(15, 1).SetValue("Ž.R. 5620098134054364");
+
+            //Kupac
+            ws.Cell(9, 9).SetValue("KUPAC:");
+            ws.Cell(11, 9).SetValue("ADRESA:");
+            //ws.Cell(12, 9).SetValue("MIJESTO:");
+            ws.Cell(13, 9).SetValue("JIB:");
+            ws.Cell(14, 9).SetValue("IB:");
+
+            ws.Cell(9, 10).SetValue(invoice.Customer.Name);
+            ws.Cell(11, 10).SetValue(invoice.Customer.Address);
+            //ws.Cell(12, 10).SetValue("75450 Šekovići");
+            ws.Cell(13, 10).SetValue(invoice.Customer.JIB);
+            ws.Cell(14, 10).SetValue(invoice.Customer.IB);
+
+            //Naslov
+            ws.Cell(16, 2).SetValue("Otpremnica/Faktura br.");
+            ws.Cell(16, 2).Style.Font.FontSize = 18;
+            centerCell(ws, 16, 2);
+            ws.Cell(16, 8).SetValue(invoice.companyInvoiceID);
+            ws.Cell(16, 8).Style.Font.FontSize = 18;
+            centerCell(ws, 16, 8);
+
+            ws.Range("B16:G17").Merge();
+            ws.Range("H16:I17").Merge();
+
+            //Sub-naslov
+            ws.Cell(18, 1).SetValue("Datum izdavanja fakrue:");
+            ws.Cell(18, 4).SetValue(invoice.Date.ToString("dd.MM.yyyy"));
+
+            ws.Cell(18, 7).SetValue("Mesto izdavanja fakture: ZVORNIK");
+
+            ws.Cell(20, 1).SetValue("Datum isporuke dobra:");
+            ws.Cell(20, 4).SetValue(invoice.Date.ToString("dd.MM.yyyy"));
+            ws.Cell(20, 6).SetValue("Valuta");
+            ws.Cell(20, 7).SetValue(DateTime.Now.ToString("dd.MM.yyyy"));
+            ws.Cell(20, 9).SetValue("Nacin isporuke: J97-T-226");
+
+            //table 
+            //header
+            this.insertTableHeaderRow(ws, 22);
+            int i = 0;
+            foreach(InvoiceItem invoiceItem in invoice.InvoiceItems)
+            {
+                insertTableRow(ws, 26 + i*2, i+1, invoiceItem);
+                i++;
+            }
+
+            insertTableTotalRow(ws, 26+i*2);
+
+            insertSummary(ws, 26+i*2+3);
+
+            insertFooter(ws, 26 + i * 2 + 6);
 
             return workbook;
         }
