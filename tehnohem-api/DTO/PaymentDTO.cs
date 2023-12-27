@@ -6,6 +6,7 @@ namespace tehnohem_api.DTO
     public class PaymentDTO
     {
         public string PaymentId { get; set; }
+        public string PaymentIdSystem { get; set; }
 
         public PaymentType PaymentType { get; set; }
         public DateOnly Date { get; set; }
@@ -22,6 +23,7 @@ namespace tehnohem_api.DTO
         public PaymentDTO() { }
         public PaymentDTO(Payment payment) {
             this.PaymentId = payment.PaymentId;
+            this.PaymentIdSystem = payment.PaymentIdSystem;
             this.PaymentType = payment.PaymentType;
             this.PayerName = payment.Payer?.Name;
             this.PayerID = payment.PayerID;

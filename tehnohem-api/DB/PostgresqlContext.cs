@@ -67,6 +67,8 @@ namespace tehnohem_api.DB
             //    .IsRequired(false);
 
             //==========PAYMENT =======================
+            modelBuilder.Entity<Payment>().Property(p => p.PaymentIdSystem).ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Payment>()
                 .HasOne<Company>(i => i.Payer)
                 .WithMany(c => c.Payments_Payer)

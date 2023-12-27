@@ -4,6 +4,7 @@ import { PaymentType } from "./paymentType";
 
 export interface Payment{
     paymentId:string;
+    paymentIdSystem:string;
     paymentType:PaymentType;
     date: string;
     

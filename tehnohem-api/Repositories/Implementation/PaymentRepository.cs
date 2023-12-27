@@ -55,7 +55,7 @@ namespace tehnohem_api.Repositories.Implementation
 
         public Payment? getPayment(string paymentId)
         {
-            return this.payments.Where(p => p.PaymentId == paymentId).FirstOrDefault();
+            return this.payments.Where(p => p.PaymentIdSystem == paymentId).FirstOrDefault();
         }
     }
 }

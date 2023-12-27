@@ -146,17 +146,27 @@ export class PaymentRecordDialogComponent implements OnInit {
   }
 
   addNewPayment(){
-    let newPayment : Payment={
+    let newPayment : Payment = {
       paymentId: this.paymentID,
+      paymentIdSystem: '',
       paymentType: this.data.paymentType,
       date: this.date.toLocaleDateString('sv'),
-      payerID: "",
-      payerName: "",
-      receiverID: this.selectedCompany!.id,
-      receiverName: this.selectedCompany!.name,
+      payerID: '',
+      payerName: '',
+      receiverID: '',
+      receiverName: '',
       paymentItems: this.paymentItems,
       totalValue: this.total_value_with_pdv,
     }
+
+    if( this.data.paymentType === PaymentType.INCOMING_INVOICE_PAYMENT){
+      newPayment.receiverID = this.selectedCompany!.id;
+      newPayment.receiverName = this.selectedCompany!.name;
+    } else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_PAYMENT){
+      newPayment.payerID = this.selectedCompany!.id;
+      newPayment.payerName = this.selectedCompany!.name;
+    }
+
     this.paymentService.addNewPayment(newPayment).subscribe(
       {
         next:()=>{

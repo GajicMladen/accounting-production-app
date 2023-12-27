@@ -311,6 +311,9 @@ export class BussinesFlowComponent implements OnInit {
   }
 
   filterTables(selectValue:string){
+    console.log(selectValue);
+    console.log(this.allInvoicesTable1);
+    console.log(this.allPaymentsTable2);
     if(selectValue != "~"){
       if(this.shownTab === 6.11 ||this.shownTab === 6.12 ){
         this.table1Data = this.allInvoicesTable1.filter( x => x.supplierID == selectValue);
@@ -363,7 +366,7 @@ export class BussinesFlowComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(
       data=>{
         if(data){
-          this.paymentService.deletePayment(payment.paymentId).subscribe({
+          this.paymentService.deletePayment(payment.paymentIdSystem).subscribe({
             next: (data)=>{
                 this.toastr.success("Uspešno uklonjeno");
                 this.getNewValuesForInvoicesAndPayments();

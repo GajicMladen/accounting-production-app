@@ -30,6 +30,7 @@ namespace tehnohem_api.Services.Implementation
 
             newPayment.Payer = payer;
             newPayment.Receiver = receiver;
+            newPayment.PaymentIdSystem = Guid.NewGuid().ToString();
 
             this.unitOfWork.PaymentRepository.addNewPayment(newPayment);
             this.unitOfWork.Commit();

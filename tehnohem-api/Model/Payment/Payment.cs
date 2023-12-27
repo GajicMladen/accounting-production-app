@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using tehnohem_api.DTO;
 using tehnohem_api.Model.Enums;
 
@@ -7,8 +8,10 @@ namespace tehnohem_api.Model
     [Table("payments")]
     public class Payment
     {
+        [Key]
         public string PaymentId { get; set; }
-        
+        public string PaymentIdSystem { get; set; }
+
         public PaymentType PaymentType { get; set; }
         public DateOnly Date { get; set; }
 
