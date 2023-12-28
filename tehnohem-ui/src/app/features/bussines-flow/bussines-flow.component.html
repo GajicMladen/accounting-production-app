@@ -20,7 +20,7 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-        <mat-slide-toggle *ngIf="selectorName === '~'">Gotovinske prodaje</mat-slide-toggle>
+        <mat-slide-toggle *ngIf="selectorName === '~'" (change)="includeCashSells()" >Gotovinske prodaje</mat-slide-toggle>
     </div>
       
       <!-- <p>Selected range: {{range.value | json}}</p> -->
@@ -56,7 +56,9 @@
         </div>
     </div>
     <div class="table3-div">
-        <button mat-raised-button class="print-btn"><mat-icon>print</mat-icon>Štampaj izveštaj</button>
+        <button mat-raised-button class="print-btn"
+        [disabled]="table1Data.length === 0 && table2Data.length === 0 "
+        ><mat-icon>download</mat-icon>Pruzmi izveštaj</button>
     </div>
 </div>
 <hr />

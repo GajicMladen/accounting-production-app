@@ -68,7 +68,7 @@ export class CompaniesComponent implements OnInit {
       data:this.dialogData
     });
     dialogRef.afterClosed().subscribe(data => {
-      if( data == "addedcompany")
+      if( data == "addedCompany")
         this.updateData();
     })
   }

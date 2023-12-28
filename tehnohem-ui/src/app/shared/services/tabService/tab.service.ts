@@ -6,7 +6,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class TabService {
 
-  private tabToShow : Subject<number> = new BehaviorSubject<number>(3.1);
+  private tabToShow : Subject<number> = new BehaviorSubject<number>(5.4);
 
   constructor() { }
 

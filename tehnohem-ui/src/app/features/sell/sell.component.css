@@ -3,6 +3,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     margin-bottom: 40px;
+    width: 97%;
 }
 .customer{
     display: flex;
@@ -95,4 +96,25 @@
 .generalInfoForm{
     display: flex;
     justify-content: space-between;
+    width: 97%;
+    padding: 15px;
+}
+
+.sellBody{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.blackSell{
+    background-color: #b4b3b7;
+    color: white;
+}
+.whiteSell{
+    background-color: white;
+    color:black;
+}
+
+.mainSellComponent{
+    width: 97%;
 }

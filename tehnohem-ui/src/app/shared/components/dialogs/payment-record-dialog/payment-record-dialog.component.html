@@ -45,7 +45,8 @@
         
         <div  *ngIf=" data.paymentType === allPaymentTypes.INCOMING_INVOICE_PAYMENT || 
                     data.paymentType === allPaymentTypes.THIRD_PARTY_COST_PAYMENT || 
-                    data.paymentType === allPaymentTypes.OUTGOING_INVOICE_PAYMENT  "
+                    data.paymentType === allPaymentTypes.OUTGOING_INVOICE_PAYMENT ||
+                    data.paymentType === allPaymentTypes.OUTGOING_INVOICE_CASH_PAYMENT  "
             class="invoices-table-div"
         >
             <app-invoices-table [dataSource]="invoices" 

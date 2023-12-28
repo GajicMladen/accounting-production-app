@@ -12,6 +12,8 @@ namespace tehnohem_api.DTO
         public float TotalValueOfPDV { get; set; }
         public float TotalValueWithoutPDV { get; set; }
 
+        public bool isCashInvoice { get; set; }
+
         public ICollection<OutgoingInvoiceItemDTO> InvoiceItems { get; set; }
 
 

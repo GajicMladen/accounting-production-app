@@ -38,7 +38,7 @@
     
     <div class="single-raw-info" *ngIf="!data.isReadonly">
         <div class="raw-categories"
-        *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE">
+        *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE || data.documentType == allDocumentType.INTERNAL_ISSUE_RAW ">
             <mat-slide-toggle class="example-margin"
              *ngIf="data.documentType == allDocumentType.INCOMING_INVOICE"
             (change)="newRaw = !newRaw" [checked]="newRaw">
@@ -202,6 +202,19 @@
                         Sačuvaj izmene
                     </span>
                 </button>
+                <button mat-raised-button class="print-button"
+                        *ngIf="data.isReadonly"
+                        [disabled]="
+                            invoiceID === '' ||
+                            (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
+                            (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
+                            (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
+                        (click)="printInvoice()">
+                    <mat-icon>download</mat-icon>
+                    <span>
+                        Preuzmi dokument 
+                    </span>
+                </button>
                 <button mat-raised-button color="warn"
                         *ngIf="data.isReadonly"
                         [disabled]="
@@ -209,7 +222,7 @@
                             (!selectedCompany && data.documentType === allDocumentType.INCOMING_INVOICE)|| 
                             (data.documentType === allDocumentType.INCOMING_OTHER_INVOICE && !selectedCompany) ||
                             (rawsToSell.length === 0 && prodcutsToSell.length === 0)" 
-                        (click)="addNewInvoice()">
+                        (click)="deleteInvoice()">
                     <mat-icon>delete</mat-icon>
                     <span>
                         Obriši

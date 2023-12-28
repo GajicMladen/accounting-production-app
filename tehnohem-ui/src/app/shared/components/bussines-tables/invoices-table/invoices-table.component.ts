@@ -4,13 +4,14 @@ import { InternalDocumentData} from 'src/app/shared/model/internalDocumentsData'
 import { DetailInvoiceInfo } from 'src/app/shared/model/invoices/detailInvoiceInfo';
 import { InternalDocumentsDialogComponent } from '../../dialogs/internal-documents-dialog/internal-documents-dialog.component';
 import { ExcelService } from 'src/app/shared/services/excel-service/excel.service';
+import { InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
 
 @Component({
   selector: 'app-invoices-table',
   templateUrl: './invoices-table.component.html',
   styleUrls: ['./invoices-table.component.css']
 })
-export class InvoicesTableComponent implements OnInit ,OnChanges{
+export class InvoicesTableComponent implements OnInit{
 
   @Input() displayedColumns: string[] = [ 'supplierName', 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
   @Input() dataSource : DetailInvoiceInfo[] = [];
@@ -20,7 +21,8 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
   @Input() inlineOptions: boolean = false;
 
   @Output() selectedInvoice : EventEmitter<any> = new EventEmitter();  
-  
+  @Output() deletedInvoice : EventEmitter<any> = new EventEmitter();
+
   selectedInvoicee : DetailInvoiceInfo | undefined;
 
   total_value_out_pdv:number = 0;
@@ -31,12 +33,7 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
     public dialog:MatDialog,
     private excelService: ExcelService,
   ) { }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dataSource']) {
-      // Trigger your function when the input list arrives
-      this.updateTotalValues();
-    }
-  }
+  
 
   ngOnInit(): void {
     this.updateTotalValues();
@@ -52,6 +49,10 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
     const dialogRef = this.dialog.open(InternalDocumentsDialogComponent,{
       data: dialogData
     });
+    dialogRef.afterClosed().subscribe(data => {
+      if(data === "deletedInvoice")
+        this.deletedInvoice.emit();
+    })
   }
   
   printInvoice(invoice: DetailInvoiceInfo){
@@ -93,4 +94,9 @@ export class InvoicesTableComponent implements OnInit ,OnChanges{
   isInvoiceSelected(invoice:DetailInvoiceInfo){
     return this.selectedInvoicee?.invoiceID === invoice.invoiceID;
   }
+  
+  isCashInvoice(invoice:DetailInvoiceInfo){
+    return invoice.invoiceType === InternalDocumentType.OUTGOING_CASH_INVOICE ;
+  }
+  
 }

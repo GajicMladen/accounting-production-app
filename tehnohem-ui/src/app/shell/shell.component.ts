@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./shell.component.css']
 })
 export class ShellComponent implements OnInit {
+  
+  tabToShow : number = 0;
 
-  @ViewChild(BussinesFlowComponent) bussinesFlowComponent! : BussinesFlowComponent;
-  @ViewChild(HistoryComponent) historyComponent! : HistoryComponent;
 
   constructor(
     private tabService:TabService,
@@ -21,8 +21,10 @@ export class ShellComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.tabService.getTab$().subscribe(
+      data => this.tabToShow = data
+    )
   }
-  tabToShow : number = 3.1;
 
   changeTab(newTab:number){
     this.tabToShow= newTab;
@@ -48,11 +50,4 @@ export class ShellComponent implements OnInit {
     
   }
 
-  updateBussinesFlow(){
-    // this.bussinesFlowComponent.updateTab(this.tabToShow);
-  }
-
-  updateHistoryComponent(){
-    // this.historyComponent.updateTab(this.tabToShow);
-  }
 }

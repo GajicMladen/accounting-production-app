@@ -1,5 +1,10 @@
-<div class="generalInfoForm">
-        <h2>Prodaja</h2>
+<div  [className]="cashSell? 'blackSell sellBody': 'whiteSell sellBody'">
+
+    <div class="generalInfoForm">
+        <div>
+            <h2>Prodaja</h2>
+            <mat-slide-toggle [(ngModel)]="cashSell" (change)="onChange()">Gotovinska</mat-slide-toggle>
+        </div>
         <mat-form-field >
             <mat-label>Broj fakture</mat-label>
             <input matInput placeholder="Broj fakture" [(ngModel)]="invoiceID">
@@ -10,117 +15,119 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-</div>
-<mat-card class="buyer">
-    <div>
-        <h3>Kupac</h3>
-        <div class="customer-picker">
-            <app-company-picker [companies]="companies" (companySelected)="changeSelectedCompany($event)" [selectedCompany]="selectedCompany"></app-company-picker>
-        </div>
     </div>
-    <div *ngIf="deliveryPlaces.length > 0">
-        <h3>Isporuka</h3>
-        <div class="customer-picker">
-            <app-company-picker [companies]="deliveryPlaces" (companySelected)="changeSelectedDeliveryPlace($event)" [selectedCompany]="selectedDeliveryPlace"></app-company-picker>
+    <mat-card class="buyer">
+        <div>
+            <h3>Kupac</h3>
+            <div class="customer-picker">
+                <app-company-picker [companies]="companies" (companySelected)="changeSelectedCompany($event)" [selectedCompany]="selectedCompany"></app-company-picker>
+            </div>
         </div>
-    </div>
-</mat-card>
-<mat-card>
-    <h3>Proizvodi</h3>
-    <div class="products">
-        <div class="product-picker">
-            <app-product-picker (selectedProductEmiter)="changedSelectedProduct($event)"></app-product-picker>
+        <div *ngIf="deliveryPlaces.length > 0">
+            <h3>Isporuka</h3>
+            <div class="customer-picker">
+                <app-company-picker [companies]="deliveryPlaces" (companySelected)="changeSelectedDeliveryPlace($event)" [selectedCompany]="selectedDeliveryPlace"></app-company-picker>
+            </div>
         </div>
-        <div *ngIf="selectedProduct">
-            <form class="product-price" [formGroup]="formGroup">
-                <mat-form-field class="example-full-width">
-                  <mat-label>Unesite cenu proizvoda</mat-label>
-                  <input matInput placeholder="Cena proizvoda" formControlName="singlePrice"/>
-                </mat-form-field>
-                <div class="package-type">
+    </mat-card>
+    <mat-card class="mainSellComponent">
+        <h3>Proizvodi</h3>
+        <div class="products">
+            <div class="product-picker">
+                <app-product-picker (selectedProductEmiter)="changedSelectedProduct($event)"></app-product-picker>
+            </div>
+            <div *ngIf="selectedProduct">
+                <form class="product-price" [formGroup]="formGroup">
                     <mat-form-field class="example-full-width">
-                        <mat-label>Unesite kolicinu proizvoda</mat-label>
-                        <input matInput placeholder="Kolicina" formControlName="amount">
+                      <mat-label>Unesite cenu proizvoda</mat-label>
+                      <input matInput placeholder="Cena proizvoda" formControlName="singlePrice"/>
                     </mat-form-field>
-                    <mat-radio-group aria-label="Select an option" formControlName="unit">
-                        <mat-radio-button value="1">kom.</mat-radio-button>
-                        <mat-radio-button value="2"><mat-icon>inventory</mat-icon></mat-radio-button>
-                    </mat-radio-group>
+                    <div class="package-type">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Unesite kolicinu proizvoda</mat-label>
+                            <input matInput placeholder="Kolicina" formControlName="amount">
+                        </mat-form-field>
+                        <mat-radio-group aria-label="Select an option" formControlName="unit">
+                            <mat-radio-button value="1">kom.</mat-radio-button>
+                            <mat-radio-button value="2"><mat-icon>inventory</mat-icon></mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Rabat</mat-label>
+                        <input matInput placeholder="Rabat" formControlName="rabat">
+                    </mat-form-field>
+                    
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Akcija</mat-label>
+                        <input matInput placeholder="Akcija" formControlName="discount">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>PDV (%)</mat-label>
+                        <input matInput placeholder="PDV (%)" formControlName="pdv">
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="product-options-end" *ngIf="selectedProduct">
+                <div class="warnings">
+                    <div *ngIf="formGroup.get('amount')?.value === null" >
+                        Unesi količinu proizvoda
+                    </div>
                 </div>
-                
-                <mat-form-field class="example-full-width">
-                    <mat-label>Rabat</mat-label>
-                    <input matInput placeholder="Rabat" formControlName="rabat">
-                </mat-form-field>
-                
-                <mat-form-field class="example-full-width">
-                    <mat-label>Akcija</mat-label>
-                    <input matInput placeholder="Akcija" formControlName="discount">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>PDV (%)</mat-label>
-                    <input matInput placeholder="PDV (%)" formControlName="pdv">
-                </mat-form-field>
-            </form>
-        </div>
-        <div class="product-options-end" *ngIf="selectedProduct">
-            <div class="warnings">
-                <div *ngIf="formGroup.get('amount')?.value === null" >
-                    Unesi količinu proizvoda
+                <div class="product-options">
+                    <button mat-raised-button class="save-btn" color="primary" (click)="addNewProductToList()"
+                        [disabled]="formGroup.get('amount')?.value === null"
+                    > 
+                        <mat-icon>check</mat-icon>
+                    </button>
                 </div>
             </div>
-            <div class="product-options">
-                <button mat-raised-button class="save-btn" color="primary" (click)="addNewProductToList()"
-                    [disabled]="formGroup.get('amount')?.value === null"
-                > 
-                    <mat-icon>check</mat-icon>
+        </div>
+        <hr />
+        <div class="sell-table">
+            <app-sell-product-table [productsToSell]="productsToSell" (deletedRow)="deletedProductToSell($event)"></app-sell-product-table>
+        </div>
+        <div class="total-div">
+            <div class="total-end">
+                <div class="total">
+                    <div class="property">
+                        <span class="label">Osnovica PDV-a:</span>
+                        <span class="value"> {{total_value_without_pdv}} </span>
+                    </div>
+                    <div class="property">
+                        <span class="label">Iznos PDV-a (stopa 17%):</span>
+                        <span class="value"> {{total_value_of_pdv}}</span>
+                    </div>
+                    <div class="property">
+                        <span class="label">Ukupan iznos za uplatu sa PDV-om:</span>
+                        <span class="value">{{total_value_with_pdv}}</span>
+                    </div>
+                  </div>
+            
+            </div>
+            <div class="final-options">
+                <div class="warnings">
+                    <div *ngIf="selectedCompany === undefined" >
+                        Odaberi kupca
+                    </div>
+                    <div *ngIf="productsToSell.length === 0" >
+                        Dodaj proizvode
+                    </div>
+                    <div *ngIf="invoiceID === ''" >
+                        Unesi broj fakture
+                    </div>
+                </div>
+                <button mat-raised-button class="final-save-btn"
+                    [disabled]="selectedCompany === undefined ||
+                                productsToSell.length === 0
+                    "
+                    (click)="addNewOutgoingInvoice()"
+                >
+                    <mat-icon>save</mat-icon>
+                    Sačuvaj
+                    <span *ngIf="cashSell">gotovinsku prodaju</span>
                 </button>
             </div>
         </div>
-    </div>
-    <hr />
-    <div class="sell-table">
-        <app-sell-product-table [productsToSell]="productsToSell" (deletedRow)="deletedProductToSell($event)"></app-sell-product-table>
-    </div>
-    <div class="total-div">
-        <div class="total-end">
-            <div class="total">
-                <div class="property">
-                    <span class="label">Osnovica PDV-a:</span>
-                    <span class="value"> {{total_value_without_pdv}} </span>
-                </div>
-                <div class="property">
-                    <span class="label">Iznos PDV-a (stopa 17%):</span>
-                    <span class="value"> {{total_value_of_pdv}}</span>
-                </div>
-                <div class="property">
-                    <span class="label">Ukupan iznos za uplatu sa PDV-om:</span>
-                    <span class="value">{{total_value_with_pdv}}</span>
-                </div>
-              </div>
-        
-        </div>
-        <div class="final-options">
-            <div class="warnings">
-                <div *ngIf="selectedCompany === undefined" >
-                    Odaberi kupca
-                </div>
-                <div *ngIf="productsToSell.length === 0" >
-                    Dodaj proizvode
-                </div>
-                <div *ngIf="invoiceID === ''" >
-                    Unesi broj fakture
-                </div>
-            </div>
-            <button mat-raised-button class="final-save-btn"
-                [disabled]="selectedCompany === undefined ||
-                            productsToSell.length === 0
-                "
-                (click)="addNewOutgoingInvoice()"
-            >
-                <mat-icon>save</mat-icon>
-                Sačuvaj
-            </button>
-        </div>
-    </div>
-</mat-card>
+    </mat-card>
+</div>

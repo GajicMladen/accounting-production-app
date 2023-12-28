@@ -58,7 +58,7 @@ namespace tehnohem_api.Services.Implementation
             updatedRaw.Name = currentRaw.Name;
             updatedRaw.TotalValue = currentRaw.TotalValue + incomingInvoiceItemDTO.value_total;
             updatedRaw.CurrentAmount = currentRaw.CurrentAmount + incomingInvoiceItemDTO.count;
-            updatedRaw.SinglePrice = (float)(updatedRaw.TotalValue / updatedRaw.CurrentAmount);
+            updatedRaw.SinglePrice = (float)Math.Round((float)(updatedRaw.TotalValue / updatedRaw.CurrentAmount),2);
             this.unitOfWork.RawRepository.updateRaw(currentRaw, updatedRaw);
         }
 
@@ -67,7 +67,11 @@ namespace tehnohem_api.Services.Implementation
             Raw currentRaw = this.unitOfWork.RawRepository.getRaw(incomingInvoiceItemDTO.itemID);
             Raw updatedRaw = new Raw();
             updatedRaw.Name = currentRaw.Name;
-            updatedRaw.TotalValue = currentRaw.TotalValue - incomingInvoiceItemDTO.value_total;
+            var total_value = currentRaw.TotalValue - incomingInvoiceItemDTO.value_total;
+            if (total_value < 0)
+                updatedRaw.TotalValue = 0;
+            else 
+                updatedRaw.TotalValue = total_value;
             updatedRaw.CurrentAmount = currentRaw.CurrentAmount - incomingInvoiceItemDTO.count;
             updatedRaw.SinglePrice = currentRaw.SinglePrice;
             this.unitOfWork.RawRepository.updateRaw(currentRaw, updatedRaw);
@@ -170,16 +174,23 @@ namespace tehnohem_api.Services.Implementation
             Product updatedProduct= new Product(currentProduct);
             updatedProduct.TotalValue = currentProduct.TotalValue + incomingInvoiceItemDTO.value_total;
             updatedProduct.CurrentAmount = currentProduct.CurrentAmount + incomingInvoiceItemDTO.count;
-            updatedProduct.SinglePrice = (float)(updatedProduct.TotalValue / updatedProduct.CurrentAmount);
+            updatedProduct.SinglePrice = (float)Math.Round((float)(updatedProduct.TotalValue / updatedProduct.CurrentAmount),2);
             this.unitOfWork.ProductRepository.UpdateProduct(currentProduct, updatedProduct);
         }
         private void updateProductStateMinus(OutgoingInvoiceItemDTO incomingInvoiceItemDTO)
         {
             Product currentProduct = this.unitOfWork.ProductRepository.GetProductById((int)incomingInvoiceItemDTO.productId);
             Product updatedProduct = new Product(currentProduct);
-            updatedProduct.TotalValue = currentProduct.TotalValue - incomingInvoiceItemDTO.value_total;
+            var currentAmount = currentProduct.CurrentAmount - incomingInvoiceItemDTO.amount;
+            
             updatedProduct.CurrentAmount = currentProduct.CurrentAmount - incomingInvoiceItemDTO.amount;
-            updatedProduct.SinglePrice = (float)(updatedProduct.TotalValue / updatedProduct.CurrentAmount);
+            updatedProduct.TotalValue = currentProduct.TotalValue - incomingInvoiceItemDTO.value_total;
+            if (currentAmount > 0)
+                updatedProduct.SinglePrice = (float)Math.Round((float)(updatedProduct.TotalValue / updatedProduct.CurrentAmount), 2);
+            else
+                updatedProduct.SinglePrice = currentProduct.SinglePrice;
+
+            
             this.unitOfWork.ProductRepository.UpdateProduct(currentProduct, updatedProduct);
         }
         public List<Invoice> GetAllInternalIssueProduct()
@@ -190,14 +201,20 @@ namespace tehnohem_api.Services.Implementation
         public void AddNewOutgoingInvoice(OutgoingInvoiceDTO newIncomingInvoice)
         {
             Company customer = this.unitOfWork.CompanyRepository.getById(newIncomingInvoice.BuyerID);
-            Invoice newInvoice = new Invoice(newIncomingInvoice, null,customer, InvoiceType.OUTGOING_INVOICE);
+            Invoice newInvoice;
+            if(newIncomingInvoice.isCashInvoice)
+                newInvoice = new Invoice(newIncomingInvoice, null, customer, InvoiceType.OUTGOING_CASH_INVOICE);
+            else 
+                newInvoice = new Invoice(newIncomingInvoice, null,customer, InvoiceType.OUTGOING_INVOICE);
 
             List<InvoiceItem> invoiceItems = new List<InvoiceItem>();
             foreach (OutgoingInvoiceItemDTO invoiceItemDTO in newIncomingInvoice.InvoiceItems)
             {
                 InvoiceItem invoiceItem = new InvoiceItem(invoiceItemDTO, newInvoice);
                 invoiceItem.itemID = invoiceItemDTO.productId;
-                updateProductStateMinus(invoiceItemDTO);
+
+                if (!newIncomingInvoice.isCashInvoice)
+                    updateProductStateMinus(invoiceItemDTO);
                 invoiceItems.Add(invoiceItem);
             }
 
@@ -205,15 +222,6 @@ namespace tehnohem_api.Services.Implementation
 
             this.unitOfWork.InvoiceRepository.AddNewInvoice(newInvoice);
             this.unitOfWork.Commit();
-        }
-
-        public void DeleteInvoice(string invoiceID)
-        {
-            Invoice? invoice = this.unitOfWork.InvoiceRepository.GetInvoiceFullInfo(invoiceID);
-            if (invoice != null) {
-                this.unitOfWork.InvoiceRepository.DeleteInvoice(invoice);
-                this.unitOfWork.Commit();
-            }
         }
         public void AddNewIncomingOtherInvoice(IncomingInvoiceDTO newIncomingInvoiceDTO)
         {
@@ -236,5 +244,65 @@ namespace tehnohem_api.Services.Implementation
         {
             return this.unitOfWork.InvoiceRepository.GetAllIncomingOtherInvoices();
         }
+
+        public void DeleteInvoice(string invoiceID)
+        {
+            Invoice? invoice = this.unitOfWork.InvoiceRepository.GetInvoiceFullInfo(invoiceID);
+            if (invoice != null) {
+                if (invoice.InvoiceType == InvoiceType.OUTGOING_INVOICE)
+                {
+                    RevertStateOfProductsOutgoingInvoice(invoice);
+                }
+                else if (invoice.InvoiceType == InvoiceType.INTERNAL_ISSUE_PRODUCT) {
+                    RevertStateOfProductsInternalIssue(invoice);
+                }
+                else if (invoice.InvoiceType == InvoiceType.INCOMING_INVOICE)
+                {
+                    RevertStateOfRawsIncomingInvoice(invoice);
+                }
+                else if(invoice.InvoiceType == InvoiceType.INTERNAL_ISSUE_RAW)
+                {
+                    RevertStateOfRawsInternalIssue(invoice);
+                }
+                this.unitOfWork.InvoiceRepository.DeleteInvoice(invoice);
+                this.unitOfWork.Commit();
+            }
+        }
+
+        public void RevertStateOfRawsIncomingInvoice(Invoice invoice) { 
+            foreach(InvoiceItem invoiceItem in invoice.InvoiceItems)
+            {
+                Raw raw = this.unitOfWork.RawRepository.getRaw((int)invoiceItem.itemID);
+                raw.CurrentAmount = raw.CurrentAmount - invoiceItem.Amount;
+                raw.TotalValue = raw.TotalValue- invoiceItem.TotalValue;
+            }
+        }
+        public void RevertStateOfRawsInternalIssue(Invoice invoice)
+        {
+            foreach (InvoiceItem invoiceItem in invoice.InvoiceItems)
+            {
+                Raw raw = this.unitOfWork.RawRepository.getRaw((int)invoiceItem.itemID);
+                raw.CurrentAmount = raw.CurrentAmount + invoiceItem.Amount;
+                raw.TotalValue = raw.TotalValue + invoiceItem.TotalValue;
+            }
+        }
+
+        public void RevertStateOfProductsOutgoingInvoice(Invoice invoice) {
+            foreach (InvoiceItem invoiceItem in invoice.InvoiceItems) {
+                Product product = this.unitOfWork.ProductRepository.GetProductById((int)invoiceItem.itemID);
+                product.CurrentAmount = product.CurrentAmount + invoiceItem.Amount;
+                product.TotalValue = product.TotalValue + invoiceItem.TotalValue;
+            }
+        }
+        public void RevertStateOfProductsInternalIssue(Invoice invoice)
+        {
+            foreach (InvoiceItem invoiceItem in invoice.InvoiceItems)
+            {
+                Product product = this.unitOfWork.ProductRepository.GetProductById((int)invoiceItem.itemID);
+                product.CurrentAmount = product.CurrentAmount - invoiceItem.Amount;
+                product.TotalValue = product.TotalValue - invoiceItem.TotalValue;
+            }
+        }
+
     }
 }

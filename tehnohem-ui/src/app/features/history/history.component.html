@@ -20,7 +20,10 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-        <mat-slide-toggle [(ngModel)]="statistics" (change)="onChange()">Statistika</mat-slide-toggle>
+        <div class="toggles">
+            <mat-slide-toggle [(ngModel)]="statistics">Statistika</mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="cashFlow" (change)="includeCashFlow()">Gotovinske prodaje</mat-slide-toggle>
+        </div>
     </div>
     <h2>Istorija</h2>
     <div *ngIf="tabToShow===5.1">
@@ -29,6 +32,7 @@
                             [displayedColumns]="displayedColumnsIncomingInvoice"
                             [inlineOptions]="true"
                             [enableSelectingInvoice]="true"
+                            (deletedInvoice)="getAllData()"
                             ></app-invoices-table>
         <div class="companies" *ngIf="!statistics">
             <div class="company" *ngFor="let v of invoicesIncoming">

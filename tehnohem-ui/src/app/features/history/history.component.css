@@ -41,3 +41,7 @@
     align-items: center;
     padding: 20px 0;
 }
+.toggles{
+    display: flex;
+    flex-direction: column;
+}

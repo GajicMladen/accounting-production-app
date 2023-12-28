@@ -92,5 +92,11 @@ namespace tehnohem_api.Controllers
             List<Invoice> invoices = this.invoicesService.GetAllOutgoingCashInvoices();
             return this.invoicesService.GetDetailInvoicesInfo(invoices);
         }
+
+        [HttpDelete("deleteInvoice/{id}")]
+        public IActionResult deleteInvoice(string id) { 
+            this.invoicesService.DeleteInvoice(id);
+            return Ok();
+        }
     }
 }

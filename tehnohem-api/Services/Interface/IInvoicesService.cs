@@ -26,5 +26,6 @@ namespace tehnohem_api.Services.Interface
 
         DetailInvoiceInfoDTO GetInvoiceDTO(string invoiceID);
         Invoice GetInvoice(string invoiceID);
+
     }
 }

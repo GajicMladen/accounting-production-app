@@ -17,6 +17,7 @@ import { InvoicesService } from 'src/app/shared/services/invoices-service/invoic
 import { PaymentService } from 'src/app/shared/services/payment-service/payment.service';
 import { customers, dugovanja, dugovanjaOstala, getters, izlazneFakture, thirdFaces, uplate, uplateKupci, uplateOstalo } from 'src/app/shared/test-data/test-data-bussines';
 import { TabService } from 'src/app/shared/services/tabService/tab.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bussines-flow',
@@ -98,7 +99,8 @@ export class BussinesFlowComponent implements OnInit {
     private paymentService: PaymentService,
     private companyService: CompanyService,
     private toastr: ToastrService,
-    private tabService:TabService
+    private tabService:TabService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -149,6 +151,13 @@ export class BussinesFlowComponent implements OnInit {
       this.invoicesService.getAllOutgoingInvoices().subscribe(
         data=>{
           this.outgoingInvoices = data;
+          this.updateTab(this.shownTab);
+        }
+      );
+
+      this.invoicesService.getAllOutgoingCashInvoices().subscribe(
+        data=>{
+          this.outgoingCashInvoices = data;
           this.updateTab(this.shownTab);
         }
       );
@@ -228,6 +237,7 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Btn1 = "Evidentiraj novu izlaznu fakturu";
       this.table2Btn1 = "Evidentiraj novo razduživanje od strane kupca";
 
+      this.table1Btn1Action = this.navigateToSellComponent;
       this.table2Btn1Action = this.openOutgoingInvoicePayment;
       
       this.allInvoicesTable1 = this.outgoingInvoices;
@@ -245,7 +255,8 @@ export class BussinesFlowComponent implements OnInit {
       this.table1Btn1 = "Evidentiraj novu izlaznu keš fakturu";
       this.table2Btn1 = "Evidentiraj novo plaćanje od strane kupca";
 
-      this.table2Btn1Action = this.openOutgoingInvoicePayment;
+      this.table1Btn1Action = this.navigateToSellComponent;
+      this.table2Btn1Action = this.openOutgoingInvoiceCashPayment;
       
       this.allInvoicesTable1 = this.outgoingCashInvoices;
       this.allPaymentsTable2 = this.outgoingCashInvoicesPayment;
@@ -323,8 +334,16 @@ export class BussinesFlowComponent implements OnInit {
         this.table1Data = this.allInvoicesTable1.filter( x => x.customerID == selectValue);
         this.table2Data = this.allPaymentsTable2.filter( x => x.payerID == selectValue);
       }
+    }else{
+      this.table1Data = this.allInvoicesTable1;
+      this.table2Data = this.allPaymentsTable2;
     }
+
     this.updateSummary();
+  }
+
+  navigateToSellComponent(){
+    this.router.navigate(["/sell"]);
   }
 
   openIncomingInvoicePayment(){
@@ -345,6 +364,20 @@ export class BussinesFlowComponent implements OnInit {
 
     const dialogRefAddNewProduct = this.dialog.open(PaymentRecordDialogComponent,{
       data: { paymentType: PaymentType.OUTGOING_INVOICE_PAYMENT, isReadonly:false}
+    });
+    dialogRefAddNewProduct.afterClosed().subscribe(
+      data=>{
+        if(data=="addedPayment"){
+          this.getNewValuesForInvoicesAndPayments();
+        }
+      }
+    )
+  }
+  
+  openOutgoingInvoiceCashPayment(){
+
+    const dialogRefAddNewProduct = this.dialog.open(PaymentRecordDialogComponent,{
+      data: { paymentType: PaymentType.OUTGOING_INVOICE_CASH_PAYMENT, isReadonly:false}
     });
     dialogRefAddNewProduct.afterClosed().subscribe(
       data=>{
@@ -404,5 +437,9 @@ export class BussinesFlowComponent implements OnInit {
         }
       }
     )
+  }
+
+  includeCashSells(){
+
   }
 }

@@ -106,3 +106,7 @@
     display: flex;
     justify-content: space-between;
 }
+
+.print-button{
+    background-color:#8feaf7
+}

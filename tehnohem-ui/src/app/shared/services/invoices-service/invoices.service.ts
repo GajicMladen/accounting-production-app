@@ -54,5 +54,13 @@ export class InvoicesService {
   getAllOutgoingInvoices():Observable<DetailInvoiceInfo[]>{
     return this.http.get<DetailInvoiceInfo[]>(this.url+"/allOutgoingInvoices");
   }
+  
+  getAllOutgoingCashInvoices():Observable<DetailInvoiceInfo[]>{
+    return this.http.get<DetailInvoiceInfo[]>(this.url+"/allOutgoingCashInvoices");
+  }
+
+  deleteInvoice(invoiceId: string):Observable<any>{
+    return this.http.delete<any>(this.url+"/deleteInvoice/"+invoiceId);
+  }
 }
 

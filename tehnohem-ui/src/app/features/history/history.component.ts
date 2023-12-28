@@ -40,6 +40,7 @@ export class HistoryComponent implements OnInit {
   invoicesInternalIssueProduct: DetailInvoiceInfo[] =[];
   
   allInvoicesOutgoing: DetailInvoiceInfo[] =[];
+  allInvoicesCashOutgoing : DetailInvoiceInfo[] = [];
   invoicesOutgoing: DetailInvoiceInfo[] =[];
 
   displayedColumnsIncomingInvoice: string[] = [ 'supplierName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
@@ -48,6 +49,7 @@ export class HistoryComponent implements OnInit {
   displayedColumnsOutgoingInvoice: string[] = [ 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
 
   statistics: boolean = true;
+  cashFlow: boolean = false;
 
   total_value_out_pdv:number = 0;
   total_value_pdv : number= 0;
@@ -113,11 +115,19 @@ export class HistoryComponent implements OnInit {
         let company : Company ={
           id: x.customerID,
           name: x.customerName,
-          jib: '',ib: '',address: '',phoneNumber: undefined,email: '',companyType: CompanyType.SUPPLIER,contactPerson: '',headCompanyId: undefined}
+          //unnessesary fields in this case
+          jib: '',ib: '',address: '',phoneNumber: undefined,email: '',companyType: CompanyType.SUPPLIER,contactPerson: '',headCompanyId: undefined
+        }
         this.customers.findIndex((item) => item.id === company.id) === -1 ?  this.customers.push(company) : null;
-        this.updateTab(this.tabToShow);
       });
+      this.updateTab(this.tabToShow);
     });
+
+    this.invoicesService.getAllOutgoingCashInvoices().subscribe(data =>{
+      this.allInvoicesCashOutgoing = data.sort(function(a,b): any{
+        return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
+      });
+    })
   }
   filterTables(selectValue:string){
     if(selectValue != "~"){
@@ -129,7 +139,15 @@ export class HistoryComponent implements OnInit {
       }
     }
   }
-  onChange(){
-    
+  includeCashFlow(){
+    if(this.cashFlow){
+      this.invoicesOutgoing = [...this.allInvoicesCashOutgoing,...this.allInvoicesOutgoing]
+    }
+    else{
+      this.invoicesOutgoing = [...this.allInvoicesOutgoing]
+    }
+    this.invoicesOutgoing = this.invoicesOutgoing.sort(function(a,b): any{
+      return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
+    });
   }
 }

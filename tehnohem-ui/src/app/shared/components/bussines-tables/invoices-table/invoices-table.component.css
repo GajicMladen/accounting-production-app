@@ -38,9 +38,12 @@ th{
 }
 
 .row-is-selected{
-    background-color: #673ab7;
+    background-color: #673ab7!Important;
 }
 
+.is-cash-invoice{
+    background-color: #e2e0e3;
+}
 .row-is-selected td{
     color: white;
 }

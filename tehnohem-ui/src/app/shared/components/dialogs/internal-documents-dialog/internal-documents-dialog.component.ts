@@ -14,6 +14,7 @@ import { IncomingInvoiceDTO } from 'src/app/shared/model/invoices/incomingInvoic
 import { InvoiceItem } from 'src/app/shared/model/invoices/invoiceItem';
 import { Product } from 'src/app/shared/model/product';
 import { ProductToSell } from 'src/app/shared/model/productToSell';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-internal-documents-dialog',
@@ -25,6 +26,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
   allDocumentType = InternalDocumentType;
 
   invoiceID : string = "";
+  invoiceIDSystem : string = "";
   date : Date  = new Date() ;
 
   companies : Company[] = [];
@@ -63,7 +65,8 @@ export class InternalDocumentsDialogComponent implements OnInit {
     private cd:ChangeDetectorRef,
     private companyService: CompanyService,
     private rawService: RawService,
-    private invoicesService: InvoicesService
+    private invoicesService: InvoicesService,
+    private toastr: ToastrService,
     ) { }
 
   ngOnInit(): void {
@@ -91,6 +94,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
 
     if(this.data.isReadonly){
       this.invoiceID = this.data.invoice!.invoiceID;
+      this.invoiceIDSystem = this.data.invoice!.invoiceIDsystem;
       this.date = this.data.invoice!.date;
 
       if(this.data.documentType === InternalDocumentType.INCOMING_INVOICE ||this.data.documentType === InternalDocumentType.INCOMING_OTHER_INVOICE  ){
@@ -315,5 +319,16 @@ export class InternalDocumentsDialogComponent implements OnInit {
       }
     )
 
+  }
+
+  printInvoice(){
+
+  }
+
+  deleteInvoice() {
+    this.invoicesService.deleteInvoice(this.invoiceIDSystem).subscribe( data => {
+      this.toastr.success("Uspešno ste obrisali fakturu : "+this.invoiceID);
+      this.dialogRef.close("deletedInvoice");
+    })
   }
 }

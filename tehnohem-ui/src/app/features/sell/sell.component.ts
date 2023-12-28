@@ -9,6 +9,7 @@ import { Product } from 'src/app/shared/model/product';
 import { ProductToSell } from 'src/app/shared/model/productToSell';
 import { CompanyService } from 'src/app/shared/services/company-service/company.service';
 import { InvoicesService } from 'src/app/shared/services/invoices-service/invoices.service';
+import { TabService } from 'src/app/shared/services/tabService/tab.service';
 
 @Component({
   selector: 'app-sell',
@@ -25,6 +26,8 @@ export class SellComponent implements OnInit {
 
   invoiceID : string = "";
   date : Date  = new Date() ;
+
+  cashSell : boolean =false;
 
   companies : Company[] = [];
   deliveryPlaces : Company[] = [];
@@ -51,7 +54,8 @@ export class SellComponent implements OnInit {
     private companyService: CompanyService,
     private toastr: ToastrService,
     private invoicesService : InvoicesService,
-    private router:Router
+    private router:Router,
+    private tabService: TabService
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +64,9 @@ export class SellComponent implements OnInit {
     })
   }
 
+  onChange(){
+    
+  }
   deletedProductToSell(product:ProductToSell){
     this.productsToSell = this.productsToSell.filter(r => r != product);
     this.updateTotalPrices();
@@ -155,6 +162,7 @@ export class SellComponent implements OnInit {
   addNewOutgoingInvoice(){
     let newOutgoingInvoice : OutgoingInvoiceDTO ={
       invoiceID: this.invoiceID,
+      isCashInvoice: this.cashSell,
       buyerID: this.selectedCompany!.id,
       date: this.date.toLocaleDateString('sv'),
       totalValue: this.total_value_with_pdv,
@@ -169,8 +177,9 @@ export class SellComponent implements OnInit {
           this.toastr.error(x);
         },
         next: x => {
-          this.toastr.success(x);
-          this.router.navigate(["/history/"+this.invoiceID]);
+          this.toastr.success("Uspešno ste dodali novu fakturu");
+          this.tabService.changeTab(5.4);
+          this.router.navigate(["/history"]);
         }
         
       }

@@ -65,7 +65,7 @@ export class PaymentRecordDialogComponent implements OnInit {
         this.companies = data;
       });
     }
-    else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_PAYMENT){
+    else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_PAYMENT || this.data.paymentType === PaymentType.OUTGOING_INVOICE_CASH_PAYMENT){
       this.companyService.getAllCustomerCompanies().subscribe(data =>{
         this.companies = data;
       });
@@ -104,6 +104,11 @@ export class PaymentRecordDialogComponent implements OnInit {
     }
     else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_PAYMENT){
       this.invoicesService.getAllOutgoingInvoices().subscribe(data =>{
+        this.invoices = data.filter(x => x.customerID === selectedCompany.id);
+      });
+    }
+    else if( this.data.paymentType === PaymentType.OUTGOING_INVOICE_CASH_PAYMENT){
+      this.invoicesService.getAllOutgoingCashInvoices().subscribe(data =>{
         this.invoices = data.filter(x => x.customerID === selectedCompany.id);
       });
     }
