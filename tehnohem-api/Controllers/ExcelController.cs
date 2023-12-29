@@ -49,5 +49,21 @@ namespace tehnohem_api.Controllers
             }
 
         }
+
+        [HttpGet("getInternalIssueRaw/{id}")]
+        public IActionResult getInternalIssueFile(string id)
+        {
+
+            Invoice invoice = this.InvoicesService.GetInvoice(id);
+
+            XLWorkbook workbook = this.ExcelService.gnerateXMLFileInternalIssueRaw(invoice);
+            using (var stream = new MemoryStream())
+            {
+                workbook.SaveAs(stream);
+                var content = stream.ToArray();
+                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "test.xlsx");
+            }
+
+        }
     }
 }

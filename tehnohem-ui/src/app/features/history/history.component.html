@@ -22,7 +22,7 @@
         </mat-form-field>
         <div class="toggles">
             <mat-slide-toggle [(ngModel)]="statistics">Statistika</mat-slide-toggle>
-            <mat-slide-toggle [(ngModel)]="cashFlow" (change)="includeCashFlow()">Gotovinske prodaje</mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="cashFlow" (change)="includeCashFlow()" *ngIf="tabToShow===5.4">Gotovinske prodaje</mat-slide-toggle>
         </div>
     </div>
     <h2>Istorija</h2>

@@ -11,7 +11,7 @@ import { InternalDocumentType } from 'src/app/shared/model/enums/invoiceType';
   templateUrl: './invoices-table.component.html',
   styleUrls: ['./invoices-table.component.css']
 })
-export class InvoicesTableComponent implements OnInit{
+export class InvoicesTableComponent implements OnInit, OnChanges{
 
   @Input() displayedColumns: string[] = [ 'supplierName', 'customerName','invoiceID','date','value_out_pdv', 'value_pdv' ,'value_total','options' ];
   @Input() dataSource : DetailInvoiceInfo[] = [];
@@ -33,6 +33,10 @@ export class InvoicesTableComponent implements OnInit{
     public dialog:MatDialog,
     private excelService: ExcelService,
   ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateTotalValues();
+  }
   
 
   ngOnInit(): void {

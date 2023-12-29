@@ -311,5 +311,30 @@ namespace tehnohem_api.Excel
 
             ws.Cell(x + 9, 2).SetValue("MP");
         }
+
+        public XLWorkbook gnerateXMLFileInternalIssueRaw(Invoice invoice)
+        {
+
+            XLWorkbook workbook = new XLWorkbook();
+            var ws = workbook.Worksheets.Add("Izdatnica repromaterijala");
+
+            ws.Cell(1,1).SetValue("\"TEHNOHEM\" doo \t   IZDATNICA REPRODUKCIONOG MATERIJALA  (periodična specifikacija)");
+            ws.Cell(2, 1).SetValue("Broj izdatnice: " + invoice.companyInvoiceID + " \t Broj radnog naloga: \t Period izdavanja: \t Datum: "+invoice.Date);
+
+            ws.Cell(4, 1).SetValue("MATERIJAL");
+            ws.Cell(4, 3).SetValue("jed. mere");
+            ws.Cell(4, 4).SetValue("cena, KM");
+            ws.Range(4, 4, 4, 5).Merge();
+            ws.Cell(4, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            ws.Cell(4, 6).SetValue("količina izdavanja");
+            ws.Cell(4, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            ws.Range(4, 6, 4, 8).Merge();
+            ws.Cell(4, 9).SetValue("Ukupno ");
+            ws.Cell(5, 9).SetValue("izdato");
+            ws.Cell(4, 10).SetValue("Ukupna ");
+            ws.Cell(5, 10).SetValue("vrednost");
+
+            return workbook;
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace tehnohem_api.Excel
 
         public XLWorkbook gnerateXMLFile();
         public XLWorkbook gnerateXMLFile(Invoice invoice);
+        public XLWorkbook gnerateXMLFileInternalIssueRaw(Invoice invoice);
+
     }
 }

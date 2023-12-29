@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Company } from 'src/app/shared/model/company';
 import { CompanyType } from 'src/app/shared/model/enums/companyType';
@@ -12,7 +12,7 @@ import { izlazneFakture } from 'src/app/shared/test-data/test-data-bussines';
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
-export class HistoryComponent implements OnInit {
+export class HistoryComponent implements OnInit  {
 
 
   @Input() tabToShow:number = 0;
@@ -88,8 +88,8 @@ export class HistoryComponent implements OnInit {
           name: x.supplierName,
           jib: '',ib: '',address: '',phoneNumber: undefined,email: '',companyType: CompanyType.SUPPLIER,contactPerson: '',headCompanyId: undefined}
         this.suppliers.findIndex((item) => item.id === company.id) === -1 ? this.suppliers.push(company) : null;
-        this.updateTab(this.tabToShow);
       });
+      this.updateTab(this.tabToShow);
     });
 
     this.invoicesService.getAllInternalIssueRaw().subscribe(data =>{
@@ -127,18 +127,34 @@ export class HistoryComponent implements OnInit {
       this.allInvoicesCashOutgoing = data.sort(function(a,b): any{
         return Date.parse(b.date.toString()) - Date.parse(a.date.toString());
       });
+      this.allInvoicesCashOutgoing.forEach(x => {
+        let company : Company ={
+          id: x.customerID,
+          name: x.customerName,
+          //unnessesary fields in this case
+          jib: '',ib: '',address: '',phoneNumber: undefined,email: '',companyType: CompanyType.SUPPLIER,contactPerson: '',headCompanyId: undefined
+        }
+        this.customers.findIndex((item) => item.id === company.id) === -1 ?  this.customers.push(company) : null;
+      });
     })
   }
+
   filterTables(selectValue:string){
     if(selectValue != "~"){
       if(this.tabToShow === 5.1 ){
         this.invoicesIncoming = this.allInvoicesIncoming.filter(x => x.supplierID === selectValue);
       }
       else if( this.tabToShow === 5.4){
-        this.invoicesOutgoing = this.allInvoicesOutgoing.filter(x => x.customerID === selectValue);
+        this.invoicesOutgoing = this.invoicesOutgoing.filter(x => x.customerID === selectValue);
+      }
+    }
+    else{
+      if( this.tabToShow === 5.4){
+        this.includeCashFlow();
       }
     }
   }
+
   includeCashFlow(){
     if(this.cashFlow){
       this.invoicesOutgoing = [...this.allInvoicesCashOutgoing,...this.allInvoicesOutgoing]
