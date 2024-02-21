@@ -3,8 +3,8 @@
     <div class="generalInfoForm">
         <h2>{{data.title}}</h2>
         <mat-form-field >
-            <mat-label>Broj fakture</mat-label>
-            <input matInput placeholder="Broj fakture" [(ngModel)]="invoiceID" [readonly]="data.isReadonly">
+            <mat-label>{{invoiceIDTitle}}</mat-label>
+            <input matInput [placeholder]="invoiceIDTitle" [(ngModel)]="invoiceID" [readonly]="data.isReadonly">
         </mat-form-field>
         <mat-form-field>
             <mat-label>Datum fakture</mat-label>

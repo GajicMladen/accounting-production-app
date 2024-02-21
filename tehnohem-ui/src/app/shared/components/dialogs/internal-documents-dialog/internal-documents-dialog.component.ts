@@ -26,6 +26,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
   allDocumentType = InternalDocumentType;
 
   invoiceID : string = "";
+  invoiceIDTitle: string = "";
   invoiceIDSystem : string = "";
   date : Date  = new Date() ;
 
@@ -70,6 +71,7 @@ export class InternalDocumentsDialogComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.invoiceIDTitle = this.getInvoiceIDTitle();
     
     if( this.data.isReadonly === false &&
       (this.data.documentType == InternalDocumentType.INCOMING_INVOICE || this.data.documentType == InternalDocumentType.INTERNAL_ISSUE_RAW)){
@@ -121,6 +123,17 @@ export class InternalDocumentsDialogComponent implements OnInit {
       }
       this.updateTotalPrices();
     }
+  }
+
+  getInvoiceIDTitle():string{
+    if(this.data.documentType== InternalDocumentType.INCOMING_INVOICE) return "Broj ulazne fakture";
+    if(this.data.documentType== InternalDocumentType.INCOMING_OTHER_INVOICE) return "Broj ulazne fakture";
+    if(this.data.documentType== InternalDocumentType.INTERNAL_ISSUE_PRODUCT) return "Broj predatnice";
+    if(this.data.documentType== InternalDocumentType.INTERNAL_ISSUE_RAW) return "Broj izdatnice repro materijala";
+    if(this.data.documentType== InternalDocumentType.OUTGOING_CASH_INVOICE) return "Broj izlazne fakture(keš)";
+    if(this.data.documentType== InternalDocumentType.OUTGOING_INVOICE) return "Broj izlazne fakture";
+    
+    return "Broj fakture";
   }
 
   updateAllRaws(){

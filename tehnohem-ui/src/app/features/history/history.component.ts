@@ -149,6 +149,9 @@ export class HistoryComponent implements OnInit  {
       }
     }
     else{
+      if(this.tabToShow === 5.1 ){
+        this.invoicesIncoming = this.allInvoicesIncoming;
+      }
       if( this.tabToShow === 5.4){
         this.includeCashFlow();
       }
